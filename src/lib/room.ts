@@ -167,6 +167,8 @@ export class Room {
   private lastKey = "";
   private lastChat = 0;
   private year: number | null = null;
+  /** A year that arrived before we knew who sent it (messages can overtake each other). */
+  private pendingYear: { id: string; year: number } | null = null;
   private timers: ReturnType<typeof setInterval>[] = [];
   private unsubs: (() => void)[] = [];
 
@@ -251,13 +253,26 @@ export class Room {
         if (!known && this.peers.size >= MAX_PLAYERS - 1) return; // room full: ignore newcomers
         this.peers.set(m.id, { id: m.id, name: m.name, shirt: m.shirt, x: m.x, facing: m.facing as 1 | -1, moving: m.moving, inside: m.inside as BuildingId | null, seen: Date.now() });
         this.emitPeers();
+        if (!known) {
+          // a newcomer's hello can get lost, so seeing someone for the first time also hands them the room's year
+          if (this.year !== null) this.transport.send({ t: "year", id: this.id, year: this.year });
+          if (this.pendingYear?.id === m.id) {
+            const y = this.pendingYear.year;
+            this.pendingYear = null;
+            this.year = y;
+            bus.emit("room:year", { name: m.name, year: y });
+          }
+        }
         return;
       }
       case "chat":
         if (known) bus.emit("room:chat", { id: m.id, name: known.name, text: m.text, mine: false });
         return;
       case "year":
-        if (!known) return;
+        if (!known) {
+          this.pendingYear = { id: m.id, year: m.year };
+          return;
+        }
         this.year = m.year; // everyone remembers the room's year, so a newcomer still gets it after the mover leaves
         bus.emit("room:year", { name: known.name, year: m.year });
         return;
