@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { data, rupees, type Item } from "@/lib/data";
 import { fmtMin } from "@/lib/story";
+import { AnalystReports } from "./LiveReports";
 import LineChart from "./LineChart";
 
 const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -203,6 +204,7 @@ export default function Analyst() {
         <span>
           <Link href="/survive">Survive the month</Link>
           <Link href="/postcard">Postcards</Link>
+          <Link href="/bazaar">The bazaar</Link>
           <a href={`${base}/data/mumbai_prices_1995_2026.csv`} download>
             Download CSV
           </a>
@@ -255,6 +257,16 @@ export default function Analyst() {
             <SmallMultiple key={it.id} item={it} />
           ))}
         </div>
+      </section>
+
+      <section className="an-section">
+        <h2>Live from the street</h2>
+        <p className="an-intro">
+          Players can report what they paid in the last two years through <Link href="/bazaar">the bazaar</Link>. Each report is checked before it
+          counts. They are not mixed into the dataset above: a few reports from a few neighbourhoods are a useful signal about today&apos;s prices, not a
+          documented series.
+        </p>
+        <AnalystReports />
       </section>
 
       <section className="an-section an-method">

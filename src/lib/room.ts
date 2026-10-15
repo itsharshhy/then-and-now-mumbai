@@ -1,5 +1,6 @@
 import { bus } from "./bus";
 import { BUILDINGS, FIRST_YEAR, LAST_YEAR, type BuildingId } from "./data";
+import { getSupabase, supabaseConfigured } from "./supabase";
 
 // Multiplayer rooms: walk the street with friends.
 // A room is a private broadcast channel named by an invite code. There is no game server and no database:
@@ -43,7 +44,7 @@ interface Transport {
 const CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // no 0/O or 1/I/L
 export const newRoomCode = () => Array.from(crypto.getRandomValues(new Uint32Array(5)), (n) => CODE_CHARS[n % CODE_CHARS.length]).join("");
 export const cleanRoomCode = (s: string) => s.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 8);
-export const onlineConfigured = () => !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+export const onlineConfigured = supabaseConfigured;
 
 /** Chat text from anyone else is untrusted: plain text only, one line, bounded. */
 export const cleanChat = (s: unknown) =>
@@ -115,12 +116,9 @@ class SupabaseTransport implements Transport {
 
   constructor(code: string, onMsg: (m: unknown) => void, onStatus: (s: string) => void) {
     (async () => {
-      const { createClient } = await import("@supabase/supabase-js");
+      const client = await getSupabase();
       if (this.closed) return;
-      this.client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!, {
-        auth: { persistSession: false, autoRefreshToken: false },
-        realtime: { params: { eventsPerSecond: 20 } },
-      });
+      this.client = client;
       this.channel = this.client.channel(`tnm-room-${code}`, { config: { broadcast: { self: false, ack: false } } });
       this.channel.on("broadcast", { event: "m" }, ({ payload }) => onMsg(payload));
       this.channel.subscribe((status) => {

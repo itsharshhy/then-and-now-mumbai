@@ -35,6 +35,23 @@ Without them, rooms still work between tabs of the same browser, which is handy 
 
 ![Two players in 2007](docs/multiplayer.png)
 
+## The bazaar
+
+`/bazaar` has two halves, and nothing from either goes public until it has been reviewed.
+
+- **Ask the bazaar.** Ask what anything cost in Mumbai. Questions about the seven street items are answered instantly from the dataset, with the figure's confidence and source. Anything else goes to a review queue, and is published only once a reviewer answers it with a price, a year and a source link. Answered questions are matched to new ones, so the same question gets the same sourced answer.
+- **Report a price.** Tell the bazaar what you paid in the last two years for any of the seven items, with an optional neighbourhood and note. Reviewed reports appear as "Live from the street": the median of the last 90 days in each shop, on the bazaar page and in Analyst Mode. They are deliberately kept apart from the sourced dataset.
+
+Reviewers use `/bazaar/review` with a review key. The key is checked by the database on every action and is stored there only as a bcrypt hash.
+
+How it is protected (`supabase/migrations/*_bazaar.sql`):
+
+- Row-level security: visitors can insert only a few named columns (new rows always start as pending) and can read only approved reports and answered questions. Nobody can update or delete except through the key-checked review functions.
+- Rate limits per connection (a salted hash of the IP, in a private schema the API can't reach), a site-wide hourly cap, and caps on the size of the queue.
+- Text is stripped of control and direction-override characters, and every field has a length limit.
+
+![The bazaar](docs/bazaar.png)
+
 ## Price postcards
 
 Pick any item and two years and get a 1200 × 630 PNG with both prices, the change after inflation, and the confidence of each number. Share it from your phone, download it, or copy a link like `/postcard/?item=onion&from=1995&to=2019`. Every shop has a "Make a postcard" link.
@@ -72,6 +89,7 @@ Right now the dataset has 17 sourced anchors and 58 estimates. Turning hollow do
 | Pixel world | Phaser 4. Every sprite is a text grid painted in code, so there are no image assets |
 | Charts | Hand-built SVG with hover tooltips, light and dark themes |
 | Multiplayer | Supabase Realtime broadcast channels (no server, no database), BroadcastChannel fallback |
+| Bazaar | Supabase Postgres with row-level security and key-checked review functions |
 
 ```
 data/raw/anchors.csv     every price point, its confidence, source and note
@@ -83,6 +101,8 @@ src/components/          street UI, shop panel, Time Machine, Analyst Mode, Surv
 src/lib/survive.ts       the month game's rules (pure functions, every price from the dataset)
 src/lib/postcard.ts      draws the postcard PNG on a canvas
 src/lib/room.ts          multiplayer rooms: transports, message validation, presence
+src/lib/bazaar.ts        Ask the Bazaar + price reports: queries, dataset matching, report summaries
+supabase/migrations/     database schema, row-level security and review functions
 ```
 
 ## Run it locally
@@ -100,7 +120,8 @@ Controls: arrow keys or A/D to walk, E (or Enter) to enter a shop, Esc to leave.
 
 1. **Phase 1 (done):** one street, five buildings, seven items, Time Machine, Analyst Mode.
 2. **Phase 2 (done):** "Can you survive the month?" mini-game and shareable price postcards.
-3. **Phase 3 (this release):** multiplayer: walk the street with friends.
-4. **Phase 4:** "Ask the Bazaar" (any item, with cited sources and a review queue) and live price reports from players.
+3. **Phase 3 (done):** multiplayer: walk the street with friends.
+4. **Phase 4 (this release):** "Ask the Bazaar" (any item, with cited sources and a review queue) and live price reports from players.
+5. **Next:** Claude drafts cited answers into the review queue, so reviewers check instead of research.
 
 Shop names are generic and no brand logos are used. Facts are quoted from the linked sources; no article text is reproduced.

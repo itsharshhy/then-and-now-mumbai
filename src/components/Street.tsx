@@ -235,6 +235,7 @@ export default function Street() {
           <p className="start-more">
             <Link href="/survive">Can you survive a month in 1995?</Link>
             <Link href="/postcard">Make a price postcard</Link>
+            <Link href="/bazaar">Ask the bazaar what anything cost</Link>
             <Link href="/analyst">Skip the game and read the analysis</Link>
           </p>
         </div>
@@ -257,6 +258,9 @@ export default function Street() {
           </div>
         )}
         <nav className="topbar-links">
+          <Link href="/bazaar" className="btn-analyst">
+            Bazaar
+          </Link>
           <Link href="/survive" className="btn-analyst">
             Survive the month
           </Link>

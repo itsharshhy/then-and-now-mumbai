@@ -8,6 +8,7 @@ import { fmtMin, storyFor } from "@/lib/story";
 import LineChart from "./LineChart";
 import Pixel from "./Pixel";
 import { postcardHref } from "./Postcard";
+import { ShopReports } from "./LiveReports";
 
 type Mode = "price" | "real" | "work";
 const MODES: { id: Mode; label: string }[] = [
@@ -137,6 +138,7 @@ export default function ShopPanel({ building, year, onClose }: { building: Build
               ))}
             </div>
             <LineChart series={series} format={format} markerX={year} height={210} title={`${item.name}, ${item.unit}, 1995–2026`} />
+            <ShopReports item={item} />
             <p className="shop-legend">
               <span className="dot solid" /> reported in a dated source <span className="dot hollow" /> estimate, source wanted
             </p>
