@@ -24,7 +24,7 @@ The budget is the same real money in every year: ₹3,000 in 2026 rupees, deflat
 
 On the start screen, choose **Start a room** to get an invite code and link (`/?room=K7QXM`), or type a friend's code to join. Up to 8 people share one street: you see each other walk, chat in speech bubbles (press T), and the **Time Machine is shared**, so when one person drags it to 1998 everybody's street changes and a note says who moved it. Players inside a shop fade out and their name tag says where they are.
 
-There is no game server and no database. A room is a Supabase Realtime broadcast channel; each player sends their own position a few times a second and everyone draws everyone else. Incoming messages are validated and chat is plain text, one line, at most 80 characters. To turn it on, set two environment variables at build time (no tables or migrations needed):
+There is no game server and no database. A room is a Supabase Realtime broadcast channel; each player sends their own position a few times a second and everyone draws everyone else. Incoming messages are validated and chat is plain text, one line, at most 80 characters. The project's Supabase settings live in the committed `.env` (they are public by design and end up in the browser bundle anyway; no tables or migrations are needed). To point at a different project, change these two values:
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=https://<project>.supabase.co

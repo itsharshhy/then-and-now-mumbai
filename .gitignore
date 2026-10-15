@@ -5,4 +5,6 @@ out
 next-env.d.ts
 .DS_Store
 .env*
+# public, browser-safe settings only (never secrets): see README "Walk the street with friends"
+!.env
 __pycache__
