@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { BUILDINGS, data, itemsFor, pointAt, rupees, type BuildingId } from "@/lib/data";
+import { BUILDINGS, FIRST_YEAR, LAST_YEAR, data, itemsFor, pointAt, rupees, type BuildingId } from "@/lib/data";
 import { KEEPERS } from "@/lib/sprites";
 import { fmtMin, storyFor } from "@/lib/story";
 import LineChart from "./LineChart";
 import Pixel from "./Pixel";
+import { postcardHref } from "./Postcard";
 
 type Mode = "price" | "real" | "work";
 const MODES: { id: Mode; label: string }[] = [
@@ -167,8 +169,11 @@ export default function ShopPanel({ building, year, onClose }: { building: Build
           </div>
         </div>
 
-        {sources.length > 0 && (
-          <footer className="shop-sources">
+        <footer className="shop-sources">
+          <Link className="shop-postcard" href={postcardHref(item.id, FIRST_YEAR, year === FIRST_YEAR ? LAST_YEAR : year)}>
+            Make a postcard
+          </Link>
+          {sources.length > 0 && <>
             Sources:{" "}
             {sources.map((s, i) => (
               <span key={s.source_id}>
@@ -179,8 +184,8 @@ export default function ShopPanel({ building, year, onClose }: { building: Build
                 {i < sources.length - 1 ? ", " : ""}
               </span>
             ))}
-          </footer>
-        )}
+          </>}
+        </footer>
       </section>
     </div>
   );

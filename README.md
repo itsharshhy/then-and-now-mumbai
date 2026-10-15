@@ -2,6 +2,8 @@
 
 A pixel-art Mumbai street where every shop is a dataset. Walk into the chai tapri, the vada pav stall, the kirana store, the railway station or the auto stand, and the shopkeeper tells you what things cost, and what they cost in 1995. Drag the **Time Machine** and the whole street changes around you: mill chimneys give way to a construction crane and then a glass mall, towers rise on the skyline, Metro Line 1 appears overhead in 2014, and the Padmini taxis disappear in 2023.
 
+Then try to **survive a month** in the year of your choice, and turn any price into a shareable **postcard**.
+
 One button switches to **Analyst Mode**: a plain report with inflation-adjusted comparisons, a data-quality breakdown, the full method and every source.
 
 ![The street in 2026](docs/street-2026.png)
@@ -9,6 +11,20 @@ One button switches to **Analyst Mode**: a plain report with inflation-adjusted 
 | 2007: the market is gone, the mall is coming | Inside the kirana store during the 2019 onion crisis |
 | --- | --- |
 | ![The street in 2007](docs/street-2007.png) | ![Kirana store, 2019](docs/shop-onion-2019.png) |
+
+## Can you survive the month?
+
+Four weeks of Mumbai street spending: the weekly kirana run, the commute, lunch, chai, and one curveball a week (a Sunday at Juhu, a monsoon evening, a friend's birthday). Run out of money or out of good mood and the month wins.
+
+The budget is the same real money in every year: ₹3,000 in 2026 rupees, deflated with India's CPI. So the only thing that changes between years is street prices, and the game asks the project's question honestly: did they outrun inflation? At the end you see what your exact choices would have cost in 1995, 2005, 2015 and 2026.
+
+![Survive the month](docs/survive.png)
+
+## Price postcards
+
+Pick any item and two years and get a 1200 × 630 PNG with both prices, the change after inflation, and the confidence of each number. Share it from your phone, download it, or copy a link like `/postcard/?item=onion&from=1995&to=2019`. Every shop has a "Make a postcard" link.
+
+![Price postcard](docs/postcard.png)
 
 ## What the data says (so far)
 
@@ -47,7 +63,9 @@ data/raw/macro.csv       India CPI inflation + Maharashtra per capita income
 data/raw/sources.csv     the source list
 scripts/build_data.py    builds public/data/series.json and the CSV download
 src/game/                Phaser scene and sprite textures
-src/components/          street UI, shop panel, Time Machine, Analyst Mode
+src/components/          street UI, shop panel, Time Machine, Analyst Mode, Survive, Postcard
+src/lib/survive.ts       the month game's rules (pure functions, every price from the dataset)
+src/lib/postcard.ts      draws the postcard PNG on a canvas
 ```
 
 ## Run it locally
@@ -63,8 +81,8 @@ Controls: arrow keys or A/D to walk, E (or Enter) to enter a shop, Esc to leave.
 
 ## Roadmap
 
-1. **Phase 1 (this release):** one street, five buildings, seven items, Time Machine, Analyst Mode.
-2. **Phase 2:** "Can you survive the month?" mini-game and shareable price postcards.
+1. **Phase 1 (done):** one street, five buildings, seven items, Time Machine, Analyst Mode.
+2. **Phase 2 (this release):** "Can you survive the month?" mini-game and shareable price postcards.
 3. **Phase 3:** multiplayer: walk the street with friends.
 4. **Phase 4:** "Ask the Bazaar" (any item, with cited sources and a review queue) and live price reports from players.
 

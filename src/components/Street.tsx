@@ -106,9 +106,11 @@ export default function Street() {
             </button>
           </form>
           <p className="start-help">Arrow keys or A/D to walk. E to enter a shop. On a phone, use the buttons under the street.</p>
-          <Link className="start-analyst" href="/analyst">
-            Skip the game and read the analysis
-          </Link>
+          <p className="start-more">
+            <Link href="/survive">Can you survive a month in 1995?</Link>
+            <Link href="/postcard">Make a price postcard</Link>
+            <Link href="/analyst">Skip the game and read the analysis</Link>
+          </p>
         </div>
       </main>
     );
@@ -119,9 +121,14 @@ export default function Street() {
       <header className="topbar">
         <h1>Then &amp; Now Mumbai</h1>
         <span className="who">{name || "Mumbaikar"}</span>
-        <Link href="/analyst" className="btn-analyst">
-          Analyst Mode
-        </Link>
+        <nav className="topbar-links">
+          <Link href="/survive" className="btn-analyst">
+            Survive the month
+          </Link>
+          <Link href="/analyst" className="btn-analyst">
+            Analyst Mode
+          </Link>
+        </nav>
       </header>
 
       <div className="stage">

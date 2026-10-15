@@ -201,6 +201,8 @@ export default function Analyst() {
       <nav className="an-nav">
         <Link href="/">Back to the street</Link>
         <span>
+          <Link href="/survive">Survive the month</Link>
+          <Link href="/postcard">Postcards</Link>
           <a href={`${base}/data/mumbai_prices_1995_2026.csv`} download>
             Download CSV
           </a>
