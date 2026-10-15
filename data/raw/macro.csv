@@ -1,0 +1,35 @@
+year,cpi_inflation_pct,cpi_confidence,per_capita_income,income_confidence
+# cpi_inflation_pct: India consumer price inflation, annual % (World Bank FP.CPI.TOTL.ZG). 2025-26 are estimates.
+# per_capita_income: Maharashtra per capita state income, Rs per year, current prices (Economic Survey of Maharashtra). Anchor years only; values pending verification against the published tables.
+1995,10.2,reported,15500,estimated
+1996,9.0,reported,,
+1997,7.2,reported,,
+1998,13.2,reported,,
+1999,4.7,reported,,
+2000,4.0,reported,23500,estimated
+2001,3.8,reported,,
+2002,4.3,reported,,
+2003,3.8,reported,,
+2004,3.8,reported,,
+2005,4.2,reported,38000,estimated
+2006,5.8,reported,,
+2007,6.4,reported,,
+2008,8.4,reported,,
+2009,10.9,reported,,
+2010,12.0,reported,85000,estimated
+2011,8.9,reported,,
+2012,9.3,reported,104000,estimated
+2013,10.9,reported,,
+2014,6.4,reported,,
+2015,5.9,reported,145000,estimated
+2016,4.9,reported,,
+2017,2.5,reported,170000,estimated
+2018,4.9,reported,,
+2019,3.7,reported,,
+2020,6.6,reported,196000,estimated
+2021,5.1,reported,220000,estimated
+2022,6.7,reported,,
+2023,5.6,reported,252000,estimated
+2024,5.0,reported,,
+2025,2.5,estimated,285000,estimated
+2026,4.0,estimated,300000,estimated

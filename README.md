@@ -1,0 +1,71 @@
+# Then & Now Mumbai
+
+A pixel-art Mumbai street where every shop is a dataset. Walk into the chai tapri, the vada pav stall, the kirana store, the railway station or the auto stand, and the shopkeeper tells you what things cost, and what they cost in 1995. Drag the **Time Machine** and the whole street changes around you: mill chimneys give way to a construction crane and then a glass mall, towers rise on the skyline, Metro Line 1 appears overhead in 2014, and the Padmini taxis disappear in 2023.
+
+One button switches to **Analyst Mode**: a plain report with inflation-adjusted comparisons, a data-quality breakdown, the full method and every source.
+
+![The street in 2026](docs/street-2026.png)
+
+| 2007: the market is gone, the mall is coming | Inside the kirana store during the 2019 onion crisis |
+| --- | --- |
+| ![The street in 2007](docs/street-2007.png) | ![Kirana store, 2019](docs/shop-onion-2019.png) |
+
+## What the data says (so far)
+
+- **Vada pav outran inflation.** ₹2 to about ₹22: an 11x rise while general prices rose about 6.5x, a real increase of roughly 69%.
+- **The local train got about 75% cheaper in real terms.** The minimum second-class fare moved from about ₹3 to ₹5 in three decades.
+- **Onions are the volatile one.** Mumbai shoppers paid up to ₹140 a kilo in November 2019.
+- Measured in minutes of work at Maharashtra's average income, everything got "cheaper". That average is pulled up by high earners, which is exactly the kind of caveat Analyst Mode spells out.
+
+![Analyst Mode](docs/analyst.png)
+
+## Honest data
+
+Street prices were never published as a series. Every price in this project is an **anchor** with a confidence level:
+
+| Confidence | Meaning |
+| --- | --- |
+| documented | an official notice or primary record |
+| reported | a dated news report states the figure |
+| estimated | reconstructed, still needs a source (hollow dots in the charts) |
+| interpolated | a year between anchors, filled log-linearly (the shopkeepers say so out loud) |
+
+Right now the dataset has 17 sourced anchors and 58 estimates. Turning hollow dots into solid ones is the main data task ahead. Found an old price in a newspaper, a receipt or a fare chart? Open an issue with the source.
+
+## How it's built
+
+| Layer | Tech |
+| --- | --- |
+| Data pipeline | Python (`scripts/build_data.py`): anchors → interpolation → CPI adjustment → minutes of work |
+| Website | Next.js 16 (static export), React 19, TypeScript |
+| Pixel world | Phaser 4. Every sprite is a text grid painted in code, so there are no image assets |
+| Charts | Hand-built SVG with hover tooltips, light and dark themes |
+
+```
+data/raw/anchors.csv     every price point, its confidence, source and note
+data/raw/macro.csv       India CPI inflation + Maharashtra per capita income
+data/raw/sources.csv     the source list
+scripts/build_data.py    builds public/data/series.json and the CSV download
+src/game/                Phaser scene and sprite textures
+src/components/          street UI, shop panel, Time Machine, Analyst Mode
+```
+
+## Run it locally
+
+```bash
+npm install
+npm run data     # rebuild the dataset from data/raw (Python 3, no extra packages)
+npm run dev      # http://localhost:3000
+npm run build    # static site in out/
+```
+
+Controls: arrow keys or A/D to walk, E (or Enter) to enter a shop, Esc to leave. On a phone, use the buttons under the street.
+
+## Roadmap
+
+1. **Phase 1 (this release):** one street, five buildings, seven items, Time Machine, Analyst Mode.
+2. **Phase 2:** "Can you survive the month?" mini-game and shareable price postcards.
+3. **Phase 3:** multiplayer: walk the street with friends.
+4. **Phase 4:** "Ask the Bazaar" (any item, with cited sources and a review queue) and live price reports from players.
+
+Shop names are generic and no brand logos are used. Facts are quoted from the linked sources; no article text is reproduced.

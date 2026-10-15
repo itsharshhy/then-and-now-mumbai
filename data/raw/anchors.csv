@@ -1,0 +1,84 @@
+item,year,price,confidence,source_id,note
+# confidence: documented = official notice or primary record; reported = a dated news report states this figure; estimated = reconstructed (vendor recall, extrapolation) and still needs a source
+# ---- Cutting chai (per glass, roadside tapri) ----
+chai,1995,2,estimated,,No archival series for tapri chai exists; reconstructed from common recall. Help wanted.
+chai,2000,3,estimated,,
+chai,2005,4,estimated,,
+chai,2010,5,estimated,,
+chai,2015,8,estimated,,
+chai,2020,10,estimated,,
+chai,2023,12,estimated,,
+chai,2026,15,estimated,,Commercial LPG hikes in 2026 pushed many stalls toward Rs 15.
+# ---- Vada pav (per piece, street stall) ----
+vadapav,1995,2,estimated,,Outlook Traveller traces the 1970s Dadar original to 25 paise.
+vadapav,2000,3,estimated,,
+vadapav,2005,5,estimated,,
+vadapav,2010,8,estimated,,Dec 2010 onion crisis squeezed vendors (DNA).
+vadapav,2018,12,reported,osho_2018_vadapav,Price paid at a named Mumbai stall in 2018.
+vadapav,2022,18,reported,ct_2022_vadapav,Report gives Rs 20-22 after a Rs 2-5 rise; midpoint of typical stalls used.
+vadapav,2026,22,estimated,,
+# ---- Local train (minimum second-class single ticket) ----
+train,1995,3,estimated,,
+train,2004,4,estimated,,
+train,2014,5,estimated,,Minimum fare widely cited as Rs 5 since the mid-2010s; notification still to be sourced.
+train,2025,5,reported,latestly_2025_rail,July 2025 national fare revision excluded suburban tickets and season passes.
+train,2026,5,estimated,,No suburban revision reported in 2026.
+# ---- Auto-rickshaw (minimum fare, first 1.5 km) ----
+auto,1995,6,estimated,,
+auto,2000,7,estimated,,
+auto,2005,8,estimated,,
+auto,2009,9,reported,iep_2010_auto,Fare before the June 2010 revision.
+auto,2010,11,reported,iep_2010_auto,Raised Rs 9 to Rs 11 in June 2010.
+auto,2011,12,reported,gn_2012_auto,Fare before the 2012 revision.
+auto,2012,15,reported,gn_2012_auto,Raised Rs 12 to Rs 15.
+auto,2015,18,estimated,,Widely cited Rs 18 revision; source pending.
+auto,2021,21,reported,bt_2022_auto,In force from 1 March 2021.
+auto,2022,23,reported,bt_2022_auto,Raised Rs 21 to Rs 23 from 1 October 2022.
+auto,2025,26,reported,fpj_2026_auto,Rs 3 rise effective 1 February 2025.
+auto,2026,27,reported,fpj_2026_auto,Raised Rs 26 to Rs 27 from 1 September 2026.
+# ---- Petrol (per litre, Mumbai) ----
+petrol,1995,23,estimated,,
+petrol,2000,28,estimated,,
+petrol,2005,43,estimated,,
+petrol,2008,55,estimated,,
+petrol,2010,55,estimated,,
+petrol,2012,78,estimated,,
+petrol,2014,80,estimated,,
+petrol,2016,64,estimated,,Global crude crash.
+petrol,2018,85,estimated,,
+petrol,2020,88,estimated,,
+petrol,2021,102,reported,etv_2021_petrol,Crossed Rs 100 in Mumbai in May 2021; annual figure set just above.
+petrol,2022,106,estimated,,
+petrol,2024,104,estimated,,
+petrol,2026,103,estimated,,
+# ---- Onion (per kg, retail; spike years show the peak) ----
+onion,1995,8,estimated,,
+onion,1997,10,estimated,,
+onion,1998,45,estimated,,1998 onion crisis peak.
+onion,1999,12,estimated,,
+onion,2005,12,estimated,,
+onion,2009,18,estimated,,
+onion,2010,30,estimated,,Dec 2010 spike.
+onion,2011,20,estimated,,
+onion,2012,18,estimated,,
+onion,2013,80,estimated,,2013 spike peak.
+onion,2014,25,estimated,,
+onion,2018,15,estimated,,
+onion,2019,140,reported,bi_2019_onion,Good-quality onions at Rs 140/kg in Mumbai in late Nov 2019 (peak).
+onion,2020,40,estimated,,
+onion,2023,35,estimated,,
+onion,2024,60,estimated,,
+onion,2026,35,estimated,,
+# ---- Milk (packaged toned, per litre) ----
+milk,1995,11,estimated,,
+milk,2000,14,estimated,,
+milk,2005,18,estimated,,
+milk,2010,26,estimated,,
+milk,2013,34,reported,bs_2014_milk,Amul Taaza price before the Jan 2014 hike.
+milk,2014,36,reported,bs_2014_milk,Raised Rs 34 to Rs 36 on 24 Jan 2014.
+milk,2017,42,estimated,,
+milk,2020,48,estimated,,
+milk,2022,52,reported,week_2023_milk,Derived: price before the Feb 2023 Rs 2 hike.
+milk,2023,54,reported,week_2023_milk,Amul Taaza after the 3 Feb 2023 hike.
+milk,2025,56,estimated,,
+milk,2026,57,estimated,,
