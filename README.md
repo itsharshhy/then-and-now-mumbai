@@ -20,6 +20,21 @@ The budget is the same real money in every year: ₹3,000 in 2026 rupees, deflat
 
 ![Survive the month](docs/survive.png)
 
+## Walk the street with friends
+
+On the start screen, choose **Start a room** to get an invite code and link (`/?room=K7QXM`), or type a friend's code to join. Up to 8 people share one street: you see each other walk, chat in speech bubbles (press T), and the **Time Machine is shared**, so when one person drags it to 1998 everybody's street changes and a note says who moved it. Players inside a shop fade out and their name tag says where they are.
+
+There is no game server and no database. A room is a Supabase Realtime broadcast channel; each player sends their own position a few times a second and everyone draws everyone else. Incoming messages are validated and chat is plain text, one line, at most 80 characters. To turn it on, set two environment variables at build time (no tables or migrations needed):
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://<project>.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+```
+
+Without them, rooms still work between tabs of the same browser, which is handy for development.
+
+![Two players in 2007](docs/multiplayer.png)
+
 ## Price postcards
 
 Pick any item and two years and get a 1200 × 630 PNG with both prices, the change after inflation, and the confidence of each number. Share it from your phone, download it, or copy a link like `/postcard/?item=onion&from=1995&to=2019`. Every shop has a "Make a postcard" link.
@@ -56,6 +71,7 @@ Right now the dataset has 17 sourced anchors and 58 estimates. Turning hollow do
 | Website | Next.js 16 (static export), React 19, TypeScript |
 | Pixel world | Phaser 4. Every sprite is a text grid painted in code, so there are no image assets |
 | Charts | Hand-built SVG with hover tooltips, light and dark themes |
+| Multiplayer | Supabase Realtime broadcast channels (no server, no database), BroadcastChannel fallback |
 
 ```
 data/raw/anchors.csv     every price point, its confidence, source and note
@@ -66,6 +82,7 @@ src/game/                Phaser scene and sprite textures
 src/components/          street UI, shop panel, Time Machine, Analyst Mode, Survive, Postcard
 src/lib/survive.ts       the month game's rules (pure functions, every price from the dataset)
 src/lib/postcard.ts      draws the postcard PNG on a canvas
+src/lib/room.ts          multiplayer rooms: transports, message validation, presence
 ```
 
 ## Run it locally
@@ -82,8 +99,8 @@ Controls: arrow keys or A/D to walk, E (or Enter) to enter a shop, Esc to leave.
 ## Roadmap
 
 1. **Phase 1 (done):** one street, five buildings, seven items, Time Machine, Analyst Mode.
-2. **Phase 2 (this release):** "Can you survive the month?" mini-game and shareable price postcards.
-3. **Phase 3:** multiplayer: walk the street with friends.
+2. **Phase 2 (done):** "Can you survive the month?" mini-game and shareable price postcards.
+3. **Phase 3 (this release):** multiplayer: walk the street with friends.
 4. **Phase 4:** "Ask the Bazaar" (any item, with cited sources and a review queue) and live price reports from players.
 
 Shop names are generic and no brand logos are used. Facts are quoted from the linked sources; no article text is reproduced.

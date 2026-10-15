@@ -1,7 +1,9 @@
 import Phaser from "phaser";
 import { bus } from "@/lib/bus";
 import { itemById, pointAt, type BuildingId } from "@/lib/data";
-import { buildTextures, CAR_COLOURS } from "./textures";
+import type { Peer } from "@/lib/room";
+import { PLAYER_FRAMES, playerPalette } from "@/lib/sprites";
+import { buildTextures, CAR_COLOURS, makeTexture } from "./textures";
 
 // World is drawn at 1 unit = 1 screen pixel at 480x270, then scaled up crisp.
 export const VIEW_W = 480;
@@ -47,6 +49,8 @@ const DOORS: Door[] = [
   { id: "autostand", x: 1035, label: "Auto stand" },
 ];
 
+const BUILDING_SHORT: Record<BuildingId, string> = { chai: "chai", vadapav: "vada pav", kirana: "kirana", station: "station", autostand: "autos" };
+
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const mixColor = (a: number, b: number, t: number) => {
   const ca = Phaser.Display.Color.IntegerToColor(a);
@@ -63,6 +67,19 @@ function rng(seed: number) {
     seed = (seed * 16807) % 2147483647;
     return (seed - 1) / 2147483646;
   };
+}
+
+interface Remote {
+  img: Phaser.GameObjects.Image;
+  tag: Phaser.GameObjects.Text;
+  bubble?: Phaser.GameObjects.Text;
+  bubbleTimer?: Phaser.Time.TimerEvent;
+  targetX: number;
+  moving: boolean;
+  facing: 1 | -1;
+  inside: boolean;
+  shirt: string;
+  clock: number;
 }
 
 interface Mover {
@@ -95,6 +112,9 @@ export class StreetScene extends Phaser.Scene {
   private metroClock = 0;
   private unsubs: (() => void)[] = [];
   private shirt = "#2f6fb3";
+  private remotes = new Map<string, Remote>();
+  private myBubble?: Phaser.GameObjects.Text;
+  private myBubbleTimer?: Phaser.Time.TimerEvent;
 
   constructor() {
     super("street");
@@ -146,6 +166,8 @@ export class StreetScene extends Phaser.Scene {
       bus.on("pause", (p: boolean) => (this.paused = p)),
       bus.on("move", (d: number) => (this.touchDir = d)),
       bus.on("interact", () => this.tryEnter(true)),
+      bus.on("room:peers", (peers: Peer[]) => this.syncPeers(peers)),
+      bus.on("room:chat", (c: { id: string; text: string; mine: boolean }) => this.say(c.mine ? null : c.id, c.text)),
     );
     this.events.once("shutdown", () => this.unsubs.forEach((u) => u()));
 
@@ -454,6 +476,98 @@ export class StreetScene extends Phaser.Scene {
     this.walkers.push({ img, speed: (right ? 1 : -1) * (12 + Math.random() * 8), frame: 0, npc, clock: 0 });
   }
 
+  // ---------------------------------------------------------------- other players
+  private shirtTextures(shirt: string) {
+    const key = `rp_${shirt.slice(1)}`;
+    if (!this.textures.exists(`${key}_0`)) PLAYER_FRAMES.forEach((f, i) => makeTexture(this, `${key}_${i}`, f, playerPalette(shirt)));
+    return key;
+  }
+
+  private syncPeers(peers: Peer[]) {
+    const ids = new Set(peers.map((p) => p.id));
+    for (const [id, r] of this.remotes) {
+      if (ids.has(id)) continue;
+      r.img.destroy();
+      r.tag.destroy();
+      r.bubble?.destroy();
+      r.bubbleTimer?.remove();
+      this.remotes.delete(id);
+    }
+    for (const p of peers) {
+      let r = this.remotes.get(p.id);
+      if (!r) {
+        const key = this.shirtTextures(p.shirt);
+        const img = this.add.image(p.x, FLOOR, `${key}_0`).setOrigin(0.5, 1).setDepth(7.5);
+        const tag = this.add
+          .text(p.x, FLOOR - 19, p.name, { fontFamily: FONT, fontSize: "8px", color: "#efe3c8" })
+          .setOrigin(0.5, 1)
+          .setDepth(11)
+          .setShadow(1, 1, "#1c1c22", 0);
+        r = { img, tag, targetX: p.x, moving: false, facing: 1, inside: false, shirt: p.shirt, clock: 0 };
+        this.remotes.set(p.id, r);
+      }
+      if (r.shirt !== p.shirt) {
+        r.shirt = p.shirt;
+        r.img.setTexture(`${this.shirtTextures(p.shirt)}_0`);
+      }
+      r.targetX = p.x;
+      r.moving = p.moving;
+      r.facing = p.facing;
+      r.inside = !!p.inside;
+      r.tag.setText(p.inside ? `${p.name} (in ${BUILDING_SHORT[p.inside]})` : p.name);
+    }
+  }
+
+  private bubble(text: string) {
+    return this.add
+      .text(0, 0, text, {
+        fontFamily: FONT,
+        fontSize: "8px",
+        color: "#1c1c22",
+        backgroundColor: "#f3f5f7",
+        padding: { x: 3, y: 2 },
+        wordWrap: { width: 120 },
+        align: "center",
+      })
+      .setOrigin(0.5, 1)
+      .setDepth(21);
+  }
+
+  /** Shows a speech bubble over a player (null = me) for a few seconds. */
+  private say(id: string | null, text: string) {
+    const ttl = 2500 + text.length * 60;
+    if (id === null) {
+      this.myBubble?.destroy();
+      this.myBubbleTimer?.remove();
+      this.myBubble = this.bubble(text);
+      this.myBubbleTimer = this.time.delayedCall(ttl, () => this.myBubble?.destroy());
+      return;
+    }
+    const r = this.remotes.get(id);
+    if (!r) return;
+    r.bubble?.destroy();
+    r.bubbleTimer?.remove();
+    r.bubble = this.bubble(text);
+    r.bubbleTimer = this.time.delayedCall(ttl, () => r.bubble?.destroy());
+  }
+
+  private updateRemotes(dtMs: number) {
+    for (const r of this.remotes.values()) {
+      // ease towards the last reported position so 8 updates a second still looks like walking
+      const dx = r.targetX - r.img.x;
+      r.img.x = Math.abs(dx) > 160 ? r.targetX : r.img.x + dx * Math.min(1, dtMs / 110);
+      const walking = r.moving || Math.abs(dx) > 1.5;
+      r.clock = walking ? r.clock + dtMs : 0;
+      const key = `rp_${r.shirt.slice(1)}`;
+      r.img.setTexture(walking ? `${key}_${Math.floor(r.clock / 140) % 2 ? 2 : 1}` : `${key}_0`);
+      r.img.setFlipX(r.facing < 0);
+      r.img.setAlpha(r.inside ? 0.4 : 1);
+      r.tag.setPosition(Math.round(r.img.x), FLOOR - 19);
+      r.bubble?.setPosition(Math.round(r.img.x), FLOOR - 30);
+    }
+    this.myBubble?.setPosition(Math.round(this.player.x), FLOOR - 21);
+  }
+
   // ---------------------------------------------------------------- loop
   update(_t: number, dtMs: number) {
     const dt = dtMs / 1000;
@@ -518,6 +632,8 @@ export class StreetScene extends Phaser.Scene {
       this.player.setTexture("player0");
     }
     this.player.setFlipX(this.facing < 0);
+    bus.emit("self", { x: this.player.x, facing: this.facing, moving: !!dir });
+    this.updateRemotes(dtMs);
 
     // doors
     const near = DOORS.find((d) => Math.abs(d.x - this.player.x) < 20) ?? null;

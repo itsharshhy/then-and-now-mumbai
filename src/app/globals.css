@@ -628,3 +628,46 @@ a { color: inherit; }
 .shop-postcard { float: right; font-family: var(--pixel); font-size: 12px; color: var(--text); margin-left: 12px; }
 .topbar-links { margin-left: auto; }
 @media (max-width: 560px) { .topbar:has(.topbar-links) h1 { display: none; } }
+
+/* ------------------------------------------------------------------ multiplayer */
+.street { grid-template-rows: auto minmax(0, 1fr) auto auto auto; }
+.start-room { border: 0; padding: 0; margin: 0 0 16px; }
+.start-room legend { font-family: var(--pixel); font-size: 13px; margin-bottom: 6px; }
+.start-room-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.start-room-row button, .start-room-row input {
+  font-family: var(--pixel); font-size: 12px; border: 3px solid var(--ink); background: transparent; color: var(--ink); padding: 8px 10px; cursor: pointer; border-radius: 0;
+}
+.start-room-row input { width: 9.5em; background: #fff8dc; cursor: text; text-transform: uppercase; letter-spacing: 1px; }
+.start-room-row .on { background: var(--ink); color: var(--taxi); }
+.start-room-row input.on { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+.btn-go:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-go:disabled:hover { background: var(--ink); color: var(--taxi); }
+
+.room-chip { display: flex; align-items: center; gap: 8px; font-family: var(--pixel); font-size: 11px; background: #fff8dc; border: 2px solid var(--ink); padding: 3px 4px 3px 8px; white-space: nowrap; }
+.room-chip button { font-family: var(--pixel); font-size: 11px; background: var(--ink); color: var(--taxi); border: 0; padding: 4px 8px; cursor: pointer; }
+.room-chip button:hover { background: var(--best); color: #fff; }
+.room-dot { width: 8px; height: 8px; background: #9a9a9a; display: inline-block; }
+.room-dot.live { background: #2e8b57; }
+.room-dot.local { background: var(--taxi-deep); }
+.room-dot.error { background: var(--best); }
+.room-toast {
+  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
+  background: var(--taxi); color: var(--ink); border: 3px solid var(--ink); font-family: var(--pixel); font-size: 12px; padding: 6px 10px; white-space: nowrap;
+}
+.roombar { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 360px); gap: 12px; padding: 8px 16px; background: #141b33; border-top: 2px solid #2b3863; align-items: end; }
+.room-lines { list-style: none; margin: 0; padding: 0; font-size: 14px; color: #c8cdd8; display: grid; gap: 2px; min-width: 0; }
+.room-lines li { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.room-lines b { color: var(--taxi); font-weight: 600; }
+.room-lines .mine b { color: #9fc3d6; }
+.room-empty { color: #9aa6c4; font-size: 13px; white-space: normal !important; }
+.room-chat { display: flex; }
+.room-chat input { flex: 1; min-width: 0; border: 2px solid var(--taxi); background: var(--dusk-deep); color: var(--chalk); padding: 7px 10px; font-size: 16px; border-radius: 0; }
+.room-chat input::placeholder { color: #8a93b0; }
+.room-chat button { font-family: var(--pixel); font-size: 12px; background: var(--taxi); color: var(--ink); border: 2px solid var(--taxi); padding: 0 12px; cursor: pointer; }
+.room-chat button:disabled { opacity: 0.6; cursor: default; }
+@media (max-width: 720px) {
+  .roombar { grid-template-columns: 1fr; gap: 6px; padding: 6px 12px; }
+  .room-lines { max-height: 3.2em; overflow: hidden; }
+  .room-chip > span:nth-child(2) b + * { display: none; }
+}
+@media (max-width: 560px) { .topbar:has(.room-chip) .topbar-links .btn-analyst:last-child { display: none; } }
