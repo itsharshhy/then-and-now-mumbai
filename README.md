@@ -47,7 +47,7 @@ Reviewers use `/bazaar/review` with a review key. The key is checked by the data
 How it is protected (`supabase/migrations/*_bazaar.sql`):
 
 - Row-level security: visitors can insert only a few named columns (new rows always start as pending) and can read only approved reports and answered questions. Nobody can update or delete except through the key-checked review functions.
-- Rate limits per connection (a salted hash of the IP, in a private schema the API can't reach), a site-wide hourly cap, and caps on the size of the queue.
+- Rate limits per connection (a salted hash of the IP, in a private schema the API can't reach, deleted nightly after a day), a site-wide hourly cap, and caps on the size of the queue.
 - Text is stripped of control and direction-override characters, and every field has a length limit.
 
 ![The bazaar](docs/bazaar.png)
