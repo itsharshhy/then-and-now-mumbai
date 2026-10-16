@@ -361,33 +361,116 @@ export function tower(w: number, floors: number, col: Col, seed: number): Px {
 
 // ---------------------------------------------------------------- trees and props
 export function tree(kind: "gulmohar" | "banyan" | "neem", seed: number): Px {
-  const W = kind === "banyan" ? 64 : 50;
-  const p = new Px(W, kind === "banyan" ? 64 : 58);
+  // layered canopy: a dark under-layer, mid foliage, sunlit tops, then leaf texture and (for gulmohar) blossoms
+  const W = kind === "banyan" ? 72 : 58;
+  const H = kind === "banyan" ? 72 : 66;
+  const p = new Px(W, H);
   const r = rng(seed);
-  const trunkCol = "#6b4a2f";
+  const trunkCol = "#7a5236";
   const bx = Math.floor(W / 2);
-  p.rect(bx - 3, 30, 7, 26, trunkCol);
-  p.rect(bx - 3, 30, 2, 26, darken(trunkCol, 0.3));
-  if (kind === "banyan") for (const dx of [-14, -8, 9, 15]) p.vline(bx + dx, 28, 26, "#7a5a3a"); // aerial roots
-  const base = kind === "gulmohar" ? "#3f7a45" : kind === "banyan" ? "#2f6a3c" : "#4f8a43";
-  const dk = darken(base, 0.35);
-  const lt = lighten(base, 0.28);
+  p.rect(bx - 4, 34, 9, H - 38, trunkCol);
+  p.rect(bx - 4, 34, 3, H - 38, darken(trunkCol, 0.3));
+  p.rect(bx + 3, 34, 2, H - 38, lighten(trunkCol, 0.2));
+  p.rect(bx - 7, H - 7, 15, 3, darken(trunkCol, 0.15)); // roots
+  if (kind === "banyan") for (const dx of [-18, -11, 10, 17]) p.vline(bx + dx, 30, H - 34, "#8a6446");
+  const greens =
+    kind === "gulmohar"
+      ? ["#2f6a3c", "#3f8a4a", "#5fae58", "#9ad06a"]
+      : kind === "banyan"
+        ? ["#285e38", "#367a44", "#4f9a50", "#86c062"]
+        : ["#3a7a3e", "#4f9a4a", "#74b85a", "#b3dc78"];
   const blobs: [number, number, number][] = [];
-  for (let i = 0; i < 9; i++) blobs.push([bx + Math.floor((r() - 0.5) * (W - 24)), 14 + Math.floor((r() - 0.3) * 20), 9 + Math.floor(r() * 6)]);
-  blobs.forEach(([x, y, rad]) => p.circle(x, y + 2, rad, dk));
-  blobs.forEach(([x, y, rad]) => p.circle(x, y, rad - 1, base));
-  blobs.forEach(([x, y, rad]) => p.circle(x - 2, y - 3, Math.max(2, rad - 5), lt));
-  p.speckle(4, 2, W - 8, 40, [lt, dk], 0.05, seed);
+  const n = kind === "banyan" ? 14 : 11;
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2;
+    const d = i === 0 ? 0 : 6 + r() * (W / 2 - 18);
+    blobs.push([bx + Math.round(Math.cos(a) * d), 22 + Math.round(Math.sin(a) * d * 0.6), 9 + Math.floor(r() * 6)]);
+  }
+  blobs.forEach(([x, y, rad]) => p.circle(x, y + 3, rad, greens[0]));
+  blobs.forEach(([x, y, rad]) => p.circle(x, y, rad - 1, greens[1]));
+  blobs.forEach(([x, y, rad]) => p.circle(x - 2, y - 2, Math.max(2, rad - 4), greens[2]));
+  blobs.forEach(([x, y, rad]) => p.circle(x - 3, y - 4, Math.max(1, rad - 8), greens[3]));
+  // leaf texture: little clusters, not single pixels
+  const lr = rng(seed + 5);
+  for (let i = 0; i < 70; i++) {
+    const [x, y, rad] = blobs[Math.floor(lr() * blobs.length)];
+    const a = lr() * Math.PI * 2;
+    const d = lr() * (rad - 1);
+    const lx = Math.round(x + Math.cos(a) * d);
+    const ly = Math.round(y + Math.sin(a) * d);
+    const c = ly < y ? greens[3] : greens[0];
+    p.rect(lx, ly, 2, 1, c);
+    p.px(lx + 1, ly - 1, c);
+  }
   if (kind === "gulmohar") {
     // the flame tree: red-orange blossoms in May
     const fl = rng(seed + 9);
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 46; i++) {
       const [x, y, rad] = blobs[Math.floor(fl() * blobs.length)];
       const a = fl() * Math.PI * 2;
       const d = fl() * (rad - 2);
-      p.px(Math.round(x + Math.cos(a) * d), Math.round(y + Math.sin(a) * d), fl() < 0.5 ? "#e8542f" : "#f28b3a");
+      const fx = Math.round(x + Math.cos(a) * d);
+      const fy = Math.round(y + Math.sin(a) * d);
+      p.rect(fx, fy, 2, 2, fl() < 0.5 ? "#e8542f" : "#f28b3a");
+      p.px(fx, fy, "#ffc36a");
     }
   }
+  return p.outline(OUTLINE);
+}
+
+export function bush(seed: number, flowers = false): Px {
+  const p = new Px(26, 18);
+  const r = rng(seed);
+  const g = ["#2f6a3c", "#4f9a4a", "#74b85a", "#a8d16b"];
+  for (let i = 0; i < 4; i++) p.circle(6 + i * 5, 10 - (i % 2) * 2, 5, g[1]);
+  for (let i = 0; i < 4; i++) p.circle(5 + i * 5, 8 - (i % 2) * 2, 3, g[2]);
+  for (let i = 0; i < 4; i++) p.px(4 + i * 5, 6 - (i % 2) * 2, g[3]);
+  p.hline(2, 15, 22, g[0]);
+  if (flowers) for (let i = 0; i < 7; i++) p.rect(3 + Math.floor(r() * 19), 4 + Math.floor(r() * 9), 2, 2, ["#f3f1ea", "#f28bb0", "#f2c230"][i % 3]);
+  return p.outline(OUTLINE);
+}
+
+export function flowerBed(seed: number): Px {
+  const p = new Px(34, 14);
+  const r = rng(seed);
+  p.rect(1, 4, 32, 9, "#8a5a3a");
+  p.rect(2, 4, 30, 6, "#5a8a3a");
+  const cols = ["#e8542f", "#f2c230", "#f28bb0", "#f3f1ea", "#b07ad6"];
+  for (let i = 0; i < 16; i++) p.rect(3 + Math.floor(r() * 28), 2 + Math.floor(r() * 7), 2, 2, cols[Math.floor(r() * cols.length)]);
+  return p.outline(OUTLINE);
+}
+
+export function rock(seed: number): Px {
+  const p = new Px(20, 14);
+  const r = rng(seed);
+  const w = 7 + Math.floor(r() * 3);
+  p.ellipse(10, 8, w, 5, "#8f959c");
+  p.ellipse(9, 6, w - 2, 3, "#b4b9be");
+  p.rect(6, 4, 3, 1, "#d4d8db");
+  p.hline(4, 12, 12, "#6f757c");
+  if (r() < 0.5) p.rect(12, 3, 3, 2, "#6fa04a"); // moss
+  return p.outline(OUTLINE);
+}
+
+export function tallGrass(seed: number): Px {
+  const p = new Px(16, 12);
+  const r = rng(seed);
+  for (let i = 0; i < 9; i++) {
+    const x = 2 + Math.floor(r() * 12);
+    const h = 4 + Math.floor(r() * 7);
+    p.vline(x, 12 - h, h, i % 2 ? "#5f9e48" : "#86c062");
+    p.px(x + (i % 2 ? 1 : -1), 12 - h, "#a8d16b");
+  }
+  return p;
+}
+
+export function pottedPlant(seed: number): Px {
+  const p = new Px(14, 18);
+  p.rect(3, 11, 8, 6, "#b5533c");
+  p.rect(3, 11, 8, 1, "#d4704f");
+  p.circle(7, 7, 5, "#4f9a4a");
+  p.circle(6, 5, 3, "#74b85a");
+  if (seed % 2) p.rect(8, 3, 2, 2, "#e8542f"); // tulsi or a hibiscus
   return p.outline(OUTLINE);
 }
 
@@ -431,14 +514,14 @@ export function bench(): Px {
   return p.outline(OUTLINE);
 }
 
-export function busStop(): Px {
+export function busStop(label = "BEST", roofCol = "#c0392b"): Px {
   const p = new Px(56, 44);
-  roof(p, 0, 0, 56, 14, "terrace", "#c0392b", 50);
+  roof(p, 0, 0, 56, 14, "terrace", roofCol, 50);
   p.rect(2, 14, 2, 28, "#6f7f8c");
   p.rect(52, 14, 2, 28, "#6f7f8c");
   p.rect(6, 30, 44, 4, "#8a8a92");
   p.rect(18, 16, 20, 9, "#efe3c8");
-  p.text(21, 18, "BEST", "#c0392b");
+  p.text(28 - textWidth(label) / 2, 18, label, roofCol);
   return p.outline(OUTLINE);
 }
 

@@ -1,0 +1,9 @@
+year,per_capita_income,income_confidence
+# Delhi per capita income, Rs per year, current prices (Economic Survey of Delhi). Fiscal years mapped to their first calendar year.
+1995,20000,estimated
+2000,38000,estimated
+2005,66000,estimated
+2011,185001,reported
+2023,459408,reported
+2024,493024,reported
+2025,531610,reported

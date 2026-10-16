@@ -1,7 +1,8 @@
 {
  "meta": {
   "title": "Then & Now Mumbai — street prices 1995-2026",
-  "generated": "2026-10-15",
+  "city": "mumbai",
+  "generated": "2026-10-16",
   "years": [
    1995,
    1996,
@@ -762,6 +763,7 @@
    "summary": {
     "nominal_multiple": 7.5,
     "real_change_pct": 15.0,
+    "first_year": 1995,
     "minutes_1995": 19.32,
     "minutes_2026": 7.49,
     "cagr_pct": 6.72,
@@ -1104,6 +1106,7 @@
    "summary": {
     "nominal_multiple": 11.0,
     "real_change_pct": 68.7,
+    "first_year": 1995,
     "minutes_1995": 19.32,
     "minutes_2026": 10.98,
     "cagr_pct": 8.04,
@@ -1446,6 +1449,7 @@
    "summary": {
     "nominal_multiple": 1.67,
     "real_change_pct": -74.5,
+    "first_year": 1995,
     "minutes_1995": 28.99,
     "minutes_2026": 2.5,
     "cagr_pct": 1.66,
@@ -1788,6 +1792,7 @@
    "summary": {
     "nominal_multiple": 4.5,
     "real_change_pct": -31.0,
+    "first_year": 1995,
     "minutes_1995": 57.97,
     "minutes_2026": 13.48,
     "cagr_pct": 4.97,
@@ -2130,6 +2135,7 @@
    "summary": {
     "nominal_multiple": 4.48,
     "real_change_pct": -31.3,
+    "first_year": 1995,
     "minutes_1995": 222.22,
     "minutes_2026": 51.42,
     "cagr_pct": 4.96,
@@ -2472,6 +2478,7 @@
    "summary": {
     "nominal_multiple": 4.38,
     "real_change_pct": -32.9,
+    "first_year": 1995,
     "minutes_1995": 77.3,
     "minutes_2026": 17.47,
     "cagr_pct": 4.88,
@@ -2814,6 +2821,7 @@
    "summary": {
     "nominal_multiple": 5.18,
     "real_change_pct": -20.6,
+    "first_year": 1995,
     "minutes_1995": 106.28,
     "minutes_2026": 28.45,
     "cagr_pct": 5.45,

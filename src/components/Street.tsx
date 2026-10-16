@@ -4,11 +4,21 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { bus } from "@/lib/bus";
 import { CHAT_MAX, MAX_PLAYERS, Room, cleanRoomCode, newRoomCode, type Peer, type RoomStatus } from "@/lib/room";
-import { BUILDINGS, FIRST_YEAR, LAST_YEAR, itemById, pointAt, rupees, type BuildingId } from "@/lib/data";
+import { CITIES, FIRST_YEAR, LAST_YEAR, buildingsFor, datasetFor, itemById, pointAt, rupees, type BuildingId, type City } from "@/lib/data";
 import { SHIRTS } from "@/lib/sprites";
 import GameCanvas from "./GameCanvas";
 import { CharPreview, Dialogue, Joystick, ZoomButtons, type Talk } from "./GameHud";
 import ShopPanel from "./ShopPanel";
+
+const ERA_DELHI: [number, string][] = [
+  [1995, "Black-and-yellow petrol autos, Blueline buses, single-screen cinemas."],
+  [2000, "Construction starts on the Metro."],
+  [2002, "Autos switch to CNG. The Metro's first stretch opens in December."],
+  [2005, "The cinema hall closes. Something is being built."],
+  [2010, "Bluelines are off the road. Green DTC buses, a new mall."],
+  [2019, "Onions cross Rs 100 a kilo. Women ride DTC buses free."],
+  [2025, "The Metro minimum fare goes up to Rs 11."],
+];
 
 const ERA: [number, string][] = [
   [1995, "Mill chimneys still smoke. Padmini taxis everywhere."],
@@ -23,6 +33,8 @@ export default function Street() {
   const [started, setStarted] = useState(false);
   const [name, setName] = useState("");
   const [shirt, setShirt] = useState(SHIRTS[0]);
+  const [city, setCity] = useState<City>("mumbai");
+  const B = buildingsFor(city);
   const [year, setYear] = useState(LAST_YEAR);
   const [open, setOpen] = useState<BuildingId | null>(null);
   const [near, setNear] = useState<BuildingId | null>(null);
@@ -46,7 +58,10 @@ export default function Street() {
 
   // an invite link (?room=CODE) pre-fills the join code
   useEffect(() => {
-    const code = cleanRoomCode(new URLSearchParams(window.location.search).get("room") ?? "");
+    const params = new URLSearchParams(window.location.search);
+    const c = params.get("city");
+    if (c === "delhi" || c === "mumbai") setCity(c);
+    const code = cleanRoomCode(params.get("room") ?? "");
     if (code.length >= 4) {
       setJoinCode(code);
       setRoomMode("join");
@@ -57,7 +72,7 @@ export default function Street() {
     if (!started || !roomCode) return;
     const r = new Room(roomCode, { name: name.trim() || "Mumbaikar", shirt });
     room.current = r;
-    window.history.replaceState(null, "", `?room=${roomCode}`);
+    window.history.replaceState(null, "", `?room=${roomCode}&city=${city}`);
     let n = 0;
     const offs = [
       bus.on("room:peers", (p: Peer[]) => setPeers(p)),
@@ -154,7 +169,7 @@ export default function Street() {
   stopRef.current = stop;
 
   const invite = async () => {
-    const url = `${window.location.origin}${window.location.pathname}?room=${roomCode}`;
+    const url = `${window.location.origin}${window.location.pathname}?room=${roomCode}&city=${city}`;
     try {
       if (navigator.share && matchMedia("(pointer: coarse)").matches) await navigator.share({ text: "Walk the Then & Now Mumbai street with me", url });
       else {
@@ -172,14 +187,14 @@ export default function Street() {
     chatInput.current?.blur();
   };
 
-  const era = [...ERA].reverse().find(([y]) => year >= y)?.[1];
-  const vada = pointAt(itemById("vadapav"), year).price;
+  const era = [...(city === "delhi" ? ERA_DELHI : ERA)].reverse().find(([y]) => year >= y)?.[1];
+  const chaiNow = pointAt(itemById("chai", datasetFor(city)), year).price;
 
   if (!started) {
     return (
       <main className="start">
         <div className="start-card">
-          <h1>Then &amp; Now Mumbai</h1>
+          <h1>Then &amp; Now {city === "delhi" ? "Delhi" : "Mumbai"}</h1>
           <p className="start-lede">
             One street, thirty-one years of prices. Walk into a shop, ask what things cost, and drag the Time Machine to watch Mumbai change around you.
           </p>
@@ -192,6 +207,17 @@ export default function Street() {
               setStarted(true);
             }}
           >
+            <fieldset className="start-city">
+              <legend>Pick a city</legend>
+              <div className="start-city-row">
+                {CITIES.map((c) => (
+                  <button type="button" key={c.id} className={city === c.id ? "on" : ""} aria-pressed={city === c.id} onClick={() => setCity(c.id)}>
+                    <b>{c.name}</b>
+                    <small>{c.blurb}</small>
+                  </button>
+                ))}
+              </div>
+            </fieldset>
             <div className="start-row">
               <div className="start-preview">
                 <CharPreview shirt={shirt} size={5} label="Your character" />
@@ -260,7 +286,7 @@ export default function Street() {
   return (
     <main className="street">
       <header className="topbar">
-        <h1>Then &amp; Now Mumbai</h1>
+        <h1>Then &amp; Now {city === "delhi" ? "Delhi" : "Mumbai"}</h1>
         <span className="who">{name || "Mumbaikar"}</span>
         {roomCode && (
           <div className="room-chip">
@@ -285,8 +311,12 @@ export default function Street() {
       </header>
 
       <div className="stage">
-        <GameCanvas year={year} shirt={shirt} />
-        <p className="where">{where === "city" ? "Mumbai, from above" : where === "chai" ? "Inside the chai tapri" : where === "kirana" ? "Inside the kirana store" : "Inside the railway station"}</p>
+        <GameCanvas year={year} shirt={shirt} city={city} />
+        <p className="where">
+          {where === "city"
+            ? `${city === "delhi" ? "Delhi" : "Mumbai"}, from above`
+            : `Inside the ${(where === "chai" ? B.chai.name : where === "kirana" ? B.kirana.name : B.station.name).toLowerCase()}`}
+        </p>
         <ZoomButtons />
         <div className="pad" aria-label="Touch controls">
           <Joystick />
@@ -316,7 +346,7 @@ export default function Street() {
         )}
         {near && !open && (
           <div className="near-hint" aria-live="polite">
-            {BUILDINGS[near].name}: {BUILDINGS[near].blurb}
+            {B[near].name}: {B[near].blurb}
           </div>
         )}
       </div>
@@ -386,7 +416,7 @@ export default function Street() {
               }}
               onPointerUp={(e) => (e.target as HTMLInputElement).blur()}
               list="year-ticks"
-              aria-valuetext={`${year}, vada pav ${rupees(vada)}`}
+              aria-valuetext={`${year}, chai ${rupees(chaiNow)}`}
             />
             <datalist id="year-ticks">
               {[1995, 2000, 2005, 2010, 2015, 2020, 2026].map((y) => (
@@ -402,7 +432,7 @@ export default function Street() {
         </div>
       </section>
 
-      {open && <ShopPanel building={open} year={year} onClose={() => setOpen(null)} />}
+      {open && <ShopPanel building={open} year={year} city={city} onClose={() => setOpen(null)} />}
     </main>
   );
 }

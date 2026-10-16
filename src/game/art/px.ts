@@ -89,19 +89,44 @@ export class Px {
     return this;
   }
 
-  /** A dark 1px outline around every opaque shape (the look of hand-made pixel art). */
-  outline(col: Col = OUTLINE, onlyOutside = true) {
+  /**
+   * A 1px outline around every opaque shape. By default it is "tinted": each outline pixel is a deep shade
+   * of the colour it borders, which reads soft and painted. Pass ink = true for a hard dark line (characters).
+   */
+  outline(col: Col = OUTLINE, onlyOutside = true, ink = false) {
     const { w, h } = this;
     const img = this.g.getImageData(0, 0, w, h);
-    const a = (x: number, y: number) => (x < 0 || y < 0 || x >= w || y >= h ? 0 : img.data[(y * w + x) * 4 + 3]);
-    const marks: number[] = [];
+    const d = img.data;
+    const a = (x: number, y: number) => (x < 0 || y < 0 || x >= w || y >= h ? 0 : d[(y * w + x) * 4 + 3]);
+    const out = this.g.createImageData(w, h);
+    const o = out.data;
+    const base = parseInt(col.slice(1), 16);
+    const [br, bg, bb] = [(base >> 16) & 255, (base >> 8) & 255, base & 255];
     for (let y = 0; y < h; y++)
       for (let x = 0; x < w; x++) {
         if (onlyOutside && a(x, y) > 0) continue;
-        if (a(x - 1, y) || a(x + 1, y) || a(x, y - 1) || a(x, y + 1)) marks.push(x, y);
+        let n = -1;
+        for (const [nx, ny] of [
+          [x, y + 1],
+          [x, y - 1],
+          [x - 1, y],
+          [x + 1, y],
+        ])
+          if (a(nx, ny) > 200) {
+            n = (ny * w + nx) * 4;
+            break;
+          }
+        if (n < 0) continue;
+        const i = (y * w + x) * 4;
+        const k = ink ? 1 : 0.62;
+        o[i] = Math.round(d[n] * (1 - k) + br * k);
+        o[i + 1] = Math.round(d[n + 1] * (1 - k) + bg * k);
+        o[i + 2] = Math.round(d[n + 2] * (1 - k) + bb * k);
+        o[i + 3] = 255;
       }
-    this.g.fillStyle = col;
-    for (let i = 0; i < marks.length; i += 2) this.g.fillRect(marks[i], marks[i + 1], 1, 1);
+    const tmp = new Px(w, h);
+    tmp.g.putImageData(out, 0, 0);
+    this.g.drawImage(tmp.c, 0, 0);
     return this;
   }
 

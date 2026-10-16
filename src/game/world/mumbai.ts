@@ -1,6 +1,6 @@
 import * as A from "../art/buildings";
 import { Px, darken, lighten, rng } from "../art/px";
-import type { BuildingId } from "@/lib/data";
+import type { BuildingId, City } from "@/lib/data";
 
 // The Mumbai neighbourhood, laid out on a 16 px tile grid and seen from above at an angle.
 // West to east: Arabian Sea, promenade, coastal road, the city blocks, the railway line, more city.
@@ -27,20 +27,21 @@ export const TRACK_X = TRACKS.map((t) => t * T + T); // centre x of each track (
 
 type Tile = "W" | "R" | "P" | "A" | "F" | "G" | "D" | "B" | "L" | "C" | "S";
 
-export function tileGrid(): Tile[][] {
+export function tileGrid(city: City = "mumbai"): Tile[][] {
+  const delhi = city === "delhi";
   const g: Tile[][] = [];
   for (let y = 0; y < MAP_H; y++) {
     const row: Tile[] = [];
     for (let x = 0; x < MAP_W; x++) {
-      let t: Tile = "C";
+      let t: Tile = "G";
       if (x < SEA_X) t = "W";
-      else if (x === SEA_X) t = "R";
+      else if (x === SEA_X) t = delhi ? "S" : "R"; // Mumbai: tetrapods; Delhi: the Yamuna's sandy bank
       else if (x < NS_ROAD.x0) t = "P";
       else if (x <= NS_ROAD.x1) t = "A";
       else if (x < CITY_X) t = "F";
       else if (y >= ROAD.y0 && y <= ROAD.y1) t = "A";
       else if (y === FOOT_N || y === FOOT_N + 1 || y === FOOT_S || y === FOOT_S + 1) t = "F";
-      if (x >= CITY_X && (y < ROAD.y0 || y > ROAD.y1)) {
+      if (!delhi && x >= CITY_X && (y < ROAD.y0 || y > ROAD.y1)) {
         if (TRACKS.some((tx) => x === tx || x === tx + 1)) t = "B";
         else if (x >= PLATFORM.x0 && x <= PLATFORM.x1) t = y < ROAD.y0 ? "L" : "G";
       }
@@ -60,16 +61,16 @@ function paintTile(p: Px, t: Tile, tx: number, ty: number, seed: number) {
   const s = seed + tx * 131 + ty * 977;
   switch (t) {
     case "A": {
-      p.rect(x, y, T, T, "#4a4a52");
-      p.speckle(x, y, T, T, ["#55555e", "#3f3f47", "#5e5e66"], 0.18, s);
+      p.rect(x, y, T, T, "#5d5a66");
+      p.speckle(x, y, T, T, ["#67646f", "#53505c", "#6f6c78"], 0.18, s);
       break;
     }
     case "F": {
       // paver blocks with dark grout
-      p.rect(x, y, T, T, "#7d776c");
+      p.rect(x, y, T, T, "#a99c84");
       for (let by = 0; by < T; by += 8)
         for (let bx = 0; bx < T; bx += 8) {
-          const c = (bx + by + tx + ty) % 16 ? "#b3ad9f" : "#a39d90";
+          const c = (bx + by + tx + ty) % 16 ? "#d9cdb4" : "#cbbfa5";
           p.rect(x + bx, y + by, 7, 7, c);
           p.hline(x + bx, y + by, 7, lighten(c, 0.12));
         }
@@ -77,14 +78,23 @@ function paintTile(p: Px, t: Tile, tx: number, ty: number, seed: number) {
       break;
     }
     case "G": {
-      p.rect(x, y, T, T, "#5e9e4f");
-      p.speckle(x, y, T, T, ["#4f8a43", "#74b45e", "#3f7a45"], 0.25, s);
-      if (s % 7 === 0) p.px(x + (s % 13), y + (s % 11), "#f2c230");
+      // soft, sunny grass with darker clumps and the odd wildflower
+      p.rect(x, y, T, T, "#8cc35e");
+      const r = rng(s);
+      for (let i = 0; i < 3; i++) p.ellipse(x + Math.floor(r() * T), y + Math.floor(r() * T), 3 + Math.floor(r() * 3), 2, "#7ab352");
+      p.speckle(x, y, T, T, ["#9fd06c", "#74ad4e", "#a9d676"], 0.18, s);
+      for (let i = 0; i < 2; i++) {
+        const gx = x + Math.floor(r() * 14);
+        const gy = y + 2 + Math.floor(r() * 12);
+        p.vline(gx, gy, 2, "#5f9a44");
+        p.px(gx + 1, gy - 1, "#5f9a44");
+      }
+      if (s % 9 === 0) p.rect(x + (s % 13), y + (s % 11), 2, 2, ["#f3f1ea", "#f2c230", "#f28bb0"][s % 3]);
       break;
     }
     case "D": {
-      p.rect(x, y, T, T, "#c49a62");
-      p.speckle(x, y, T, T, ["#b38a55", "#d4ab72", "#a87f4c"], 0.2, s);
+      p.rect(x, y, T, T, "#d9b77e");
+      p.speckle(x, y, T, T, ["#cfab70", "#e3c48c", "#c49d64"], 0.2, s);
       break;
     }
     case "P": {
@@ -93,6 +103,11 @@ function paintTile(p: Px, t: Tile, tx: number, ty: number, seed: number) {
       p.hline(x, y, T, "#c2b79e");
       p.vline(x, y, T, "#c2b79e");
       p.speckle(x, y, T, T, ["#cbbfa6", "#e3d9c2"], 0.08, s);
+      break;
+    }
+    case "S": {
+      p.rect(x, y, T, T, "#e6d3a3");
+      p.speckle(x, y, T, T, ["#d9c48f", "#f0e0b6", "#cbb57e"], 0.2, s);
       break;
     }
     case "R": {
@@ -123,18 +138,21 @@ function paintTile(p: Px, t: Tile, tx: number, ty: number, seed: number) {
       if (s % 5 === 0) p.ellipse(x + 8, y + 8, 5, 3, "#a89470");
       break;
     }
+    case "W":
+      break; // left clear: the animated sea shows through
     default:
-      p.rect(x, y, T, T, "#2f6f8f");
+      p.rect(x, y, T, T, "#5fb3c6");
   }
 }
 
-export function drawGround(year: number): Px {
-  const g = tileGrid();
+export function drawGround(year: number, city: City = "mumbai"): Px {
+  const delhi = city === "delhi";
+  const g = tileGrid(city);
   const p = new Px(WORLD_W, WORLD_H);
   for (let y = 0; y < MAP_H; y++) for (let x = 0; x < MAP_W; x++) paintTile(p, g[y][x], x, y, 7);
 
   // rails on the two tracks
-  for (const tx of TRACKS) {
+  if (!delhi) for (const tx of TRACKS) {
     const cx = tx * T + T;
     for (const rx of [cx - 9, cx + 7]) {
       p.rect(rx, 0, 2, WORLD_H, "#b9b9c2");
@@ -142,8 +160,10 @@ export function drawGround(year: number): Px {
     }
   }
   // platform edges: the yellow line you must stand behind
-  p.rect(PLATFORM.x0 * T, 0, 2, ROAD.y0 * T - 32, "#f2c230");
-  p.rect((PLATFORM.x1 + 1) * T - 2, 0, 2, ROAD.y0 * T - 32, "#f2c230");
+  if (!delhi) {
+    p.rect(PLATFORM.x0 * T, 0, 2, ROAD.y0 * T - 32, "#f2c230");
+    p.rect((PLATFORM.x1 + 1) * T - 2, 0, 2, ROAD.y0 * T - 32, "#f2c230");
+  }
 
   // main road markings
   const ry0 = ROAD.y0 * T;
@@ -169,25 +189,27 @@ export function drawGround(year: number): Px {
 
   // under the road bridge and around the station forecourt
   p.rect(66 * T, FOOT_N * T - 4, 14 * T, 4, darken("#b3ad9f", 0.25));
-  if (year >= 2014) {
+  if (year >= (delhi ? 2002 : 2014)) {
     // shadow of the metro viaduct falls across the road
     p.g.fillStyle = "rgba(20,10,30,0.18)";
-    p.g.fillRect(CITY_X * T, 36 * T + 10, (TRACKS[0] - CITY_X) * T, 14);
+    p.g.fillRect(CITY_X * T, 36 * T + 10, (delhi ? 78 : TRACKS[0]) * T - CITY_X * T, 14);
   }
   return p;
 }
 
 /** A seamless 64x64 sea tile; the scene scrolls it for waves. */
 export function seaTile(frame: number): Px {
+  // light turquoise water with soft swirls of foam, like a painted map
   const p = new Px(64, 64);
-  p.rect(0, 0, 64, 64, "#2f6f8f");
+  p.rect(0, 0, 64, 64, "#5fb3c6");
   const r = rng(91 + frame);
-  for (let i = 0; i < 26; i++) {
+  for (let i = 0; i < 10; i++) p.ellipse(Math.floor(r() * 64), Math.floor(r() * 64), 6 + Math.floor(r() * 8), 2, "#6dc0d2");
+  for (let i = 0; i < 22; i++) {
     const x = Math.floor(r() * 64);
     const y = Math.floor(r() * 64);
-    p.hline(x, y, 5 + Math.floor(r() * 6), i % 3 ? "#3f86a6" : "#7fc0d6");
+    p.hline(x, y, 4 + Math.floor(r() * 7), i % 3 ? "#8fd3e0" : "#e6f6f8");
   }
-  p.speckle(0, 0, 64, 64, ["#286180", "#3a7d9c"], 0.08, 5 + frame);
+  p.speckle(0, 0, 64, 64, ["#55a8bc", "#79c6d6"], 0.06, 5 + frame);
   return p;
 }
 
@@ -344,13 +366,13 @@ export const DOORS: Door[] = [
 export const SPAWN = { x: 360, y: FOOT_N * T + 22 };
 
 /** Tiles you can't walk on (sea, rocks, rails, platforms seen from outside). */
-export function blockedTiles(): boolean[][] {
-  const g = tileGrid();
+export function blockedTiles(city: City = "mumbai"): boolean[][] {
+  const g = tileGrid(city);
   return g.map((row, y) =>
     row.map((t, x) => {
       if (t === "W" || t === "R") return true;
       if ((t === "B" || t === "L") && !(y >= ROAD.y0 - 2 && y <= ROAD.y1 + 2)) return true;
-      if (x >= PLATFORM.x0 && x <= PLATFORM.x1 && y > ROAD.y1 + 2) return true; // grass strip between tracks
+      if (city === "mumbai" && x >= PLATFORM.x0 && x <= PLATFORM.x1 && y > ROAD.y1 + 2) return true; // grass strip between tracks
       if (y < 2) return true;
       return false;
     }),

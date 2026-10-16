@@ -12,7 +12,8 @@ export interface Look {
   skin: Col;
   hair: Col;
   hairStyle: "short" | "long" | "bun" | "bald" | "spiky";
-  hat?: { kind: "topi" | "cap" | "helmet"; col: Col };
+  hat?: { kind: "topi" | "cap" | "helmet" | "turban"; col: Col };
+  beard?: boolean;
   top: Col;
   topStyle: "shirt" | "kurta" | "saree" | "vest" | "uniform" | "tshirt";
   accent?: Col; // saree border, dupatta, collar
@@ -43,6 +44,14 @@ export const LOOKS: Record<string, Look> = {
   college: { skin: "#c68642", hair: "#1d1a1f", hairStyle: "long", top: "#e86a8a", topStyle: "kurta", accent: "#f2c230", bottom: "#f3f1ea", shoes: "#7a4e2d" },
   dada: { skin: "#a86b3c", hair: "#d9d4cc", hairStyle: "bald", top: "#f3f1ea", topStyle: "kurta", bottom: "#f3f1ea", shoes: "#5a3a22", glasses: true, greyHair: true },
   techie: { skin: "#b5794a", hair: "#2b1d1a", hairStyle: "short", top: "#2f6fb3", topStyle: "tshirt", bottom: "#3b4a6b", shoes: "#e9e6e0", backpack: "#2b2b33" },
+  // Delhi
+  sardar: { skin: "#c68642", hair: "#2b2b33", hairStyle: "short", hat: { kind: "turban", col: "#e08a2a" }, top: "#f3f1ea", topStyle: "kurta", bottom: "#f3f1ea", shoes: "#5a3a22", beard: true },
+  bittu: { skin: "#a86b3c", hair: "#1d1a1f", hairStyle: "spiky", top: "#e9e6e0", topStyle: "vest", bottom: "#5b6b8a", shoes: "#5a3a22", moustache: true },
+  gupta: { skin: "#c68642", hair: "#2b1d1a", hairStyle: "short", top: "#c9d6a0", topStyle: "kurta", bottom: "#f3f1ea", shoes: "#5a3a22", glasses: true, moustache: true },
+  metrostaff: { skin: "#a86b3c", hair: "#1d1a1f", hairStyle: "short", hat: { kind: "cap", col: "#3a4a6b" }, top: "#9aa6b8", topStyle: "uniform", bottom: "#3a4a6b", shoes: "#1d1a1f" },
+  ramesh: { skin: "#8d5524", hair: "#1d1a1f", hairStyle: "short", top: "#8a8f6b", topStyle: "uniform", bottom: "#5b5a40", shoes: "#3a2a22", moustache: true },
+  sardarWalker: { skin: "#c68642", hair: "#2b2b33", hairStyle: "short", hat: { kind: "turban", col: "#2f4f8f" }, top: "#3a6fa3", topStyle: "shirt", bottom: "#2b3148", shoes: "#1d1a1f", beard: true },
+  salwar: { skin: "#c68642", hair: "#1d1a1f", hairStyle: "long", top: "#2e8b7a", topStyle: "kurta", accent: "#f28bb0", bottom: "#f3f1ea", shoes: "#7a4e2d" },
   biker: { skin: "#8d5524", hair: "#1d1a1f", hairStyle: "short", hat: { kind: "helmet", col: "#c23b3b" }, top: "#3a3f4b", topStyle: "tshirt", bottom: "#2b3148", shoes: "#1d1a1f" },
 };
 
@@ -244,6 +253,21 @@ export function drawCharacter(look: Look, dir: Dir, frame: 0 | 1 | 2): Px {
       if (dir === "down") r(3, 2 + hy, 10, 1, cd);
       if (dir === "side") r(10, 2 + hy, 4, 1, cd);
       r(7, -1 + hy, 2, 1, "#e0a526");
+    } else if (look.hat.kind === "turban") {
+      // a pagri: wrapped folds rising to a peak at the front
+      const lt = lighten(c, 0.25);
+      r(2, -2 + hy, 12, 6, c);
+      r(3, -3 + hy, 10, 1, c);
+      if (dir === "down") {
+        for (let i = 0; i < 5; i++) r(3 + i, 2 - i + hy, 1, 1, cd), r(12 - i, 2 - i + hy, 1, 1, cd);
+        r(7, -3 + hy, 2, 2, lt);
+      } else if (dir === "side") {
+        r(1, -1 + hy, 3, 5, c);
+        for (let i = 0; i < 4; i++) r(4 + i * 2, 1 - (i % 2) + hy, 2, 1, cd);
+      } else {
+        for (let i = 0; i < 4; i++) r(3, -1 + i + hy, 10, 1, i % 2 ? cd : c);
+      }
+      r(4, -2 + hy, 6, 1, lt);
     } else {
       r(2, -2 + hy, 12, 7, c);
       r(3, -2 + hy, 8, 1, lighten(c, 0.3));
@@ -251,7 +275,18 @@ export function drawCharacter(look: Look, dir: Dir, frame: 0 | 1 | 2): Px {
     }
   }
 
-  p.outline(OUTLINE);
+  // a full beard, for the sardars of Delhi (and anyone else who wants one)
+  if (look.beard && dir !== "up") {
+    if (dir === "down") {
+      r(4, 6 + bob, 8, 4, look.hair);
+      r(5, 10 + bob, 6, 1, look.hair);
+      r(6, 7 + bob, 4, 1, darken(look.skin, 0.4)); // mouth peeking through
+    } else {
+      r(7, 6 + bob, 6, 4, look.hair);
+      r(8, 10 + bob, 4, 1, look.hair);
+    }
+  }
+  p.outline(OUTLINE, true, true);
   return p;
 }
 

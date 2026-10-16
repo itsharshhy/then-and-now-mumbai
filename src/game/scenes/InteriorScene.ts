@@ -2,7 +2,9 @@ import Phaser from "phaser";
 import { bus } from "@/lib/bus";
 import * as I from "../art/interiors";
 import * as V from "../art/vehicles";
-import { INTERIORS, PLATFORM_EDGE, PLATFORM_Y, TRACK_BOTTOM, type InteriorKind, type InteriorSpec } from "../world/interiors";
+import { INTERIORS_BY_CITY, PLATFORM_EDGE, PLATFORM_Y, TRACK_BOTTOM, type InteriorKind, type InteriorSpec } from "../world/interiors";
+import * as D from "../art/delhi";
+import type { City } from "@/lib/data";
 import { WALKER_LOOKS, type Talker } from "../world/life";
 import {
   Actor,
@@ -50,7 +52,10 @@ export class InteriorScene extends Phaser.Scene {
     super("interior");
   }
 
-  init(d: { kind: InteriorKind; year?: number; shirt?: string }) {
+  private city: City = "mumbai";
+
+  init(d: { kind: InteriorKind; year?: number; shirt?: string; city?: City }) {
+    this.city = d.city ?? (this.registry.get("city") as City) ?? "mumbai";
     // Phaser reuses the scene object, so everything from the last visit starts fresh here
     this.props = [];
     this.talkers = [];
@@ -61,7 +66,7 @@ export class InteriorScene extends Phaser.Scene {
     this.trainState = "away";
     this.trainClock = 2500;
     this.crowd = [];
-    this.spec = INTERIORS[d.kind];
+    this.spec = INTERIORS_BY_CITY[this.city][d.kind];
     this.year = d.year ?? (this.registry.get("year") as number) ?? 2026;
     this.shirt = d.shirt ?? (this.registry.get("shirt") as string) ?? this.shirt;
   }
@@ -94,7 +99,7 @@ export class InteriorScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player.sprite, true, 0.15, 0.15);
     this.controls = new Controls(this, () => this.interact());
     this.prompt = makePrompt(this);
-    this.remotes = new Remotes(this, s.kind);
+    this.remotes = new Remotes(this, `${this.city}:${s.kind}`);
     myBubbles(this, () => this.player);
 
     if (s.kind === "chai") this.time.addEvent({ delay: 260, loop: true, callback: () => this.puff() });
@@ -155,6 +160,10 @@ export class InteriorScene extends Phaser.Scene {
 
   // ---------------------------------------------------------------- station: trains and crowds
   private trainKey() {
+    if (this.city === "delhi") {
+      if (!this.textures.exists("stationTrain:delhi")) addTexture(this, "stationTrain:delhi", I.stationTrain(D.delhiMetroCoach(), D.delhiMetroCoach(), 4));
+      return "stationTrain:delhi";
+    }
     const liv = this.year >= 2010 ? "new" : "old";
     const key = `stationTrain:${liv}`;
     if (!this.textures.exists(key)) addTexture(this, key, I.stationTrain(V.localCoach(liv, true, 0.7, 3), V.localCab(liv), 4));
@@ -228,7 +237,7 @@ export class InteriorScene extends Phaser.Scene {
   }
 
   private leave() {
-    this.scene.start("city", { year: this.year, shirt: this.shirt });
+    this.scene.start("city", { year: this.year, shirt: this.shirt, city: this.city });
   }
 
   update(_t: number, dtMs: number) {
@@ -243,7 +252,7 @@ export class InteriorScene extends Phaser.Scene {
     }
     p.moving = moving;
     p.animate(dtMs);
-    bus.emit("self", { x: p.x, y: p.y, dir: p.facing, moving, scene: this.spec.kind });
+    bus.emit("self", { x: p.x, y: p.y, dir: p.facing, moving, scene: `${this.city}:${this.spec.kind}` });
 
     // walking onto the door mat takes you out
     const e = this.spec.exit;

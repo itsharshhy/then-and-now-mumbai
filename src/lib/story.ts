@@ -1,12 +1,22 @@
-import { data, macroAt, pointAt, rupees, type Item } from "./data";
+import { available, data, macroAt, pointAt, rupees, type Dataset, type Item } from "./data";
 
-const first = (i: Item) => i.series[0];
+/** The first year the item existed (1995 for most; 2002 for the Delhi Metro). */
+const first = (i: Item) => i.series.find((p) => available(i, p.year))!;
 
 /** The shopkeeper's lines for one item in one year, written from the data. */
-export function storyFor(item: Item, year: number): string[] {
+export function storyFor(item: Item, year: number, ds: Dataset = data): string[] {
+  if (!available(item, year))
+    return [
+      `There is no ${item.name.toLowerCase()} yet in ${year}.`,
+      item.id === "metro"
+        ? "The first Metro stretch, Shahdara to Tis Hazari, opened on 25 December 2002. Until then it's buses, autos and cycle rickshaws."
+        : `It arrives in ${item.available_from}.`,
+      `Move the Time Machine to ${item.available_from} or later and come back.`,
+    ];
   const p = pointAt(item, year);
   const p0 = first(item);
-  const now = year === data.meta.base_year;
+  const y0 = p0.year;
+  const now = year === ds.meta.base_year;
   const name = item.name.toLowerCase();
   const lines: string[] = [];
 
@@ -16,32 +26,32 @@ export function storyFor(item: Item, year: number): string[] {
       : `It's ${year}. ${cap(name)} here costs ${rupees(p.price)} (${item.unit}).`,
   );
 
-  if (year > p0.year) {
+  if (year > y0) {
     const mult = p.price / p0.price;
     lines.push(
       mult >= 1.05
-        ? `In 1995 it was ${rupees(p0.price)}. That's ${mult.toFixed(1)}x the price.`
-        : `In 1995 it was ${rupees(p0.price)}. It has barely moved since.`,
+        ? `In ${y0} it was ${rupees(p0.price)}. That's ${mult.toFixed(1)}x the price.`
+        : `In ${y0} it was ${rupees(p0.price)}. It has barely moved since.`,
     );
     // the 1995 price restated in the chosen year's rupees (CPI-adjusted)
     const in_this_year = p0.price_2026 * (p.price / p.price_2026);
     lines.push(
-      `But rupees shrink too. The 1995 ${name} is worth ${rupees(in_this_year)} in ${year} money, so in real terms it got ${
+      `But rupees shrink too. The ${y0} ${name} is worth ${rupees(in_this_year)} in ${year} money, so in real terms it got ${
         p.price > in_this_year * 1.03 ? "dearer" : p.price < in_this_year * 0.97 ? "cheaper" : "no dearer"
       }.`,
     );
     lines.push(
-      `Measured in work: about ${fmtMin(p.minutes_of_work)} of the average Maharashtrian's paid time, against ${fmtMin(p0.minutes_of_work)} in 1995.`,
+      `Measured in work: about ${fmtMin(p.minutes_of_work)} of the average ${ds.meta.city === "delhi" ? "Delhiite" : "Maharashtrian"}'s paid time, against ${fmtMin(p0.minutes_of_work)} in ${y0}.`,
     );
   } else {
-    const m = macroAt(year);
+    const m = macroAt(year, ds);
     lines.push(
       `That is ${fmtMin(p.minutes_of_work)} of work for someone on the state's average income of ${rupees(m.income_monthly)} a month.`,
     );
   }
 
-  lines.push(...flavour(item, year));
-  lines.push(honesty(item, year));
+  lines.push(...(ds.meta.city === "delhi" ? flavourDelhi(item, year) : flavour(item, year)));
+  lines.push(honesty(item, year, ds));
   return lines;
 }
 
@@ -65,7 +75,27 @@ function flavour(item: Item, year: number): string[] {
   }
 }
 
-function honesty(item: Item, year: number): string {
+function flavourDelhi(item: Item, year: number): string[] {
+  switch (item.id) {
+    case "samosa":
+      return ["Nobody kept a record of samosa prices. These are my best memory, so the dots are hollow."];
+    case "metro":
+      return ["Smart cards, then tokens, now QR tickets on your phone. The minimum fare moves only when a fare committee says so."];
+    case "onion":
+      if ([1998, 2010, 2013, 2015, 2019].includes(year)) return ["A crisis year. In 1998 onion prices helped bring down the Delhi government."];
+      return ["Watch 1998, 2010, 2013 and 2019 on the chart. Onions have a temper in this city too."];
+    case "auto":
+      return [year >= 2002 ? "Every auto in Delhi has run on CNG since the Supreme Court order of the early 2000s. That's why they're green." : "These are still black-and-yellow, petrol autos. CNG comes in the next few years."];
+    case "petrol":
+      return year >= 2021 ? ["Petrol crossed Rs 95 a litre in Delhi in June 2021."] : [];
+    case "chai":
+      return ["Truth? Nobody wrote chai prices down. These are my best memory. Help me find a source!"];
+    default:
+      return [];
+  }
+}
+
+function honesty(item: Item, year: number, ds: Dataset = data): string {
   const p = pointAt(item, year);
   if (p.kind === "interpolated") {
     const before = [...item.series].reverse().find((q) => q.kind === "anchor" && q.year < year);
@@ -73,7 +103,7 @@ function honesty(item: Item, year: number): string {
     return `Honest note: I have no record for exactly ${year}. This sits between my ${before?.year} and ${after?.year} figures.`;
   }
   if (p.confidence === "estimated") return `Honest note: the ${year} figure is an estimate. It still needs a printed source.`;
-  const src = p.source_id ? data.sources[p.source_id] : null;
+  const src = p.source_id ? ds.sources[p.source_id] : null;
   return src ? `Source: ${src.publisher}${src.date ? `, ${src.date.slice(0, 4)}` : ""}.` : "Source on record.";
 }
 

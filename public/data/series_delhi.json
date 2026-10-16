@@ -1,0 +1,2872 @@
+{
+ "meta": {
+  "title": "Then & Now Delhi — street prices 1995-2026",
+  "city": "delhi",
+  "generated": "2026-10-16",
+  "years": [
+   1995,
+   1996,
+   1997,
+   1998,
+   1999,
+   2000,
+   2001,
+   2002,
+   2003,
+   2004,
+   2005,
+   2006,
+   2007,
+   2008,
+   2009,
+   2010,
+   2011,
+   2012,
+   2013,
+   2014,
+   2015,
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025,
+   2026
+  ],
+  "base_year": 2026,
+  "work_hours_per_month": 208
+ },
+ "sources": {
+  "wb_cpi": {
+   "source_id": "wb_cpi",
+   "title": "Inflation, consumer prices (annual %) — India (FP.CPI.TOTL.ZG)",
+   "publisher": "World Bank",
+   "date": "",
+   "url": "https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG?locations=IN"
+  },
+  "pib_2002_metro": {
+   "source_id": "pib_2002_metro",
+   "title": "Delhi Metro's first section opened (Shahdara to Tis Hazari)",
+   "publisher": "Press Information Bureau",
+   "date": "2002-12-05",
+   "url": "https://archive.pib.gov.in/release02/lyr2002/rdec2002/05122002/r051220028.html"
+  },
+  "bt_2017_metro": {
+   "source_id": "bt_2017_metro",
+   "title": "Delhi Metro fares hike: minimum Rs 10, maximum Rs 50",
+   "publisher": "Business Today",
+   "date": "2017-05-08",
+   "url": "https://www.businesstoday.in/latest/economy-politics/story/delhi-metro-board-clears-fare-hike-to-come-into-effect-from-wednesday-78792-2017-05-08"
+  },
+  "week_2025_metro": {
+   "source_id": "week_2025_metro",
+   "title": "Delhi Metro fare hike: minimum ticket price is now Rs 11",
+   "publisher": "The Week",
+   "date": "2025-08-25",
+   "url": "https://www.theweek.in/news/india/2025/08/25/delhi-metro-fare-hike-minimum-ticket-price-now-is-11-check-full-details-here.amp.html"
+  },
+  "dh_2010_auto": {
+   "source_id": "dh_2010_auto",
+   "title": "Delhi govt hikes auto, taxi fares",
+   "publisher": "Deccan Herald",
+   "date": "2010-06-23",
+   "url": "https://www.deccanherald.com/india/delhi-govt-hikes-auto-taxi-2496255"
+  },
+  "tribune_2019_auto": {
+   "source_id": "tribune_2019_auto",
+   "title": "Auto fare revised to Rs 25 for first 1.5 km",
+   "publisher": "The Tribune",
+   "date": "2019-06-18",
+   "url": "https://www.tribuneindia.com/news/archive/delhi/auto-fare-revised-to-rs-25-for-first-1-5-km-740227"
+  },
+  "bt_2022_dl_auto": {
+   "source_id": "bt_2022_dl_auto",
+   "title": "Delhi government increases fares of auto rickshaw, taxi",
+   "publisher": "Business Today",
+   "date": "2022-10-28",
+   "url": "https://www.businesstoday.in/latest/economy/story/delhi-government-increases-fares-of-auto-rickshaw-taxi-351158-2022-10-28"
+  },
+  "ppac_delhi_petrol": {
+   "source_id": "ppac_delhi_petrol",
+   "title": "RSP of petrol and diesel at Delhi",
+   "publisher": "Petroleum Planning & Analysis Cell",
+   "date": "2017-06-15",
+   "url": "https://ppac.gov.in/retail-selling-price-rsp-of-petrol-diesel-and-domestic-lpg/rsp-of-petrol-and-diesel-at-delhi-up-to-15-6-2017"
+  },
+  "bt_2013_petrol": {
+   "source_id": "bt_2013_petrol",
+   "title": "Petrol price hiked again, seventh increase since June",
+   "publisher": "Business Today",
+   "date": "2013-09-01",
+   "url": "https://www.businesstoday.in/story/petrol-price-hiked-again-seventh-increase-since-june/1/198590.html"
+  },
+  "ht_2021_petrol": {
+   "source_id": "ht_2021_petrol",
+   "title": "Petrol crosses Rs 95 a litre in Delhi",
+   "publisher": "Hindustan Times",
+   "date": "2021-06-07",
+   "url": "https://www.pressreader.com/india/hindustan-times-st-jaipur/20210607/281805696862001"
+  },
+  "upstox_2026_petrol": {
+   "source_id": "upstox_2026_petrol",
+   "title": "Petrol price in Delhi",
+   "publisher": "Upstox",
+   "date": "2026-07-29",
+   "url": "https://upstox.com/petrol-price/petrol-price-in-delhi/"
+  },
+  "tribune_2013_onion": {
+   "source_id": "tribune_2013_onion",
+   "title": "Onion prices and the 1998 Delhi election",
+   "publisher": "The Tribune",
+   "date": "2013-10-24",
+   "url": "https://www.tribuneindia.com/2013/20131024/main3.htm"
+  },
+  "bt_2010_onion": {
+   "source_id": "bt_2010_onion",
+   "title": "Onion prices still rule high at Rs 70 a kg in Delhi",
+   "publisher": "Business Today",
+   "date": "2010-12-23",
+   "url": "https://www.businesstoday.in/story/onion-prices-still-rule-high-at-rs-70-a-kg-in-delhi/1/198125.html"
+  },
+  "bt_2013_onion": {
+   "source_id": "bt_2013_onion",
+   "title": "Onion price in New Delhi soars to Rs 80 a kg",
+   "publisher": "Business Today",
+   "date": "2013-08-12",
+   "url": "https://businesstoday.in/story/onion-price-in-new-delhi-soars-to-rs-80-a-kg-despite-supply/1/197781.html"
+  },
+  "wiki_onion": {
+   "source_id": "wiki_onion",
+   "title": "2010 Indian onion crisis",
+   "publisher": "Wikipedia",
+   "date": "",
+   "url": "https://en.wikipedia.org/wiki/2010_Indian_onion_crisis"
+  },
+  "bs_2019_onion": {
+   "source_id": "bs_2019_onion",
+   "title": "Onion prices",
+   "publisher": "Business Standard",
+   "date": "2019-12-27",
+   "url": "https://business-standard.com/topic/onion-prices/page-5"
+  },
+  "money9_2021_milk": {
+   "source_id": "money9_2021_milk",
+   "title": "Mother Dairy to hike milk prices in Delhi-NCR by Rs 2 per litre from July 11",
+   "publisher": "Money9",
+   "date": "2021-07-10",
+   "url": "https://www.money9.com/news/exclusive/mother-dairy-to-hike-milk-prices-in-delhi-ncr-by-rs-2-per-litre-from-july-11-54154.html"
+  },
+  "bt_2022_milk": {
+   "source_id": "bt_2022_milk",
+   "title": "Mother Dairy hikes milk rate by Rs 2 per litre from tomorrow",
+   "publisher": "Business Today",
+   "date": "2022-12-26",
+   "url": "https://businesstoday.in/latest/story/mother-dairy-hikes-milk-rate-by-rs-2-per-litre-from-tomorrow-357791-2022-12-26"
+  },
+  "dh_2025_milk": {
+   "source_id": "dh_2025_milk",
+   "title": "Mother Dairy raises milk prices by up to Rs 2 a litre",
+   "publisher": "Deccan Herald",
+   "date": "2025-04-29",
+   "url": "https://www.deccanherald.com/business/companies/mother-dairy-raises-milk-prices-by-up-to-rs-2litre-3516866"
+  }
+ },
+ "macro": [
+  {
+   "year": 1995,
+   "inflation_pct": 10.2,
+   "inflation_confidence": "reported",
+   "cpi_index": 15.33,
+   "income_monthly": 1667,
+   "income_confidence": "estimated",
+   "hourly_wage": 8.01
+  },
+  {
+   "year": 1996,
+   "inflation_pct": 9.0,
+   "inflation_confidence": "reported",
+   "cpi_index": 16.71,
+   "income_monthly": 1895,
+   "income_confidence": "interpolated",
+   "hourly_wage": 9.11
+  },
+  {
+   "year": 1997,
+   "inflation_pct": 7.2,
+   "inflation_confidence": "reported",
+   "cpi_index": 17.92,
+   "income_monthly": 2155,
+   "income_confidence": "interpolated",
+   "hourly_wage": 10.36
+  },
+  {
+   "year": 1998,
+   "inflation_pct": 13.2,
+   "inflation_confidence": "reported",
+   "cpi_index": 20.28,
+   "income_monthly": 2450,
+   "income_confidence": "interpolated",
+   "hourly_wage": 11.78
+  },
+  {
+   "year": 1999,
+   "inflation_pct": 4.7,
+   "inflation_confidence": "reported",
+   "cpi_index": 21.23,
+   "income_monthly": 2785,
+   "income_confidence": "interpolated",
+   "hourly_wage": 13.39
+  },
+  {
+   "year": 2000,
+   "inflation_pct": 4.0,
+   "inflation_confidence": "reported",
+   "cpi_index": 22.08,
+   "income_monthly": 3167,
+   "income_confidence": "estimated",
+   "hourly_wage": 15.22
+  },
+  {
+   "year": 2001,
+   "inflation_pct": 3.8,
+   "inflation_confidence": "reported",
+   "cpi_index": 22.92,
+   "income_monthly": 3536,
+   "income_confidence": "interpolated",
+   "hourly_wage": 17.0
+  },
+  {
+   "year": 2002,
+   "inflation_pct": 4.3,
+   "inflation_confidence": "reported",
+   "cpi_index": 23.91,
+   "income_monthly": 3949,
+   "income_confidence": "interpolated",
+   "hourly_wage": 18.99
+  },
+  {
+   "year": 2003,
+   "inflation_pct": 3.8,
+   "inflation_confidence": "reported",
+   "cpi_index": 24.82,
+   "income_monthly": 4410,
+   "income_confidence": "interpolated",
+   "hourly_wage": 21.2
+  },
+  {
+   "year": 2004,
+   "inflation_pct": 3.8,
+   "inflation_confidence": "reported",
+   "cpi_index": 25.76,
+   "income_monthly": 4925,
+   "income_confidence": "interpolated",
+   "hourly_wage": 23.68
+  },
+  {
+   "year": 2005,
+   "inflation_pct": 4.2,
+   "inflation_confidence": "reported",
+   "cpi_index": 26.84,
+   "income_monthly": 5500,
+   "income_confidence": "estimated",
+   "hourly_wage": 26.44
+  },
+  {
+   "year": 2006,
+   "inflation_pct": 5.8,
+   "inflation_confidence": "reported",
+   "cpi_index": 28.4,
+   "income_monthly": 6531,
+   "income_confidence": "interpolated",
+   "hourly_wage": 31.4
+  },
+  {
+   "year": 2007,
+   "inflation_pct": 6.4,
+   "inflation_confidence": "reported",
+   "cpi_index": 30.21,
+   "income_monthly": 7755,
+   "income_confidence": "interpolated",
+   "hourly_wage": 37.28
+  },
+  {
+   "year": 2008,
+   "inflation_pct": 8.4,
+   "inflation_confidence": "reported",
+   "cpi_index": 32.75,
+   "income_monthly": 9208,
+   "income_confidence": "interpolated",
+   "hourly_wage": 44.27
+  },
+  {
+   "year": 2009,
+   "inflation_pct": 10.9,
+   "inflation_confidence": "reported",
+   "cpi_index": 36.32,
+   "income_monthly": 10934,
+   "income_confidence": "interpolated",
+   "hourly_wage": 52.57
+  },
+  {
+   "year": 2010,
+   "inflation_pct": 12.0,
+   "inflation_confidence": "reported",
+   "cpi_index": 40.68,
+   "income_monthly": 12983,
+   "income_confidence": "interpolated",
+   "hourly_wage": 62.42
+  },
+  {
+   "year": 2011,
+   "inflation_pct": 8.9,
+   "inflation_confidence": "reported",
+   "cpi_index": 44.3,
+   "income_monthly": 15417,
+   "income_confidence": "estimated",
+   "hourly_wage": 74.12
+  },
+  {
+   "year": 2012,
+   "inflation_pct": 9.3,
+   "inflation_confidence": "reported",
+   "cpi_index": 48.42,
+   "income_monthly": 16631,
+   "income_confidence": "interpolated",
+   "hourly_wage": 79.96
+  },
+  {
+   "year": 2013,
+   "inflation_pct": 10.9,
+   "inflation_confidence": "reported",
+   "cpi_index": 53.7,
+   "income_monthly": 17940,
+   "income_confidence": "interpolated",
+   "hourly_wage": 86.25
+  },
+  {
+   "year": 2014,
+   "inflation_pct": 6.4,
+   "inflation_confidence": "reported",
+   "cpi_index": 57.14,
+   "income_monthly": 19353,
+   "income_confidence": "interpolated",
+   "hourly_wage": 93.04
+  },
+  {
+   "year": 2015,
+   "inflation_pct": 5.9,
+   "inflation_confidence": "reported",
+   "cpi_index": 60.51,
+   "income_monthly": 20877,
+   "income_confidence": "interpolated",
+   "hourly_wage": 100.37
+  },
+  {
+   "year": 2016,
+   "inflation_pct": 4.9,
+   "inflation_confidence": "reported",
+   "cpi_index": 63.47,
+   "income_monthly": 22521,
+   "income_confidence": "interpolated",
+   "hourly_wage": 108.27
+  },
+  {
+   "year": 2017,
+   "inflation_pct": 2.5,
+   "inflation_confidence": "reported",
+   "cpi_index": 65.06,
+   "income_monthly": 24294,
+   "income_confidence": "interpolated",
+   "hourly_wage": 116.8
+  },
+  {
+   "year": 2018,
+   "inflation_pct": 4.9,
+   "inflation_confidence": "reported",
+   "cpi_index": 68.25,
+   "income_monthly": 26207,
+   "income_confidence": "interpolated",
+   "hourly_wage": 126.0
+  },
+  {
+   "year": 2019,
+   "inflation_pct": 3.7,
+   "inflation_confidence": "reported",
+   "cpi_index": 70.77,
+   "income_monthly": 28271,
+   "income_confidence": "interpolated",
+   "hourly_wage": 135.92
+  },
+  {
+   "year": 2020,
+   "inflation_pct": 6.6,
+   "inflation_confidence": "reported",
+   "cpi_index": 75.44,
+   "income_monthly": 30497,
+   "income_confidence": "interpolated",
+   "hourly_wage": 146.62
+  },
+  {
+   "year": 2021,
+   "inflation_pct": 5.1,
+   "inflation_confidence": "reported",
+   "cpi_index": 79.29,
+   "income_monthly": 32899,
+   "income_confidence": "interpolated",
+   "hourly_wage": 158.17
+  },
+  {
+   "year": 2022,
+   "inflation_pct": 6.7,
+   "inflation_confidence": "reported",
+   "cpi_index": 84.6,
+   "income_monthly": 35489,
+   "income_confidence": "interpolated",
+   "hourly_wage": 170.62
+  },
+  {
+   "year": 2023,
+   "inflation_pct": 5.6,
+   "inflation_confidence": "reported",
+   "cpi_index": 89.34,
+   "income_monthly": 38284,
+   "income_confidence": "estimated",
+   "hourly_wage": 184.06
+  },
+  {
+   "year": 2024,
+   "inflation_pct": 5.0,
+   "inflation_confidence": "reported",
+   "cpi_index": 93.81,
+   "income_monthly": 41085,
+   "income_confidence": "estimated",
+   "hourly_wage": 197.53
+  },
+  {
+   "year": 2025,
+   "inflation_pct": 2.5,
+   "inflation_confidence": "estimated",
+   "cpi_index": 96.15,
+   "income_monthly": 44301,
+   "income_confidence": "estimated",
+   "hourly_wage": 212.98
+  },
+  {
+   "year": 2026,
+   "inflation_pct": 4.0,
+   "inflation_confidence": "estimated",
+   "cpi_index": 100.0,
+   "income_monthly": 44301,
+   "income_confidence": "interpolated",
+   "hourly_wage": 212.98
+  }
+ ],
+ "items": [
+  {
+   "id": "chai",
+   "name": "Chai",
+   "unit": "per cup",
+   "building": "chai",
+   "place": "Chai stall",
+   "keeper": "Sardar ji",
+   "series": [
+    {
+     "year": 1995,
+     "price": 2.0,
+     "price_2026": 13.04,
+     "minutes_of_work": 14.98,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": "No archival series for roadside chai exists; reconstructed. Help wanted."
+    },
+    {
+     "year": 1996,
+     "price": 2.17,
+     "price_2026": 12.98,
+     "minutes_of_work": 14.28,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1997,
+     "price": 2.35,
+     "price_2026": 13.13,
+     "minutes_of_work": 13.62,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1998,
+     "price": 2.55,
+     "price_2026": 12.58,
+     "minutes_of_work": 13.0,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1999,
+     "price": 2.77,
+     "price_2026": 13.03,
+     "minutes_of_work": 12.4,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2000,
+     "price": 3.0,
+     "price_2026": 13.59,
+     "minutes_of_work": 11.82,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2001,
+     "price": 3.18,
+     "price_2026": 13.86,
+     "minutes_of_work": 11.21,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2002,
+     "price": 3.37,
+     "price_2026": 14.08,
+     "minutes_of_work": 10.64,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2003,
+     "price": 3.57,
+     "price_2026": 14.37,
+     "minutes_of_work": 10.09,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2004,
+     "price": 3.78,
+     "price_2026": 14.66,
+     "minutes_of_work": 9.57,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2005,
+     "price": 4.0,
+     "price_2026": 14.9,
+     "minutes_of_work": 9.08,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2006,
+     "price": 4.34,
+     "price_2026": 15.28,
+     "minutes_of_work": 8.29,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2007,
+     "price": 4.7,
+     "price_2026": 15.57,
+     "minutes_of_work": 7.57,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2008,
+     "price": 5.1,
+     "price_2026": 15.58,
+     "minutes_of_work": 6.91,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2009,
+     "price": 5.53,
+     "price_2026": 15.23,
+     "minutes_of_work": 6.31,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2010,
+     "price": 6.0,
+     "price_2026": 14.75,
+     "minutes_of_work": 5.77,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2011,
+     "price": 6.65,
+     "price_2026": 15.0,
+     "minutes_of_work": 5.38,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2012,
+     "price": 7.36,
+     "price_2026": 15.2,
+     "minutes_of_work": 5.52,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2013,
+     "price": 8.15,
+     "price_2026": 15.18,
+     "minutes_of_work": 5.67,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2014,
+     "price": 9.03,
+     "price_2026": 15.8,
+     "minutes_of_work": 5.82,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2015,
+     "price": 10.0,
+     "price_2026": 16.53,
+     "minutes_of_work": 5.98,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2016,
+     "price": 10.37,
+     "price_2026": 16.34,
+     "minutes_of_work": 5.75,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2017,
+     "price": 10.76,
+     "price_2026": 16.53,
+     "minutes_of_work": 5.53,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2018,
+     "price": 11.16,
+     "price_2026": 16.35,
+     "minutes_of_work": 5.31,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2019,
+     "price": 11.57,
+     "price_2026": 16.35,
+     "minutes_of_work": 5.11,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2020,
+     "price": 12.0,
+     "price_2026": 15.91,
+     "minutes_of_work": 4.91,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2021,
+     "price": 12.45,
+     "price_2026": 15.71,
+     "minutes_of_work": 4.72,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2022,
+     "price": 12.93,
+     "price_2026": 15.28,
+     "minutes_of_work": 4.55,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2023,
+     "price": 13.42,
+     "price_2026": 15.02,
+     "minutes_of_work": 4.37,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2024,
+     "price": 13.92,
+     "price_2026": 14.84,
+     "minutes_of_work": 4.23,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2025,
+     "price": 14.45,
+     "price_2026": 15.03,
+     "minutes_of_work": 4.07,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2026,
+     "price": 15.0,
+     "price_2026": 15.0,
+     "minutes_of_work": 4.23,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    }
+   ],
+   "summary": {
+    "nominal_multiple": 7.5,
+    "real_change_pct": 15.0,
+    "first_year": 1995,
+    "minutes_1995": 14.98,
+    "minutes_2026": 4.23,
+    "cagr_pct": 6.72,
+    "anchor_counts": {
+     "documented": 0,
+     "reported": 0,
+     "estimated": 7
+    }
+   }
+  },
+  {
+   "id": "samosa",
+   "name": "Samosa",
+   "unit": "per piece",
+   "building": "vadapav",
+   "place": "Samosa stall",
+   "keeper": "Bittu bhaiya",
+   "series": [
+    {
+     "year": 1995,
+     "price": 2.0,
+     "price_2026": 13.04,
+     "minutes_of_work": 14.98,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": "No archival series; reconstructed. Help wanted."
+    },
+    {
+     "year": 1996,
+     "price": 2.17,
+     "price_2026": 12.98,
+     "minutes_of_work": 14.28,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1997,
+     "price": 2.35,
+     "price_2026": 13.13,
+     "minutes_of_work": 13.62,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1998,
+     "price": 2.55,
+     "price_2026": 12.58,
+     "minutes_of_work": 13.0,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1999,
+     "price": 2.77,
+     "price_2026": 13.03,
+     "minutes_of_work": 12.4,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2000,
+     "price": 3.0,
+     "price_2026": 13.59,
+     "minutes_of_work": 11.82,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2001,
+     "price": 3.18,
+     "price_2026": 13.86,
+     "minutes_of_work": 11.21,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2002,
+     "price": 3.37,
+     "price_2026": 14.08,
+     "minutes_of_work": 10.64,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2003,
+     "price": 3.57,
+     "price_2026": 14.37,
+     "minutes_of_work": 10.09,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2004,
+     "price": 3.78,
+     "price_2026": 14.66,
+     "minutes_of_work": 9.57,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2005,
+     "price": 4.0,
+     "price_2026": 14.9,
+     "minutes_of_work": 9.08,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2006,
+     "price": 4.47,
+     "price_2026": 15.75,
+     "minutes_of_work": 8.55,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2007,
+     "price": 5.0,
+     "price_2026": 16.56,
+     "minutes_of_work": 8.05,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2008,
+     "price": 5.6,
+     "price_2026": 17.09,
+     "minutes_of_work": 7.58,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2009,
+     "price": 6.26,
+     "price_2026": 17.23,
+     "minutes_of_work": 7.14,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2010,
+     "price": 7.0,
+     "price_2026": 17.21,
+     "minutes_of_work": 6.73,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2011,
+     "price": 7.52,
+     "price_2026": 16.97,
+     "minutes_of_work": 6.09,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2012,
+     "price": 8.07,
+     "price_2026": 16.67,
+     "minutes_of_work": 6.06,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2013,
+     "price": 8.67,
+     "price_2026": 16.15,
+     "minutes_of_work": 6.03,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2014,
+     "price": 9.31,
+     "price_2026": 16.3,
+     "minutes_of_work": 6.0,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2015,
+     "price": 10.0,
+     "price_2026": 16.53,
+     "minutes_of_work": 5.98,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2016,
+     "price": 10.84,
+     "price_2026": 17.09,
+     "minutes_of_work": 6.01,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2017,
+     "price": 11.76,
+     "price_2026": 18.08,
+     "minutes_of_work": 6.04,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2018,
+     "price": 12.75,
+     "price_2026": 18.69,
+     "minutes_of_work": 6.07,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2019,
+     "price": 13.83,
+     "price_2026": 19.54,
+     "minutes_of_work": 6.11,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2020,
+     "price": 15.0,
+     "price_2026": 19.88,
+     "minutes_of_work": 6.14,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2021,
+     "price": 15.74,
+     "price_2026": 19.85,
+     "minutes_of_work": 5.97,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2022,
+     "price": 16.51,
+     "price_2026": 19.51,
+     "minutes_of_work": 5.81,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2023,
+     "price": 17.32,
+     "price_2026": 19.39,
+     "minutes_of_work": 5.65,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2024,
+     "price": 18.17,
+     "price_2026": 19.37,
+     "minutes_of_work": 5.52,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2025,
+     "price": 19.06,
+     "price_2026": 19.83,
+     "minutes_of_work": 5.37,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2026,
+     "price": 20.0,
+     "price_2026": 20.0,
+     "minutes_of_work": 5.63,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    }
+   ],
+   "summary": {
+    "nominal_multiple": 10.0,
+    "real_change_pct": 53.4,
+    "first_year": 1995,
+    "minutes_1995": 14.98,
+    "minutes_2026": 5.63,
+    "cagr_pct": 7.71,
+    "anchor_counts": {
+     "documented": 0,
+     "reported": 0,
+     "estimated": 7
+    }
+   }
+  },
+  {
+   "id": "metro",
+   "name": "Delhi Metro ticket",
+   "unit": "minimum fare",
+   "building": "station",
+   "place": "Metro station",
+   "keeper": "Metro staff",
+   "available_from": 2002,
+   "series": [
+    {
+     "year": 1995,
+     "price": 4.0,
+     "price_2026": 26.09,
+     "minutes_of_work": 29.95,
+     "kind": "unavailable",
+     "confidence": "unavailable",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1996,
+     "price": 4.0,
+     "price_2026": 23.94,
+     "minutes_of_work": 26.34,
+     "kind": "unavailable",
+     "confidence": "unavailable",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1997,
+     "price": 4.0,
+     "price_2026": 22.33,
+     "minutes_of_work": 23.17,
+     "kind": "unavailable",
+     "confidence": "unavailable",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1998,
+     "price": 4.0,
+     "price_2026": 19.72,
+     "minutes_of_work": 20.38,
+     "kind": "unavailable",
+     "confidence": "unavailable",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1999,
+     "price": 4.0,
+     "price_2026": 18.84,
+     "minutes_of_work": 17.92,
+     "kind": "unavailable",
+     "confidence": "unavailable",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2000,
+     "price": 4.0,
+     "price_2026": 18.11,
+     "minutes_of_work": 15.76,
+     "kind": "unavailable",
+     "confidence": "unavailable",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2001,
+     "price": 4.0,
+     "price_2026": 17.45,
+     "minutes_of_work": 14.12,
+     "kind": "unavailable",
+     "confidence": "unavailable",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2002,
+     "price": 4.0,
+     "price_2026": 16.73,
+     "minutes_of_work": 12.64,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": "pib_2002_metro",
+     "note": "Opening-year minimum fare not yet verified; the opening date is documented."
+    },
+    {
+     "year": 2003,
+     "price": 4.42,
+     "price_2026": 17.8,
+     "minutes_of_work": 12.5,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2004,
+     "price": 4.88,
+     "price_2026": 18.93,
+     "minutes_of_work": 12.36,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2005,
+     "price": 5.38,
+     "price_2026": 20.06,
+     "minutes_of_work": 12.22,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2006,
+     "price": 5.94,
+     "price_2026": 20.93,
+     "minutes_of_work": 11.36,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2007,
+     "price": 6.56,
+     "price_2026": 21.72,
+     "minutes_of_work": 10.56,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2008,
+     "price": 7.25,
+     "price_2026": 22.12,
+     "minutes_of_work": 9.82,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2009,
+     "price": 8.0,
+     "price_2026": 22.02,
+     "minutes_of_work": 9.13,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "bt_2017_metro",
+     "note": "The minimum fare stood at Rs 8 from the 2009 revision until 2017."
+    },
+    {
+     "year": 2010,
+     "price": 8.23,
+     "price_2026": 20.22,
+     "minutes_of_work": 7.91,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2011,
+     "price": 8.46,
+     "price_2026": 19.09,
+     "minutes_of_work": 6.85,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2012,
+     "price": 8.7,
+     "price_2026": 17.96,
+     "minutes_of_work": 6.53,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2013,
+     "price": 8.94,
+     "price_2026": 16.66,
+     "minutes_of_work": 6.22,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2014,
+     "price": 9.2,
+     "price_2026": 16.1,
+     "minutes_of_work": 5.93,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2015,
+     "price": 9.46,
+     "price_2026": 15.63,
+     "minutes_of_work": 5.65,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2016,
+     "price": 9.72,
+     "price_2026": 15.32,
+     "minutes_of_work": 5.39,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2017,
+     "price": 10.0,
+     "price_2026": 15.37,
+     "minutes_of_work": 5.14,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "bt_2017_metro",
+     "note": "Minimum raised from Rs 8 to Rs 10 in May 2017."
+    },
+    {
+     "year": 2018,
+     "price": 10.12,
+     "price_2026": 14.83,
+     "minutes_of_work": 4.82,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2019,
+     "price": 10.24,
+     "price_2026": 14.47,
+     "minutes_of_work": 4.52,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2020,
+     "price": 10.36,
+     "price_2026": 13.74,
+     "minutes_of_work": 4.24,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2021,
+     "price": 10.49,
+     "price_2026": 13.23,
+     "minutes_of_work": 3.98,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2022,
+     "price": 10.61,
+     "price_2026": 12.55,
+     "minutes_of_work": 3.73,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2023,
+     "price": 10.74,
+     "price_2026": 12.02,
+     "minutes_of_work": 3.5,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2024,
+     "price": 10.87,
+     "price_2026": 11.59,
+     "minutes_of_work": 3.3,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2025,
+     "price": 11.0,
+     "price_2026": 11.44,
+     "minutes_of_work": 3.1,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "week_2025_metro",
+     "note": "Minimum raised from Rs 10 to Rs 11 on 25 August 2025."
+    },
+    {
+     "year": 2026,
+     "price": 11.0,
+     "price_2026": 11.0,
+     "minutes_of_work": 3.1,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    }
+   ],
+   "summary": {
+    "nominal_multiple": 2.75,
+    "real_change_pct": -34.2,
+    "first_year": 2002,
+    "minutes_1995": 12.64,
+    "minutes_2026": 3.1,
+    "cagr_pct": 4.31,
+    "anchor_counts": {
+     "documented": 0,
+     "reported": 3,
+     "estimated": 1
+    }
+   }
+  },
+  {
+   "id": "auto",
+   "name": "Auto-rickshaw ride",
+   "unit": "minimum fare, meter down",
+   "building": "autostand",
+   "place": "Auto stand",
+   "keeper": "Ramesh ji",
+   "series": [
+    {
+     "year": 1995,
+     "price": 6.0,
+     "price_2026": 39.13,
+     "minutes_of_work": 44.93,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1996,
+     "price": 6.19,
+     "price_2026": 37.03,
+     "minutes_of_work": 40.75,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1997,
+     "price": 6.38,
+     "price_2026": 35.62,
+     "minutes_of_work": 36.97,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1998,
+     "price": 6.58,
+     "price_2026": 32.45,
+     "minutes_of_work": 33.53,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1999,
+     "price": 6.79,
+     "price_2026": 31.97,
+     "minutes_of_work": 30.41,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2000,
+     "price": 7.0,
+     "price_2026": 31.7,
+     "minutes_of_work": 27.59,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2001,
+     "price": 7.37,
+     "price_2026": 32.14,
+     "minutes_of_work": 25.99,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2002,
+     "price": 7.75,
+     "price_2026": 32.42,
+     "minutes_of_work": 24.49,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2003,
+     "price": 8.16,
+     "price_2026": 32.87,
+     "minutes_of_work": 23.08,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2004,
+     "price": 8.58,
+     "price_2026": 33.32,
+     "minutes_of_work": 21.75,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2005,
+     "price": 9.03,
+     "price_2026": 33.65,
+     "minutes_of_work": 20.49,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2006,
+     "price": 9.5,
+     "price_2026": 33.47,
+     "minutes_of_work": 18.16,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2007,
+     "price": 10.0,
+     "price_2026": 33.1,
+     "minutes_of_work": 16.09,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "dh_2010_auto",
+     "note": "Rs 10 for the first kilometre after the 2007 revision."
+    },
+    {
+     "year": 2008,
+     "price": 12.39,
+     "price_2026": 37.82,
+     "minutes_of_work": 16.79,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2009,
+     "price": 15.34,
+     "price_2026": 42.23,
+     "minutes_of_work": 17.51,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2010,
+     "price": 19.0,
+     "price_2026": 46.7,
+     "minutes_of_work": 18.26,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "dh_2010_auto",
+     "note": "Rs 19 for the first 2 km from June 2010."
+    },
+    {
+     "year": 2011,
+     "price": 20.82,
+     "price_2026": 47.0,
+     "minutes_of_work": 16.85,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2012,
+     "price": 22.81,
+     "price_2026": 47.12,
+     "minutes_of_work": 17.12,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2013,
+     "price": 25.0,
+     "price_2026": 46.55,
+     "minutes_of_work": 17.39,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "tribune_2019_auto",
+     "note": "Rs 25 for the first 2 km from the 2013 revision."
+    },
+    {
+     "year": 2014,
+     "price": 25.0,
+     "price_2026": 43.75,
+     "minutes_of_work": 16.12,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2015,
+     "price": 25.0,
+     "price_2026": 41.32,
+     "minutes_of_work": 14.94,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2016,
+     "price": 25.0,
+     "price_2026": 39.39,
+     "minutes_of_work": 13.85,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2017,
+     "price": 25.0,
+     "price_2026": 38.43,
+     "minutes_of_work": 12.84,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2018,
+     "price": 25.0,
+     "price_2026": 36.63,
+     "minutes_of_work": 11.91,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2019,
+     "price": 25.0,
+     "price_2026": 35.32,
+     "minutes_of_work": 11.04,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "tribune_2019_auto",
+     "note": "Still Rs 25 but the first slab shrank to 1.5 km in June 2019."
+    },
+    {
+     "year": 2020,
+     "price": 26.17,
+     "price_2026": 34.68,
+     "minutes_of_work": 10.71,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2021,
+     "price": 27.39,
+     "price_2026": 34.54,
+     "minutes_of_work": 10.39,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2022,
+     "price": 28.66,
+     "price_2026": 33.88,
+     "minutes_of_work": 10.08,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2023,
+     "price": 30.0,
+     "price_2026": 33.58,
+     "minutes_of_work": 9.78,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "bt_2022_dl_auto",
+     "note": "Rs 30 for the first 1.5 km from January 2023."
+    },
+    {
+     "year": 2024,
+     "price": 30.0,
+     "price_2026": 31.98,
+     "minutes_of_work": 9.11,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2025,
+     "price": 30.0,
+     "price_2026": 31.2,
+     "minutes_of_work": 8.45,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2026,
+     "price": 30.0,
+     "price_2026": 30.0,
+     "minutes_of_work": 8.45,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    }
+   ],
+   "summary": {
+    "nominal_multiple": 5.0,
+    "real_change_pct": -23.3,
+    "first_year": 1995,
+    "minutes_1995": 44.93,
+    "minutes_2026": 8.45,
+    "cagr_pct": 5.33,
+    "anchor_counts": {
+     "documented": 0,
+     "reported": 5,
+     "estimated": 2
+    }
+   }
+  },
+  {
+   "id": "petrol",
+   "name": "Petrol",
+   "unit": "per litre",
+   "building": "autostand",
+   "place": "Auto stand",
+   "keeper": "Ramesh ji",
+   "series": [
+    {
+     "year": 1995,
+     "price": 21.0,
+     "price_2026": 136.97,
+     "minutes_of_work": 157.25,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1996,
+     "price": 21.57,
+     "price_2026": 129.06,
+     "minutes_of_work": 142.05,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1997,
+     "price": 22.15,
+     "price_2026": 123.65,
+     "minutes_of_work": 128.32,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1998,
+     "price": 22.75,
+     "price_2026": 112.19,
+     "minutes_of_work": 115.91,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1999,
+     "price": 23.37,
+     "price_2026": 110.05,
+     "minutes_of_work": 104.71,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2000,
+     "price": 24.0,
+     "price_2026": 108.68,
+     "minutes_of_work": 94.59,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2001,
+     "price": 25.24,
+     "price_2026": 110.11,
+     "minutes_of_work": 89.07,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2002,
+     "price": 26.54,
+     "price_2026": 111.01,
+     "minutes_of_work": 83.87,
+     "kind": "anchor",
+     "confidence": "documented",
+     "source_id": "ppac_delhi_petrol",
+     "note": "PPAC price on 1 April 2002."
+    },
+    {
+     "year": 2003,
+     "price": 29.91,
+     "price_2026": 120.53,
+     "minutes_of_work": 84.64,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2004,
+     "price": 33.71,
+     "price_2026": 130.87,
+     "minutes_of_work": 85.42,
+     "kind": "anchor",
+     "confidence": "documented",
+     "source_id": "ppac_delhi_petrol",
+     "note": "PPAC price in March 2004."
+    },
+    {
+     "year": 2005,
+     "price": 37.31,
+     "price_2026": 139.02,
+     "minutes_of_work": 84.67,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2006,
+     "price": 41.3,
+     "price_2026": 145.44,
+     "minutes_of_work": 78.92,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2007,
+     "price": 45.71,
+     "price_2026": 151.3,
+     "minutes_of_work": 73.57,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2008,
+     "price": 50.6,
+     "price_2026": 154.49,
+     "minutes_of_work": 68.58,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2009,
+     "price": 54.9,
+     "price_2026": 151.14,
+     "minutes_of_work": 62.66,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2010,
+     "price": 59.56,
+     "price_2026": 146.41,
+     "minutes_of_work": 57.25,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2011,
+     "price": 64.62,
+     "price_2026": 145.86,
+     "minutes_of_work": 52.31,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2012,
+     "price": 70.11,
+     "price_2026": 144.78,
+     "minutes_of_work": 52.61,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2013,
+     "price": 76.06,
+     "price_2026": 141.64,
+     "minutes_of_work": 52.91,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "bt_2013_petrol",
+     "note": "After the seventh hike since June 2013."
+    },
+    {
+     "year": 2014,
+     "price": 76.83,
+     "price_2026": 134.47,
+     "minutes_of_work": 49.55,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2015,
+     "price": 77.61,
+     "price_2026": 128.27,
+     "minutes_of_work": 46.4,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2016,
+     "price": 78.4,
+     "price_2026": 123.52,
+     "minutes_of_work": 43.45,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2017,
+     "price": 79.2,
+     "price_2026": 121.73,
+     "minutes_of_work": 40.68,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2018,
+     "price": 80.0,
+     "price_2026": 117.22,
+     "minutes_of_work": 38.1,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": "Peaked near Rs 84 in October 2018 before an excise cut."
+    },
+    {
+     "year": 2019,
+     "price": 84.72,
+     "price_2026": 119.7,
+     "minutes_of_work": 37.4,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2020,
+     "price": 89.71,
+     "price_2026": 118.91,
+     "minutes_of_work": 36.71,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2021,
+     "price": 95.0,
+     "price_2026": 119.81,
+     "minutes_of_work": 36.04,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "ht_2021_petrol",
+     "note": "Crossed Rs 95 in June 2021."
+    },
+    {
+     "year": 2022,
+     "price": 96.72,
+     "price_2026": 114.32,
+     "minutes_of_work": 34.01,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": "Rate after the May 2022 excise cut; source wanted."
+    },
+    {
+     "year": 2023,
+     "price": 98.04,
+     "price_2026": 109.74,
+     "minutes_of_work": 31.96,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2024,
+     "price": 99.38,
+     "price_2026": 105.94,
+     "minutes_of_work": 30.19,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2025,
+     "price": 100.74,
+     "price_2026": 104.77,
+     "minutes_of_work": 28.38,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2026,
+     "price": 102.12,
+     "price_2026": 102.12,
+     "minutes_of_work": 28.77,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "upstox_2026_petrol",
+     "note": "Price on 29 July 2026."
+    }
+   ],
+   "summary": {
+    "nominal_multiple": 4.86,
+    "real_change_pct": -25.4,
+    "first_year": 1995,
+    "minutes_1995": 157.25,
+    "minutes_2026": 28.77,
+    "cagr_pct": 5.23,
+    "anchor_counts": {
+     "documented": 2,
+     "reported": 3,
+     "estimated": 5
+    }
+   }
+  },
+  {
+   "id": "onion",
+   "name": "Onion",
+   "unit": "per kg",
+   "building": "kirana",
+   "place": "Kirana store",
+   "keeper": "Gupta ji",
+   "series": [
+    {
+     "year": 1995,
+     "price": 7.0,
+     "price_2026": 45.66,
+     "minutes_of_work": 52.42,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1996,
+     "price": 14.33,
+     "price_2026": 85.72,
+     "minutes_of_work": 94.35,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1997,
+     "price": 29.32,
+     "price_2026": 163.65,
+     "minutes_of_work": 169.82,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1998,
+     "price": 60.0,
+     "price_2026": 295.86,
+     "minutes_of_work": 305.68,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "tribune_2013_onion",
+     "note": "The 1998 price spike is remembered for bringing down Delhi's government."
+    },
+    {
+     "year": 1999,
+     "price": 24.49,
+     "price_2026": 115.36,
+     "minutes_of_work": 109.76,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2000,
+     "price": 10.0,
+     "price_2026": 45.29,
+     "minutes_of_work": 39.41,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2001,
+     "price": 10.37,
+     "price_2026": 45.25,
+     "minutes_of_work": 36.6,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2002,
+     "price": 10.76,
+     "price_2026": 44.99,
+     "minutes_of_work": 33.99,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2003,
+     "price": 11.16,
+     "price_2026": 44.96,
+     "minutes_of_work": 31.57,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2004,
+     "price": 11.57,
+     "price_2026": 44.92,
+     "minutes_of_work": 29.32,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2005,
+     "price": 12.0,
+     "price_2026": 44.71,
+     "minutes_of_work": 27.23,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2006,
+     "price": 17.08,
+     "price_2026": 60.13,
+     "minutes_of_work": 32.63,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2007,
+     "price": 24.3,
+     "price_2026": 80.41,
+     "minutes_of_work": 39.1,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2008,
+     "price": 34.57,
+     "price_2026": 105.56,
+     "minutes_of_work": 46.86,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2009,
+     "price": 49.19,
+     "price_2026": 135.44,
+     "minutes_of_work": 56.15,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2010,
+     "price": 70.0,
+     "price_2026": 172.07,
+     "minutes_of_work": 67.29,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "bt_2010_onion",
+     "note": "The December 2010 onion crisis."
+    },
+    {
+     "year": 2011,
+     "price": 37.42,
+     "price_2026": 84.46,
+     "minutes_of_work": 30.29,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2012,
+     "price": 20.0,
+     "price_2026": 41.3,
+     "minutes_of_work": 15.01,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2013,
+     "price": 80.0,
+     "price_2026": 148.98,
+     "minutes_of_work": 55.65,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "bt_2013_onion",
+     "note": "August 2013."
+    },
+    {
+     "year": 2014,
+     "price": 80.0,
+     "price_2026": 140.01,
+     "minutes_of_work": 51.59,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2015,
+     "price": 80.0,
+     "price_2026": 132.21,
+     "minutes_of_work": 47.82,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "wiki_onion",
+     "note": "Retail spike in 2015."
+    },
+    {
+     "year": 2016,
+     "price": 44.72,
+     "price_2026": 70.46,
+     "minutes_of_work": 24.78,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2017,
+     "price": 25.0,
+     "price_2026": 38.43,
+     "minutes_of_work": 12.84,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2018,
+     "price": 50.5,
+     "price_2026": 73.99,
+     "minutes_of_work": 24.05,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2019,
+     "price": 102.0,
+     "price_2026": 144.12,
+     "minutes_of_work": 45.03,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "bs_2019_onion",
+     "note": "Consumer affairs ministry data"
+    },
+    {
+     "year": 2020,
+     "price": 67.83,
+     "price_2026": 89.91,
+     "minutes_of_work": 27.76,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2021,
+     "price": 45.11,
+     "price_2026": 56.89,
+     "minutes_of_work": 17.11,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2022,
+     "price": 30.0,
+     "price_2026": 35.46,
+     "minutes_of_work": 10.55,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2023,
+     "price": 31.18,
+     "price_2026": 34.9,
+     "minutes_of_work": 10.16,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2024,
+     "price": 32.4,
+     "price_2026": 34.54,
+     "minutes_of_work": 9.84,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2025,
+     "price": 33.68,
+     "price_2026": 35.02,
+     "minutes_of_work": 9.49,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2026,
+     "price": 35.0,
+     "price_2026": 35.0,
+     "minutes_of_work": 9.86,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    }
+   ],
+   "summary": {
+    "nominal_multiple": 5.0,
+    "real_change_pct": -23.3,
+    "first_year": 1995,
+    "minutes_1995": 52.42,
+    "minutes_2026": 9.86,
+    "cagr_pct": 5.33,
+    "anchor_counts": {
+     "documented": 0,
+     "reported": 5,
+     "estimated": 7
+    }
+   }
+  },
+  {
+   "id": "milk",
+   "name": "Packaged milk",
+   "unit": "toned, per litre",
+   "building": "kirana",
+   "place": "Kirana store",
+   "keeper": "Gupta ji",
+   "series": [
+    {
+     "year": 1995,
+     "price": 10.0,
+     "price_2026": 65.22,
+     "minutes_of_work": 74.88,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1996,
+     "price": 10.7,
+     "price_2026": 64.0,
+     "minutes_of_work": 70.44,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1997,
+     "price": 11.44,
+     "price_2026": 63.86,
+     "minutes_of_work": 66.27,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1998,
+     "price": 12.24,
+     "price_2026": 60.34,
+     "minutes_of_work": 62.34,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 1999,
+     "price": 13.09,
+     "price_2026": 61.64,
+     "minutes_of_work": 58.65,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2000,
+     "price": 14.0,
+     "price_2026": 63.4,
+     "minutes_of_work": 55.17,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2001,
+     "price": 14.38,
+     "price_2026": 62.73,
+     "minutes_of_work": 50.74,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2002,
+     "price": 14.77,
+     "price_2026": 61.77,
+     "minutes_of_work": 46.67,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2003,
+     "price": 15.17,
+     "price_2026": 61.12,
+     "minutes_of_work": 42.92,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2004,
+     "price": 15.58,
+     "price_2026": 60.48,
+     "minutes_of_work": 39.48,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2005,
+     "price": 16.0,
+     "price_2026": 59.61,
+     "minutes_of_work": 36.31,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2006,
+     "price": 17.35,
+     "price_2026": 61.1,
+     "minutes_of_work": 33.16,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2007,
+     "price": 18.82,
+     "price_2026": 62.28,
+     "minutes_of_work": 30.28,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2008,
+     "price": 20.41,
+     "price_2026": 62.31,
+     "minutes_of_work": 27.66,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2009,
+     "price": 22.13,
+     "price_2026": 60.93,
+     "minutes_of_work": 25.26,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2010,
+     "price": 24.0,
+     "price_2026": 59.0,
+     "minutes_of_work": 23.07,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2011,
+     "price": 26.92,
+     "price_2026": 60.77,
+     "minutes_of_work": 21.79,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2012,
+     "price": 30.2,
+     "price_2026": 62.37,
+     "minutes_of_work": 22.66,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2013,
+     "price": 33.88,
+     "price_2026": 63.08,
+     "minutes_of_work": 23.57,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2014,
+     "price": 38.0,
+     "price_2026": 66.51,
+     "minutes_of_work": 24.5,
+     "kind": "anchor",
+     "confidence": "estimated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2015,
+     "price": 39.31,
+     "price_2026": 64.96,
+     "minutes_of_work": 23.5,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2016,
+     "price": 40.66,
+     "price_2026": 64.06,
+     "minutes_of_work": 22.53,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2017,
+     "price": 42.06,
+     "price_2026": 64.64,
+     "minutes_of_work": 21.6,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2018,
+     "price": 43.5,
+     "price_2026": 63.74,
+     "minutes_of_work": 20.72,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2019,
+     "price": 45.0,
+     "price_2026": 63.58,
+     "minutes_of_work": 19.86,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "money9_2021_milk",
+     "note": "Price set in December 2019 (toned milk went from Rs 45 to Rs 47 in July 2021)."
+    },
+    {
+     "year": 2020,
+     "price": 45.99,
+     "price_2026": 60.96,
+     "minutes_of_work": 18.82,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2021,
+     "price": 47.0,
+     "price_2026": 59.28,
+     "minutes_of_work": 17.83,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "money9_2021_milk",
+     "note": "From 11 July 2021."
+    },
+    {
+     "year": 2022,
+     "price": 53.0,
+     "price_2026": 62.64,
+     "minutes_of_work": 18.64,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "bt_2022_milk",
+     "note": "From 27 December 2022."
+    },
+    {
+     "year": 2023,
+     "price": 54.3,
+     "price_2026": 60.78,
+     "minutes_of_work": 17.7,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2024,
+     "price": 55.63,
+     "price_2026": 59.31,
+     "minutes_of_work": 16.9,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    },
+    {
+     "year": 2025,
+     "price": 57.0,
+     "price_2026": 59.28,
+     "minutes_of_work": 16.06,
+     "kind": "anchor",
+     "confidence": "reported",
+     "source_id": "dh_2025_milk",
+     "note": "Pouched toned milk from 30 April 2025."
+    },
+    {
+     "year": 2026,
+     "price": 57.0,
+     "price_2026": 57.0,
+     "minutes_of_work": 16.06,
+     "kind": "interpolated",
+     "confidence": "interpolated",
+     "source_id": null,
+     "note": null
+    }
+   ],
+   "summary": {
+    "nominal_multiple": 5.7,
+    "real_change_pct": -12.6,
+    "first_year": 1995,
+    "minutes_1995": 74.88,
+    "minutes_2026": 16.06,
+    "cagr_pct": 5.78,
+    "anchor_counts": {
+     "documented": 0,
+     "reported": 4,
+     "estimated": 5
+    }
+   }
+  }
+ ]
+}

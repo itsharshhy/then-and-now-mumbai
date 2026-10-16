@@ -1,0 +1,65 @@
+item,year,price,confidence,source_id,note
+# Delhi street prices. Same rules as Mumbai: documented = official record; reported = a dated news report states the figure; estimated = reconstructed, source wanted.
+# ---- Chai (per cup, roadside stall) ----
+chai,1995,2,estimated,,No archival series for roadside chai exists; reconstructed. Help wanted.
+chai,2000,3,estimated,,
+chai,2005,4,estimated,,
+chai,2010,6,estimated,,
+chai,2015,10,estimated,,
+chai,2020,12,estimated,,
+chai,2026,15,estimated,,
+# ---- Samosa (per piece, street stall) ----
+samosa,1995,2,estimated,,No archival series; reconstructed. Help wanted.
+samosa,2000,3,estimated,,
+samosa,2005,4,estimated,,
+samosa,2010,7,estimated,,
+samosa,2015,10,estimated,,
+samosa,2020,15,estimated,,
+samosa,2026,20,estimated,,
+# ---- Delhi Metro (minimum fare). The first stretch, Shahdara to Tis Hazari, opened on 25 December 2002. ----
+metro,2002,4,estimated,pib_2002_metro,Opening-year minimum fare not yet verified; the opening date is documented.
+metro,2009,8,reported,bt_2017_metro,The minimum fare stood at Rs 8 from the 2009 revision until 2017.
+metro,2017,10,reported,bt_2017_metro,Minimum raised from Rs 8 to Rs 10 in May 2017.
+metro,2025,11,reported,week_2025_metro,Minimum raised from Rs 10 to Rs 11 on 25 August 2025.
+# ---- Auto-rickshaw (minimum fare, meter down) ----
+auto,1995,6,estimated,,
+auto,2000,7,estimated,,
+auto,2007,10,reported,dh_2010_auto,Rs 10 for the first kilometre after the 2007 revision.
+auto,2010,19,reported,dh_2010_auto,Rs 19 for the first 2 km from June 2010.
+auto,2013,25,reported,tribune_2019_auto,Rs 25 for the first 2 km from the 2013 revision.
+auto,2019,25,reported,tribune_2019_auto,Still Rs 25 but the first slab shrank to 1.5 km in June 2019.
+auto,2023,30,reported,bt_2022_dl_auto,Rs 30 for the first 1.5 km from January 2023.
+# ---- Petrol (per litre, Delhi) ----
+petrol,1995,21,estimated,,
+petrol,2000,24,estimated,,
+petrol,2002,26.54,documented,ppac_delhi_petrol,PPAC price on 1 April 2002.
+petrol,2004,33.71,documented,ppac_delhi_petrol,PPAC price in March 2004.
+petrol,2008,50.6,estimated,,
+petrol,2013,76.06,reported,bt_2013_petrol,After the seventh hike since June 2013.
+petrol,2018,80,estimated,,Peaked near Rs 84 in October 2018 before an excise cut.
+petrol,2021,95,reported,ht_2021_petrol,Crossed Rs 95 in June 2021.
+petrol,2022,96.72,estimated,,Rate after the May 2022 excise cut; source wanted.
+petrol,2026,102.12,reported,upstox_2026_petrol,Price on 29 July 2026.
+# ---- Onion (per kg, retail) ----
+onion,1995,7,estimated,,
+onion,1998,60,reported,tribune_2013_onion,The 1998 price spike is remembered for bringing down Delhi's government.
+onion,2000,10,estimated,,
+onion,2005,12,estimated,,
+onion,2010,70,reported,bt_2010_onion,The December 2010 onion crisis.
+onion,2012,20,estimated,,
+onion,2013,80,reported,bt_2013_onion,August 2013.
+onion,2015,80,reported,wiki_onion,Retail spike in 2015.
+onion,2017,25,estimated,,
+onion,2019,102,reported,bs_2019_onion,Consumer affairs ministry data, late December 2019.
+onion,2022,30,estimated,,
+onion,2026,35,estimated,,
+# ---- Packaged milk (Mother Dairy toned, per litre) ----
+milk,1995,10,estimated,,
+milk,2000,14,estimated,,
+milk,2005,16,estimated,,
+milk,2010,24,estimated,,
+milk,2014,38,estimated,,
+milk,2019,45,reported,money9_2021_milk,Price set in December 2019 (toned milk went from Rs 45 to Rs 47 in July 2021).
+milk,2021,47,reported,money9_2021_milk,From 11 July 2021.
+milk,2022,53,reported,bt_2022_milk,From 27 December 2022.
+milk,2025,57,reported,dh_2025_milk,Pouched toned milk from 30 April 2025.

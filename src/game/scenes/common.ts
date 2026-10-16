@@ -223,7 +223,7 @@ export class Remotes {
   }
 
   private sync(peers: Peer[]) {
-    const here = peers.filter((p) => (p.scene ?? "city") === this.sceneId);
+    const here = peers.filter((p) => p.scene === this.sceneId);
     const ids = new Set(here.map((p) => p.id));
     for (const [id, r] of this.map)
       if (!ids.has(id)) {

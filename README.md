@@ -12,6 +12,15 @@ One button switches to **Analyst Mode**: a plain report with inflation-adjusted 
 | --- | --- |
 | ![The street in 2007](docs/street-2007.png) | ![Kirana store, 2019](docs/shop-onion-2019.png) |
 
+## Two cities: Mumbai and Delhi
+
+Pick a city on the start screen. Both are seen from above like a drone shot, and you can zoom in and out (scroll, pinch, or the + and − buttons).
+
+- **Mumbai:** the sea front, chawls, the chai tapri, vada pav cart and kirana, and a station where local trains pull in. BEST double-deckers run until 2023, Padmini taxis until 2023, and the Metro opens over the road in 2014.
+- **Delhi:** the Yamuna's ghats, Old Delhi havelis, a Mughal city gate, a gurudwara and DDA flats. There's a kulhad chai stall, a samosa stall, Gupta ji's kirana, Blueline buses until 2010 and then green DTC buses, autos that turn green with CNG, and cycle rickshaws. The Metro station is a construction site until it opens in December 2002, and the game won't let you in before then.
+
+Delhi has its own dataset (`data/raw/delhi/`, built to `public/data/series_delhi.json`) with the same honesty rules. It covers Metro fares from 2009, auto fares from 2007, PPAC petrol prices from 2002, Mother Dairy milk from 2019, onion price spikes, and Delhi's per capita income for minutes of work. Delhi chai and samosa prices are estimates, flagged as such.
+
 ## Can you survive the month?
 
 Four weeks of Mumbai street spending: the weekly kirana run, the commute, lunch, chai, and one curveball a week (a Sunday at Juhu, a monsoon evening, a friend's birthday). Run out of money or out of good mood and the month wins.
@@ -84,7 +93,7 @@ Right now the dataset has 17 sourced anchors and 58 estimates. Turning hollow do
 
 | Layer | Tech |
 | --- | --- |
-| Data pipeline | Python (`scripts/build_data.py`): anchors → interpolation → CPI adjustment → minutes of work |
+| Data pipeline | Python (`scripts/build_data.py`): per city, anchors → interpolation → CPI adjustment → minutes of work |
 | Website | Next.js 16 (static export), React 19, TypeScript |
 | Pixel world | Phaser 4. Every sprite is a text grid painted in code, so there are no image assets |
 | Charts | Hand-built SVG with hover tooltips, light and dark themes |

@@ -12,8 +12,9 @@ import { getSupabase, supabaseConfigured } from "./supabase";
 export const WORLD_MIN_X = 0;
 export const WORLD_MAX_X = 2000;
 export const WORLD_MAX_Y = 2000;
-export const SCENES = ["city", "chai", "kirana", "station"] as const;
-export type SceneId = (typeof SCENES)[number];
+// where a player is: "<city>:<place>", e.g. "mumbai:city" or "delhi:station"
+const SCENE_RE = /^(mumbai|delhi):(city|chai|kirana|station)$/;
+export type SceneId = string;
 export type Dir4 = "down" | "up" | "left" | "right";
 const DIR4: Dir4[] = ["down", "up", "left", "right"];
 export const MAX_PLAYERS = 8;
@@ -80,7 +81,7 @@ export function parseMsg(raw: unknown): Msg | null {
         x: Math.min(WORLD_MAX_X, Math.max(WORLD_MIN_X, x)),
         y: Math.min(WORLD_MAX_Y, Math.max(0, y)),
         dir: DIR4.includes(m.dir as Dir4) ? (m.dir as Dir4) : "down",
-        scene: SCENES.includes(m.scene as SceneId) ? (m.scene as SceneId) : "city",
+        scene: typeof m.scene === "string" && SCENE_RE.test(m.scene) ? m.scene : "mumbai:city",
         moving: m.moving === true,
         inside,
       };
@@ -169,7 +170,7 @@ export class Room {
   readonly id = crypto.randomUUID();
   readonly transport: Transport;
   private peers = new Map<string, Peer>();
-  private self: { x: number; y: number; dir: Dir4; moving: boolean; scene: SceneId } = { x: 360, y: 540, dir: "down", moving: false, scene: "city" };
+  private self: { x: number; y: number; dir: Dir4; moving: boolean; scene: SceneId } = { x: 360, y: 540, dir: "down", moving: false, scene: "mumbai:city" };
   private inside: BuildingId | null = null;
   private lastSent = 0;
   private lastKey = "";

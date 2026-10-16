@@ -3,9 +3,9 @@
 import { useEffect, useRef } from "react";
 
 /** Boots Phaser on the client only; Phaser touches window at import time. */
-export default function GameCanvas({ year, shirt }: { year: number; shirt: string }) {
+export default function GameCanvas({ year, shirt, city = "mumbai" }: { year: number; shirt: string; city?: "mumbai" | "delhi" }) {
   const host = useRef<HTMLDivElement>(null);
-  const start = useRef({ year, shirt });
+  const start = useRef({ year, shirt, city });
 
   useEffect(() => {
     let game: import("phaser").Game | undefined;

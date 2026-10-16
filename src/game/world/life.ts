@@ -1,4 +1,4 @@
-import { data, itemById, macroAt, pointAt, rupees, type BuildingId } from "@/lib/data";
+import { data, datasets, itemById, macroAt, pointAt, rupees, type BuildingId, type Dataset } from "@/lib/data";
 
 // The people who stand around the city and what they say. Lines are written from the dataset where they
 // mention prices, so they change with the Time Machine and stay honest.
@@ -108,6 +108,81 @@ export const TALKERS: Talker[] = [
   },
 ];
 
+// ---------------------------------------------------------------- Delhi
+const dl = datasets.delhi;
+const dprice = (id: string, year: number) => rupees(pointAt(itemById(id, dl), year).price);
+
+export const TALKERS_DELHI: Talker[] = [
+  {
+    id: "dl-sevadar",
+    look: "sardarWalker",
+    x: 540,
+    y: 352,
+    facing: "down",
+    name: "Sevadar at the gurudwara",
+    lines: () => ["Langar is served to everyone who walks in, every day. Nobody pays, nobody is turned away.", "Cover your head and wash your feet, then come in and eat."],
+  },
+  {
+    id: "dl-student",
+    look: "salwar",
+    x: 1210,
+    y: 548,
+    facing: "left",
+    name: "College student",
+    lines: (y) =>
+      y >= 2002
+        ? [`The Metro minimum fare is ${dprice("metro", y)} in ${y}.`, "My nani still can't believe you can cross Delhi underground in half an hour."]
+        : ["They say a Metro is coming. Trains above the road, in Delhi! I'll believe it when I ride it.", `Until then it's the bus, or an auto at ${dprice("auto", y)} minimum.`],
+  },
+  {
+    id: "dl-dada",
+    look: "dada",
+    x: 172,
+    y: 560,
+    facing: "right",
+    name: "Old man by the Yamuna",
+    lines: (y) => [
+      "I've watched this river for seventy years. In the monsoon it comes right up to the ghats.",
+      `Onions at ${dprice("onion", y)} a kilo this year. ${[1998, 2010, 2013, 2015, 2019].includes(y) ? "Daylight robbery." : "Bearable."}`,
+    ],
+  },
+  {
+    id: "dl-commuter",
+    look: "office",
+    x: 520,
+    y: 660,
+    facing: "up",
+    name: "Office-goer",
+    lines: (y) => [
+      y < 2011 ? "Watch out for the Blueline buses. They race each other for passengers." : "The Bluelines are gone since 2010. Now it's green DTC buses, all on CNG.",
+      y >= 2019 ? "Women ride DTC buses free since 2019. My sister saves a lot." : "A bus ticket is a few rupees. Cheaper than any auto.",
+    ],
+  },
+  {
+    id: "dl-kid",
+    look: "student",
+    x: 560,
+    y: 990,
+    facing: "down",
+    name: "School kid",
+    lines: (y) => ["This is our Ramlila ground. At Dussehra the whole colony comes to watch Ravana burn.", `Samosa after school: ${dprice("samosa", y)}. With extra chutney.`],
+  },
+  {
+    id: "dl-rickshaw",
+    look: "bittu",
+    x: 1330,
+    y: 640,
+    facing: "left",
+    name: "Rickshaw puller",
+    lines: (y) => [
+      "Short rides in the lanes, where autos can't fit. That's my work.",
+      y >= 2002 ? "The Metro brings me more passengers, not fewer. Last mile, they call it." : "Every year more autos, more cars. Still, the lanes need me.",
+    ],
+  },
+];
+
+export const WALKER_LOOKS_DELHI = ["office", "salwar", "sardarWalker", "student", "college", "dada", "techie", "aunty"];
+
 /** People walking up and down the footpaths. */
 export const WALKER_LOOKS = ["office", "aunty", "dabbawala", "student", "college", "dada", "techie", "koli"];
 
@@ -131,8 +206,8 @@ const SPOTS: [number, number][] = [
   [1230, 920],
 ];
 
-export function receipts(): Receipt[] {
-  const anchors = data.items.flatMap((it) =>
+export function receipts(ds: Dataset = data): Receipt[] {
+  const anchors = ds.items.flatMap((it) =>
     it.series.filter((p) => p.kind === "anchor" && p.source_id && p.confidence !== "estimated").map((p) => ({ item: it.id, year: p.year })),
   );
   return SPOTS.slice(0, anchors.length).map(([x, y], i) => {
@@ -141,10 +216,10 @@ export function receipts(): Receipt[] {
   });
 }
 
-export function receiptText(r: Receipt) {
-  const it = itemById(r.item);
+export function receiptText(r: Receipt, ds: Dataset = data) {
+  const it = itemById(r.item, ds);
   const p = pointAt(it, r.year);
-  const src = p.source_id ? data.sources[p.source_id] : null;
+  const src = p.source_id ? ds.sources[p.source_id] : null;
   return {
     title: `${it.name}, ${r.year}: ${rupees(p.price)}`,
     body: `${it.unit}. ${src ? `Source: ${src.publisher}${src.date ? `, ${src.date.slice(0, 4)}` : ""}.` : ""}`,

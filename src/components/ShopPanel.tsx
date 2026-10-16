@@ -2,11 +2,16 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { BUILDINGS, FIRST_YEAR, LAST_YEAR, data, itemsFor, pointAt, rupees, type BuildingId } from "@/lib/data";
-import { KEEPERS } from "@/lib/sprites";
+import { FIRST_YEAR, LAST_YEAR, available, buildingsFor, datasetFor, itemsFor, pointAt, rupees, type BuildingId, type City } from "@/lib/data";
 import { fmtMin, storyFor } from "@/lib/story";
 import LineChart from "./LineChart";
-import Pixel from "./Pixel";
+import { CharPreview } from "./GameHud";
+
+// The game character behind each counter, per city.
+const KEEPER_LOOK: Record<City, Record<BuildingId, string>> = {
+  mumbai: { chai: "raju", vadapav: "sunita", kirana: "mehta", station: "clerk", autostand: "pappu" },
+  delhi: { chai: "sardar", vadapav: "bittu", kirana: "gupta", station: "metrostaff", autostand: "ramesh" },
+};
 import { postcardHref } from "./Postcard";
 import { ShopReports } from "./LiveReports";
 
@@ -17,17 +22,18 @@ const MODES: { id: Mode; label: string }[] = [
   { id: "work", label: "Minutes of work" },
 ];
 
-export default function ShopPanel({ building, year, onClose }: { building: BuildingId; year: number; onClose: () => void }) {
-  const items = itemsFor(building);
+export default function ShopPanel({ building, year, onClose, city = "mumbai" }: { building: BuildingId; year: number; onClose: () => void; city?: City }) {
+  const ds = datasetFor(city);
+  const items = itemsFor(building, ds);
   const [itemIdx, setItemIdx] = useState(0);
   const item = items[Math.min(itemIdx, items.length - 1)];
   const [mode, setMode] = useState<Mode>("price");
-  const lines = useMemo(() => storyFor(item, year), [item, year]);
+  const lines = useMemo(() => storyFor(item, year, ds), [item, year, ds]);
   const [line, setLine] = useState(0);
   const [shown, setShown] = useState(0);
   const closeRef = useRef<HTMLButtonElement>(null);
-  const b = BUILDINGS[building];
-  const keeper = KEEPERS[building];
+  const b = buildingsFor(city)[building];
+  const open = available(item, year);
 
   useEffect(() => {
     setLine(0);
@@ -76,7 +82,7 @@ export default function ShopPanel({ building, year, onClose }: { building: Build
       label: item.name,
       color: "var(--series-1)",
       anchors: true,
-      points: item.series.map((q) => ({
+      points: item.series.filter((q) => available(item, q.year)).map((q) => ({
         x: q.year,
         y: mode === "price" ? q.price : mode === "real" ? q.price_2026 : q.minutes_of_work,
         confidence: q.confidence,
@@ -86,7 +92,7 @@ export default function ShopPanel({ building, year, onClose }: { building: Build
   ];
   const format = mode === "work" ? (v: number) => (v >= 90 ? `${Math.round(v / 60)}h` : `${Math.round(v)}m`) : (v: number) => rupees(v);
   const anchors = item.series.filter((q) => q.kind === "anchor");
-  const sources = [...new Set(anchors.map((q) => q.source_id).filter(Boolean))].map((id) => data.sources[id!]);
+  const sources = [...new Set(anchors.map((q) => q.source_id).filter(Boolean))].map((id) => ds.sources[id!]);
   const text = lines[line] ?? "";
   const done = shown >= text.length && line === lines.length - 1;
 
@@ -105,7 +111,7 @@ export default function ShopPanel({ building, year, onClose }: { building: Build
           <div className="shop-items" role="tablist" aria-label="What this shop sells">
             {items.map((it, i) => (
               <button key={it.id} role="tab" aria-selected={i === itemIdx} className={i === itemIdx ? "on" : ""} onClick={() => setItemIdx(i)}>
-                {it.name} <b>{rupees(pointAt(it, year).price)}</b>
+                {it.name} <b>{available(it, year) ? rupees(pointAt(it, year).price) : "—"}</b>
               </button>
             ))}
           </div>
@@ -116,17 +122,17 @@ export default function ShopPanel({ building, year, onClose }: { building: Build
             <div className="shop-figures">
               <div>
                 <span>{year} price</span>
-                <strong>{rupees(p.price)}</strong>
+                <strong>{open ? rupees(p.price) : "—"}</strong>
                 <small>{item.unit}</small>
               </div>
               <div>
                 <span>In 2026 rupees</span>
-                <strong>{rupees(p.price_2026)}</strong>
+                <strong>{open ? rupees(p.price_2026) : "—"}</strong>
                 <small>inflation-adjusted</small>
               </div>
               <div>
                 <span>Work to afford it</span>
-                <strong>{fmtMin(p.minutes_of_work)}</strong>
+                <strong>{open ? fmtMin(p.minutes_of_work) : "—"}</strong>
                 <small>at average income</small>
               </div>
             </div>
@@ -146,7 +152,7 @@ export default function ShopPanel({ building, year, onClose }: { building: Build
 
           <div className="dialogue" tabIndex={0} data-dialogue onClick={advance} aria-live="polite">
             <div className="portrait">
-              <Pixel grid={keeper.grid} palette={keeper.palette} size={6} label={b.keeper} />
+              <CharPreview look={KEEPER_LOOK[city][building]} size={3} label={b.keeper} />
               <span>{b.keeper}</span>
             </div>
             <div className="dialogue-log">

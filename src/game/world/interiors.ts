@@ -1,6 +1,6 @@
 import * as I from "../art/interiors";
 import { Px } from "../art/px";
-import { itemById, pointAt, rupees, type BuildingId } from "@/lib/data";
+import { datasets, itemById, pointAt, rupees, type BuildingId, type City } from "@/lib/data";
 import type { Talker } from "./life";
 
 // The rooms you can walk into. Each is a background (floor + back wall), furniture that y-sorts with you,
@@ -250,3 +250,123 @@ export const STATION: InteriorSpec = {
 };
 
 export const INTERIORS: Record<InteriorKind, InteriorSpec> = { chai: CHAI, kirana: KIRANA, station: STATION };
+
+// ---------------------------------------------------------------- Delhi: same rooms, different city
+const dpr = (id: string, y: number) => rupees(pointAt(itemById(id, datasets.delhi), y).price);
+
+export const CHAI_DELHI: InteriorSpec = {
+  ...CHAI,
+  title: "Chai stall",
+  bgKey: (y) => `dl-chai-bg${era(y, [2008])}`,
+  bg: (y) => {
+    // a dhaba-style room: cement floor, a green wall, a calendar and the radio
+    const p = new Px(CHAI_W, CHAI_H);
+    I.stoneFloor(p, 0, 0, CHAI_W, CHAI_H, "#b9b2a2", 21);
+    I.backWall(p, 0, 0, CHAI_W, 64, "#8fbf9a");
+    p.rect(0, 40, CHAI_W, 2, "#5a7a5f");
+    p.draw(I.calendar(y), 24, 10);
+    p.draw(I.radio(y), 60, 22);
+    p.rect(250, 8, 44, 30, "#e0a526"); // a framed photo of the Golden Temple
+    p.rect(253, 11, 38, 24, "#5fb3c6");
+    p.rect(262, 18, 20, 12, "#f2c230");
+    p.rect(270, 14, 4, 4, "#f2c230");
+    I.sideWalls(p, CHAI_W, CHAI_H, 64, "#8fbf9a");
+    I.doorMat(p, CHAI_W / 2, CHAI_H - 16);
+    return p;
+  },
+  props: CHAI.props.map((pr0, i) =>
+    i === 1
+      ? { ...pr0, key: (y: number) => `dl-chai-menu${y}`, draw: (y: number) => I.board(["MENU", `CHAI ${dpr("chai", y)}`, `SAMOSA ${dpr("samosa", y)}`]) }
+      : pr0,
+  ),
+  keeper: { ...CHAI.keeper, look: "sardar", name: "Sardar ji" },
+  talkers: [
+    {
+      id: "dl-chai-regular",
+      look: "dada",
+      x: 50,
+      y: 150,
+      facing: "right",
+      name: "A regular",
+      lines: (y) => [
+        `Chai in a kulhad, then you smash the cup. ${y > 1995 ? `It was ${dpr("chai", 1995)} in 1995, ${dpr("chai", y)} now.` : ""}`,
+        "Nobody ever wrote chai prices down. If you find an old menu, tell the bazaar.",
+      ],
+    },
+    {
+      id: "dl-chai-student",
+      look: "salwar",
+      x: 268,
+      y: 212,
+      facing: "up",
+      name: "Student",
+      lines: (y) => [y >= 2002 ? "One chai, then the Metro to college. Rajiv Chowk at nine is a sport." : "One chai, then two buses to college. Every single day.", "Sardar ji's samosas run out by eleven."],
+    },
+  ],
+};
+
+export const KIRANA_DELHI: InteriorSpec = {
+  ...KIRANA,
+  props: KIRANA.props.map((pr0, i) =>
+    i === 4 ? { ...pr0, key: (y: number) => `dl-kboard${y}`, draw: (y: number) => I.board(["TODAY", `ONION ${dpr("onion", y)}/KG`, `MILK ${dpr("milk", y)}/L`], "#f3ead2", "#1c1c22", "#c0392b") } : pr0,
+  ),
+  keeper: { ...KIRANA.keeper, look: "gupta", name: "Gupta ji" },
+  talkers: [
+    {
+      id: "dl-kirana-aunty",
+      look: "aunty",
+      x: 248,
+      y: 140,
+      facing: "left",
+      name: "Neighbour",
+      lines: (y) => [
+        `Onions at ${dpr("onion", y)} a kilo! ${[1998, 2010, 2013, 2015, 2019].includes(y) ? "In 1998 onions brought down a government, you know." : "Fine, two kilos."}`,
+        `Mother Dairy toned milk: ${dpr("milk", y)} a litre. My mother paid ${dpr("milk", 1995)} in 1995.`,
+      ],
+    },
+  ],
+};
+
+export const STATION_DELHI: InteriorSpec = {
+  ...STATION,
+  title: "Metro station",
+  bgKey: () => "dl-station-bg",
+  bg: (y) => {
+    // white floor tiles and steel: the Delhi Metro look
+    const p = STATION.bg(y);
+    I.checkerFloor(p, 6, 70, ST_W - 12, PLATFORM_Y - 84, "#e9eef2", "#dfe5ea", 16);
+    p.text(10, 126, "EXIT", "#2b2226");
+    return p;
+  },
+  props: STATION.props.map((pr0, i) =>
+    i === 1
+      ? { ...pr0, key: (y: number) => `dl-indicator${y}`, draw: (y: number) => I.indicator(["NEXT TRAIN 3 MIN", `TICKET ${dpr("metro", y)}`]) }
+      : pr0,
+  ),
+  keeper: { ...STATION.keeper, look: "metrostaff", name: "Metro staff" },
+  talkers: [
+    {
+      id: "dl-st-commuter",
+      look: "office",
+      x: 470,
+      y: 268,
+      facing: "down",
+      name: "Daily commuter",
+      lines: (y) => [`${dpr("metro", y)} for the shortest ride. Smart card saves a bit.`, "Stand behind the yellow line. Let them get off first. Then push."],
+    },
+    {
+      id: "dl-st-aunty",
+      look: "salwar",
+      x: 300,
+      y: 262,
+      facing: "right",
+      name: "Commuter",
+      lines: () => ["The first coach is for women. I always walk to the front of the platform.", "Before the Metro it was two buses and an hour and a half. Now it's forty minutes."],
+    },
+  ],
+};
+
+export const INTERIORS_BY_CITY: Record<City, Record<InteriorKind, InteriorSpec>> = {
+  mumbai: INTERIORS,
+  delhi: { chai: CHAI_DELHI, kirana: KIRANA_DELHI, station: STATION_DELHI },
+};
