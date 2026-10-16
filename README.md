@@ -18,6 +18,15 @@ The home page (`/`) is a landing page with a **Download now** button, and the ga
 
 - On Android and in desktop Chrome or Edge, Download now opens the browser's install prompt.
 - On an iPhone it shows the two Add to Home Screen steps, because Apple doesn't offer a prompt.
+- On a Mac the button reads **Download for Mac** and downloads a real Mac app, `Then-and-Now-mac.dmg` (Apple Silicon and Intel).
+
+### The Mac app
+
+`desktop/` is a small Electron wrapper: it ships the static site (`out/`) inside the app and serves it from `app://game`, so it plays offline and needs no server. `.github/workflows/mac-app.yml` builds it on a GitHub Mac runner whenever `main` changes and publishes it as the `mac-app` release; the landing page links to `releases/latest/download/Then-and-Now-mac.dmg`.
+
+It is ad-hoc signed but not notarized (notarizing needs a paid Apple Developer account), so the first launch needs **System Settings > Privacy & Security > Open Anyway**; the landing page walks people through it. To notarize later, add the Apple ID secrets to the workflow and set `mac.identity` in `desktop/package.json` to the Developer ID certificate.
+
+To build it yourself on a Mac: `npm run build`, then `cd desktop && npm ci && npm run dist:mac`.
 
 Once installed it opens full screen with its own icon, and after the first visit it works offline: everything except multiplayer and the bazaar, which need a connection. What we store is set out in `/privacy`.
 

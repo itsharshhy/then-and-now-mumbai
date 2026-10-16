@@ -1,0 +1,62 @@
+{
+  "name": "then-and-now",
+  "productName": "Then & Now",
+  "version": "1.0.0",
+  "description": "Walk thirty years of Indian street prices.",
+  "author": "Then & Now",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist:mac": "electron-builder --mac --publish never"
+  },
+  "devDependencies": {
+    "electron": "38.2.0",
+    "electron-builder": "26.0.12"
+  },
+  "build": {
+    "appId": "app.thenandnow.game",
+    "productName": "Then & Now",
+    "artifactName": "Then-and-Now-mac.${ext}",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../out",
+        "to": "site"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.games",
+      "icon": "build/icon.png",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "universal"
+          ]
+        }
+      ],
+      "identity": "-",
+      "hardenedRuntime": false
+    },
+    "dmg": {
+      "title": "Then & Now"
+    },
+    "publish": null
+  },
+  "repository": "https://github.com/itsharshhy/then-and-now-mumbai"
+}

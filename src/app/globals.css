@@ -880,6 +880,9 @@ p.bz-error.bz-panel { background: #f4d7a0; margin-top: 20px; }
 }
 .ld-play:hover { background: var(--chalk); color: var(--ink); }
 .ld-small { font-size: 14px; color: #9aa6c4; margin: 16px 0 0; }
+.ld-small a, .ld-install-grid a { color: var(--taxi); }
+.ld-modal-card .ld-small { color: inherit; opacity: 0.8; }
+.ld-modal-card .ld-small a { color: inherit; text-decoration: underline; }
 
 .ld-hero-art { position: relative; padding-bottom: 40px; }
 .ld-screen { margin: 0; border: 4px solid var(--ink); box-shadow: 10px 10px 0 var(--ink), 0 30px 80px rgba(0, 0, 0, 0.45); }

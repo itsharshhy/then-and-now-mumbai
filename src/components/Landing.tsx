@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useInstall } from "./Pwa";
 
 const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
+// built by .github/workflows/mac-app.yml on every release of the game
+const MAC_DMG = "https://github.com/itsharshhy/then-and-now-mumbai/releases/latest/download/Then-and-Now-mac.dmg";
 
 const FEATURES: { img: string; title: string; text: string }[] = [
   { img: "mumbai", title: "A city from above", text: "Fly over a Mumbai neighbourhood like a drone: the sea front, chawls with washing on the galleries, BEST buses, kaali-peeli taxis. Zoom right in or pull right back." },
@@ -19,6 +21,12 @@ export default function Landing() {
   const { canPrompt, installed, platform, prompt } = useInstall();
   const [help, setHelp] = useState(false);
   const [done, setDone] = useState(false);
+  const [macSteps, setMacSteps] = useState(false);
+  const mac = platform === "mac" || platform === "mac-safari";
+  const getMac = () => {
+    window.location.href = MAC_DMG;
+    setMacSteps(true);
+  };
 
   // old invite links pointed at the home page: send them to the game
   useEffect(() => {
@@ -28,6 +36,7 @@ export default function Landing() {
 
   const download = async () => {
     if (installed) return router.push("/play/");
+    if (mac) return getMac();
     if (canPrompt) {
       const r = await prompt();
       if (r === "accepted") setDone(true);
@@ -64,13 +73,26 @@ export default function Landing() {
           </p>
           <div className="ld-cta">
             <button className="ld-download" onClick={download}>
-              {installed ? "Open the app" : done ? "Installed. Open it from your home screen" : "Download now"}
+              {installed
+                ? "Open the app"
+                : mac
+                  ? "Download for Mac"
+                  : done
+                    ? "Installed. Open it from your home screen"
+                    : "Download now"}
             </button>
             <Link href="/play" className="ld-play">
               Play in your browser
             </Link>
           </div>
-          <p className="ld-small">Free. No sign-up. Works offline once installed, on phones and computers.</p>
+          <p className="ld-small">
+            Free. No sign-up. On Android, iPhone, Mac and Windows, and it works offline once installed.{" "}
+            {!mac && (
+              <a href={MAC_DMG} onClick={() => setMacSteps(true)}>
+                Get the Mac app
+              </a>
+            )}
+          </p>
         </div>
         <div className="ld-hero-art">
           <figure className="ld-screen">
@@ -128,8 +150,17 @@ export default function Landing() {
             <p>Open this page in Safari, tap the Share button, then Add to Home Screen.</p>
           </div>
           <div>
-            <h3>Computer</h3>
-            <p>In Chrome or Edge, tap Download now, or the install icon at the right of the address bar.</p>
+            <h3>Mac</h3>
+            <p>
+              <a href={MAC_DMG} onClick={() => setMacSteps(true)}>
+                Download the Mac app
+              </a>{" "}
+              (Apple Silicon and Intel), open it and drag Then &amp; Now into Applications. Plays offline, from the Dock and Launchpad.
+            </p>
+          </div>
+          <div>
+            <h3>Windows and Linux</h3>
+            <p>In Chrome or Edge, click Download now, or the install icon at the right of the address bar.</p>
           </div>
         </div>
       </section>
@@ -180,6 +211,38 @@ export default function Landing() {
                 Play now instead
               </Link>
               <button className="ld-play" onClick={() => setHelp(false)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {macSteps && (
+        <div className="ld-modal" role="dialog" aria-modal="true" aria-labelledby="ld-mac-title" onClick={() => setMacSteps(false)}>
+          <div className="ld-modal-card" onClick={(e) => e.stopPropagation()}>
+            <h2 id="ld-mac-title">Then &amp; Now for Mac is downloading</h2>
+            <ol>
+              <li>
+                Open <b>Then-and-Now-mac.dmg</b> from your Downloads and drag <b>Then &amp; Now</b> into <b>Applications</b>.
+              </li>
+              <li>
+                Open it. The first time, macOS says it can&apos;t check the developer (we aren&apos;t paying Apple to sign it). Click <b>Done</b>.
+              </li>
+              <li>
+                Go to <b>System Settings</b>, then <b>Privacy &amp; Security</b>, scroll down and click <b>Open Anyway</b>. On macOS 14 or older you
+                can Control-click the app and choose <b>Open</b> instead. After that it opens like any other app.
+              </li>
+            </ol>
+            <p className="ld-small">
+              Download didn&apos;t start? <a href={MAC_DMG}>Try again</a>. Rather not install anything? In Safari choose <b>File</b>, then{" "}
+              <b>Add to Dock</b>.
+            </p>
+            <div className="ld-cta">
+              <Link href="/play" className="ld-download">
+                Play in the browser meanwhile
+              </Link>
+              <button className="ld-play" onClick={() => setMacSteps(false)}>
                 Close
               </button>
             </div>

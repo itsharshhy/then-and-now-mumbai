@@ -4,7 +4,8 @@ import { useEffect, useSyncExternalStore } from "react";
 
 // Installing the game: registers the service worker, and keeps the browser's install prompt so the
 // "Download now" button can show it when the person asks (Chrome, Edge, Android). iPhones have no
-// prompt, so the landing page shows the Add to Home Screen steps instead.
+// prompt, so the landing page shows the Add to Home Screen steps instead. On a Mac, Chrome and Edge
+// give the prompt; Safari 17+ has no prompt but installs from File > Add to Dock.
 
 interface InstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -29,7 +30,7 @@ if (typeof window !== "undefined") {
   });
 }
 
-export type Platform = "ios" | "android" | "desktop";
+export type Platform = "ios" | "android" | "mac-safari" | "mac" | "desktop";
 
 export interface InstallState {
   canPrompt: boolean;
@@ -43,10 +44,12 @@ let cached: InstallState = serverState;
 function read(): InstallState {
   const ua = navigator.userAgent;
   const ios = /iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+  const mac = !ios && /macintosh|mac os x/i.test(ua);
+  const safari = /safari/i.test(ua) && !/chrome|chromium|crios|edg|opr|firefox|fxios/i.test(ua);
   const next: InstallState = {
     canPrompt: !!deferred,
     installed: installedNow || window.matchMedia("(display-mode: standalone)").matches || (navigator as Navigator & { standalone?: boolean }).standalone === true,
-    platform: ios ? "ios" : /android/i.test(ua) ? "android" : "desktop",
+    platform: ios ? "ios" : /android/i.test(ua) ? "android" : mac ? (safari ? "mac-safari" : "mac") : "desktop",
   };
   if (next.canPrompt !== cached.canPrompt || next.installed !== cached.installed || next.platform !== cached.platform) cached = next;
   return cached;
