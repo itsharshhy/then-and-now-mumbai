@@ -6,8 +6,14 @@ import { useEffect, useState } from "react";
 import { useInstall } from "./Pwa";
 
 const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
-// built by .github/workflows/mac-app.yml on every release of the game
-const MAC_DMG = "https://github.com/itsharshhy/then-and-now-mumbai/releases/latest/download/Then-and-Now-mac.dmg";
+// built by .github/workflows/apps.yml whenever the game changes on main
+const RELEASE = "https://github.com/itsharshhy/then-and-now-mumbai/releases/latest/download/";
+const APPS = {
+  android: { label: "Android", file: `${RELEASE}Then-and-Now-android.apk`, name: "Then-and-Now-android.apk" },
+  windows: { label: "Windows", file: `${RELEASE}Then-and-Now-Windows-Setup.exe`, name: "Then-and-Now-Windows-Setup.exe" },
+  mac: { label: "Mac", file: `${RELEASE}Then-and-Now-mac.dmg`, name: "Then-and-Now-mac.dmg" },
+} as const;
+type AppKey = keyof typeof APPS;
 
 const FEATURES: { img: string; title: string; text: string }[] = [
   { img: "mumbai", title: "A city from above", text: "Fly over a Mumbai neighbourhood like a drone: the sea front, chawls with washing on the galleries, BEST buses, kaali-peeli taxis. Zoom right in or pull right back." },
@@ -21,22 +27,31 @@ export default function Landing() {
   const { canPrompt, installed, platform, prompt } = useInstall();
   const [help, setHelp] = useState(false);
   const [done, setDone] = useState(false);
-  const [macSteps, setMacSteps] = useState(false);
-  const mac = platform === "mac" || platform === "mac-safari";
-  const getMac = () => {
-    window.location.href = MAC_DMG;
-    setMacSteps(true);
+  const [steps, setSteps] = useState<AppKey | null>(null);
+  const native: AppKey | null =
+    platform === "mac" || platform === "mac-safari" ? "mac" : platform === "windows" ? "windows" : platform === "android" ? "android" : null;
+  const getApp = (key: AppKey) => {
+    window.location.href = APPS[key].file;
+    setSteps(key);
   };
+  // a plain link (so it works without JavaScript and can be copied), plus the steps
+  const appLink = (key: AppKey, text: string) => (
+    <a href={APPS[key].file} onClick={() => setSteps(key)}>
+      {text}
+    </a>
+  );
 
-  // old invite links pointed at the home page: send them to the game
   useEffect(() => {
     const q = window.location.search;
-    if (/[?&](room|city)=/.test(q)) router.replace(`/play/${q}`);
+    // inside the Mac, Windows or Android app the home page is just a door to the game
+    if (/ThenAndNowApp/.test(navigator.userAgent)) router.replace("/play/");
+    // old invite links pointed at the home page: send them to the game
+    else if (/[?&](room|city)=/.test(q)) router.replace(`/play/${q}`);
   }, [router]);
 
   const download = async () => {
     if (installed) return router.push("/play/");
-    if (mac) return getMac();
+    if (native) return getApp(native);
     if (canPrompt) {
       const r = await prompt();
       if (r === "accepted") setDone(true);
@@ -75,8 +90,8 @@ export default function Landing() {
             <button className="ld-download" onClick={download}>
               {installed
                 ? "Open the app"
-                : mac
-                  ? "Download for Mac"
+                : native
+                  ? `Download for ${APPS[native].label}`
                   : done
                     ? "Installed. Open it from your home screen"
                     : "Download now"}
@@ -86,12 +101,8 @@ export default function Landing() {
             </Link>
           </div>
           <p className="ld-small">
-            Free. No sign-up. On Android, iPhone, Mac and Windows, and it works offline once installed.{" "}
-            {!mac && (
-              <a href={MAC_DMG} onClick={() => setMacSteps(true)}>
-                Get the Mac app
-              </a>
-            )}
+            Free. No sign-up. Works offline once installed. Get the app for {appLink("android", "Android")}, {appLink("windows", "Windows")} or{" "}
+            {appLink("mac", "Mac")}.
           </p>
         </div>
         <div className="ld-hero-art">
@@ -139,11 +150,14 @@ export default function Landing() {
       </section>
 
       <section className="ld-install" id="install">
-        <h2>Install it like an app</h2>
+        <h2>Get the app</h2>
         <div className="ld-install-grid">
           <div>
             <h3>Android</h3>
-            <p>Tap Download now and then Install. Or in Chrome&apos;s menu, choose Add to Home screen.</p>
+            <p>
+              {appLink("android", "Download the Android app")} on your phone and tap it to install. Android 7 or later. It plays offline and sits on
+              your home screen.
+            </p>
           </div>
           <div>
             <h3>iPhone and iPad</h3>
@@ -152,15 +166,19 @@ export default function Landing() {
           <div>
             <h3>Mac</h3>
             <p>
-              <a href={MAC_DMG} onClick={() => setMacSteps(true)}>
-                Download the Mac app
-              </a>{" "}
-              (Apple Silicon and Intel), open it and drag Then &amp; Now into Applications. Plays offline, from the Dock and Launchpad.
+              {appLink("mac", "Download the Mac app")} (Apple Silicon and Intel), open it and drag Then &amp; Now into Applications. Plays offline, from
+              the Dock and Launchpad.
             </p>
           </div>
           <div>
-            <h3>Windows and Linux</h3>
-            <p>In Chrome or Edge, click Download now, or the install icon at the right of the address bar.</p>
+            <h3>Windows</h3>
+            <p>
+              {appLink("windows", "Download the Windows app")} and run the installer. Windows 10 or 11. It goes in the Start menu and on your desktop.
+            </p>
+          </div>
+          <div>
+            <h3>Linux and Chromebook</h3>
+            <p>In Chrome or Edge, click the install icon at the right of the address bar.</p>
           </div>
         </div>
       </section>
@@ -218,31 +236,56 @@ export default function Landing() {
         </div>
       )}
 
-      {macSteps && (
-        <div className="ld-modal" role="dialog" aria-modal="true" aria-labelledby="ld-mac-title" onClick={() => setMacSteps(false)}>
+      {steps && (
+        <div className="ld-modal" role="dialog" aria-modal="true" aria-labelledby="ld-steps-title" onClick={() => setSteps(null)}>
           <div className="ld-modal-card" onClick={(e) => e.stopPropagation()}>
-            <h2 id="ld-mac-title">Then &amp; Now for Mac is downloading</h2>
-            <ol>
-              <li>
-                Open <b>Then-and-Now-mac.dmg</b> from your Downloads and drag <b>Then &amp; Now</b> into <b>Applications</b>.
-              </li>
-              <li>
-                Open it. The first time, macOS says it can&apos;t check the developer (we aren&apos;t paying Apple to sign it). Click <b>Done</b>.
-              </li>
-              <li>
-                Go to <b>System Settings</b>, then <b>Privacy &amp; Security</b>, scroll down and click <b>Open Anyway</b>. On macOS 14 or older you
-                can Control-click the app and choose <b>Open</b> instead. After that it opens like any other app.
-              </li>
-            </ol>
+            <h2 id="ld-steps-title">Then &amp; Now for {APPS[steps].label} is downloading</h2>
+            {steps === "mac" ? (
+              <ol>
+                <li>
+                  Open <b>{APPS.mac.name}</b> from your Downloads and drag <b>Then &amp; Now</b> into <b>Applications</b>.
+                </li>
+                <li>
+                  Open it. The first time, macOS says it can&apos;t check the developer (we aren&apos;t paying Apple to sign it). Click <b>Done</b>.
+                </li>
+                <li>
+                  Go to <b>System Settings</b>, then <b>Privacy &amp; Security</b>, scroll down and click <b>Open Anyway</b>. On macOS 14 or older you
+                  can Control-click the app and choose <b>Open</b> instead. After that it opens like any other app.
+                </li>
+              </ol>
+            ) : steps === "windows" ? (
+              <ol>
+                <li>
+                  Open <b>{APPS.windows.name}</b> from your Downloads.
+                </li>
+                <li>
+                  If Windows says <b>Windows protected your PC</b>, click <b>More info</b>, then <b>Run anyway</b>. (It says that for any app without a
+                  paid certificate.)
+                </li>
+                <li>It installs in a few seconds and opens. Next time, find Then &amp; Now in the Start menu or on your desktop.</li>
+              </ol>
+            ) : (
+              <ol>
+                <li>
+                  When the download finishes, tap <b>{APPS.android.name}</b> (or open it from <b>Files</b>, then <b>Downloads</b>).
+                </li>
+                <li>
+                  If Android asks, allow your browser to <b>install unknown apps</b>, then go back.
+                </li>
+                <li>
+                  Tap <b>Install</b>. If Play Protect asks about an unrecognised app, tap <b>More details</b>, then <b>Install anyway</b>. Then
+                  &amp; Now appears with your other apps.
+                </li>
+              </ol>
+            )}
             <p className="ld-small">
-              Download didn&apos;t start? <a href={MAC_DMG}>Try again</a>. Rather not install anything? In Safari choose <b>File</b>, then{" "}
-              <b>Add to Dock</b>.
+              Download didn&apos;t start? <a href={APPS[steps].file}>Try again</a>.
             </p>
             <div className="ld-cta">
               <Link href="/play" className="ld-download">
                 Play in the browser meanwhile
               </Link>
-              <button className="ld-play" onClick={() => setMacSteps(false)}>
+              <button className="ld-play" onClick={() => setSteps(null)}>
                 Close
               </button>
             </div>

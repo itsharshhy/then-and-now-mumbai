@@ -18,15 +18,21 @@ The home page (`/`) is a landing page with a **Download now** button, and the ga
 
 - On Android and in desktop Chrome or Edge, Download now opens the browser's install prompt.
 - On an iPhone it shows the two Add to Home Screen steps, because Apple doesn't offer a prompt.
-- On a Mac the button reads **Download for Mac** and downloads a real Mac app, `Then-and-Now-mac.dmg` (Apple Silicon and Intel).
+- On Android, Windows and Mac the button reads **Download for Android / Windows / Mac** and downloads a real app: `Then-and-Now-android.apk`, `Then-and-Now-Windows-Setup.exe` or `Then-and-Now-mac.dmg`. The landing page then shows the first-launch steps for that system.
 
-### The Mac app
+### The Mac, Windows and Android apps
 
-`desktop/` is a small Electron wrapper: it ships the static site (`out/`) inside the app and serves it from `app://game`, so it plays offline and needs no server. `.github/workflows/mac-app.yml` builds it on a GitHub Mac runner whenever `main` changes and publishes it as the `mac-app` release; the landing page links to `releases/latest/download/Then-and-Now-mac.dmg`.
+Each app ships the static site (`out/`) inside it, so it plays offline and needs no server; multiplayer and the bazaar still go to Supabase over the network.
 
-It is ad-hoc signed but not notarized (notarizing needs a paid Apple Developer account), so the first launch needs **System Settings > Privacy & Security > Open Anyway**; the landing page walks people through it. `desktop/adhoc-sign.js` does the ad-hoc signing (Apple Silicon won't open an unsigned app at all). To notarize later, import a Developer ID certificate in the workflow, set `mac.identity` in `desktop/package.json`, add the notarize settings and drop the ad-hoc hook.
+- `desktop/` is the Mac and Windows app: a small Electron wrapper that serves the site from `app://game`.
+- `mobile/` is the Android app: Capacitor, with `MainActivity.java` serving each page's own `index.html` (Capacitor alone sends every folder path to the home page).
+- `.github/workflows/apps.yml` builds all three on GitHub's Mac, Windows and Linux runners whenever `main` changes, and publishes them together as the latest release. The landing page links to `releases/latest/download/<file>`.
 
-To build it yourself on a Mac: `npm run build`, then `cd desktop && npm ci && npm run dist:mac`.
+None of them is store-signed, because that needs paid accounts (Apple Developer, a Windows code-signing certificate, Google Play Console). So the first launch asks once: macOS **Open Anyway** in Privacy & Security, Windows SmartScreen **More info > Run anyway**, and Android **install unknown apps**. The Mac app is ad-hoc signed by `desktop/adhoc-sign.js`, because Apple Silicon won't open an unsigned app at all.
+
+Android signing key: a new APK only installs over the old one if both are signed with the same key. Until the repository has the `ANDROID_KEYSTORE_BASE64` and `ANDROID_KEYSTORE_PASSWORD` secrets (key alias `thenandnow`), the workflow makes a key on its first run and keeps it in the GitHub Actions cache. That cache is dropped after 7 days without a build, so set the secrets for a permanent key.
+
+Building them yourself: `npm run build`, then `cd desktop && npm ci && npm run dist:mac` (on a Mac) or `npm run dist:win` (on Windows); for Android, `cd mobile && npm ci && npx cap sync android && cd android && ./gradlew assembleRelease`.
 
 Once installed it opens full screen with its own icon, and after the first visit it works offline: everything except multiplayer and the bazaar, which need a connection. What we store is set out in `/privacy`.
 

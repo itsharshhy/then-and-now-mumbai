@@ -30,7 +30,7 @@ if (typeof window !== "undefined") {
   });
 }
 
-export type Platform = "ios" | "android" | "mac-safari" | "mac" | "desktop";
+export type Platform = "ios" | "android" | "mac-safari" | "mac" | "windows" | "desktop";
 
 export interface InstallState {
   canPrompt: boolean;
@@ -48,8 +48,8 @@ function read(): InstallState {
   const safari = /safari/i.test(ua) && !/chrome|chromium|crios|edg|opr|firefox|fxios/i.test(ua);
   const next: InstallState = {
     canPrompt: !!deferred,
-    installed: installedNow || window.matchMedia("(display-mode: standalone)").matches || (navigator as Navigator & { standalone?: boolean }).standalone === true,
-    platform: ios ? "ios" : /android/i.test(ua) ? "android" : mac ? (safari ? "mac-safari" : "mac") : "desktop",
+    installed: installedNow || /ThenAndNowApp/.test(ua) || window.matchMedia("(display-mode: standalone)").matches || (navigator as Navigator & { standalone?: boolean }).standalone === true,
+    platform: ios ? "ios" : /android/i.test(ua) ? "android" : mac ? (safari ? "mac-safari" : "mac") : /windows/i.test(ua) ? "windows" : "desktop",
   };
   if (next.canPrompt !== cached.canPrompt || next.installed !== cached.installed || next.platform !== cached.platform) cached = next;
   return cached;

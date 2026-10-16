@@ -2,14 +2,15 @@
   "name": "then-and-now",
   "productName": "Then & Now",
   "version": "1.0.0",
-  "description": "Walk thirty years of Indian street prices.",
+  "description": "Walk thirty years of Indian street prices. Mac and Windows app.",
   "author": "Then & Now",
   "license": "UNLICENSED",
   "private": true,
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist:mac": "electron-builder --mac --publish never"
+    "dist:mac": "electron-builder --mac --publish never",
+    "dist:win": "electron-builder --win --publish never"
   },
   "devDependencies": {
     "electron": "38.2.0",
@@ -18,7 +19,6 @@
   "build": {
     "appId": "app.thenandnow.game",
     "productName": "Then & Now",
-    "artifactName": "Then-and-Now-mac.${ext}",
     "directories": {
       "output": "dist",
       "buildResources": "build"
@@ -51,13 +51,33 @@
         }
       ],
       "identity": null,
-      "hardenedRuntime": false
+      "hardenedRuntime": false,
+      "artifactName": "Then-and-Now-mac.${ext}"
     },
     "dmg": {
       "title": "Then & Now"
     },
     "publish": null,
-    "afterPack": "adhoc-sign.js"
+    "afterPack": "adhoc-sign.js",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "artifactName": "Then-and-Now-Windows-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Then & Now"
+    }
   },
   "repository": "https://github.com/itsharshhy/then-and-now-mumbai"
 }

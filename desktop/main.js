@@ -1,4 +1,4 @@
-// Then & Now for Mac: a window around the same static game the website serves. The built site
+// Then & Now for Mac and Windows: a window around the same static game the website serves. The built site
 // (Next's out/ folder) ships inside the app and is served from app://game, so it plays offline;
 // multiplayer and the bazaar talk to Supabase over the network as they do on the web.
 const { app, BrowserWindow, Menu, net, protocol, shell } = require("electron");
@@ -32,6 +32,7 @@ function createWindow() {
     minHeight: 480,
     title: "Then & Now",
     backgroundColor: "#26365e",
+    autoHideMenuBar: true,
     webPreferences: { contextIsolation: true, sandbox: true },
   });
   // links to other sites (GitHub, sources) open in the browser
@@ -47,6 +48,9 @@ function createWindow() {
   });
   win.loadURL(`${ORIGIN}/play/?source=mac`);
 }
+
+// lets the site tell it is running inside the app (no "Download" buttons there)
+app.userAgentFallback = `${app.userAgentFallback} ThenAndNowApp`;
 
 app.whenReady().then(() => {
   protocol.handle("app", (req) => {

@@ -1,0 +1,216 @@
+# Builds the downloadable apps whenever the game changes on main, and publishes them together as the
+# latest GitHub release, which the landing page's download buttons link to:
+#   releases/latest/download/Then-and-Now-mac.dmg              Mac (desktop/, Electron)
+#   releases/latest/download/Then-and-Now-Windows-Setup.exe    Windows (desktop/, Electron)
+#   releases/latest/download/Then-and-Now-android.apk          Android (mobile/, Capacitor)
+# Each one ships the static site inside it, so the game plays offline.
+#
+# None of them is store-signed: that needs a paid Apple Developer account, a Windows code-signing
+# certificate and a Play Console account. So macOS asks for "Open Anyway", Windows SmartScreen for
+# "Run anyway", and Android for "Install unknown apps" the first time.
+name: Apps
+
+on:
+  push:
+    branches: [main]
+    paths: ["src/**", "public/**", "desktop/**", "mobile/**", "package.json", "package-lock.json", ".github/workflows/apps.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apps
+  cancel-in-progress: true
+
+jobs:
+  mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            desktop/package-lock.json
+
+      - name: Build the site
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build the Mac app
+        working-directory: desktop
+        run: |
+          npm ci
+          npx electron-builder --mac --publish never -c.buildVersion=${{ github.run_number }}
+
+      - name: Check the app is signed and the dmg mounts
+        working-directory: desktop/dist
+        run: |
+          codesign --verify --deep --strict "mac-universal/Then & Now.app"
+          hdiutil attach -nobrowse -mountpoint /tmp/tnm Then-and-Now-mac.dmg
+          codesign --verify --deep --strict "/tmp/tnm/Then & Now.app"
+          hdiutil detach /tmp/tnm
+          unzip -q Then-and-Now-mac.zip -d unzipped
+          codesign --verify --deep --strict "unzipped/Then & Now.app"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mac
+          path: |
+            desktop/dist/Then-and-Now-mac.dmg
+            desktop/dist/Then-and-Now-mac.zip
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            desktop/package-lock.json
+
+      - name: Build the site
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build the Windows installer
+        working-directory: desktop
+        run: |
+          npm ci
+          npx electron-builder --win --publish never -c.buildVersion=${{ github.run_number }}
+
+      - name: Check the installer
+        shell: bash
+        working-directory: desktop/dist
+        run: |
+          test -s Then-and-Now-Windows-Setup.exe
+          test -f "win-unpacked/Then & Now.exe"
+          test -f win-unpacked/resources/site/play/index.html
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: desktop/dist/Then-and-Now-Windows-Setup.exe
+
+  android:
+    runs-on: ubuntu-latest
+    env:
+      HAS_SECRET_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            mobile/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Build the site
+        run: |
+          npm ci
+          npm run build
+
+      - name: Copy the site into the Android project
+        working-directory: mobile
+        run: |
+          npm ci
+          npx cap sync android
+
+      # The signing key has to stay the same between builds, or a new APK won't install over the
+      # old one. Best: the ANDROID_KEYSTORE_BASE64 / ANDROID_KEYSTORE_PASSWORD repository secrets.
+      # Until those exist, a key made on the first build is kept in the Actions cache.
+      - name: Restore the cached signing key
+        id: cached-key
+        if: ${{ env.HAS_SECRET_KEY != 'true' }}
+        uses: actions/cache/restore@v4
+        with:
+          path: mobile/release.keystore
+          key: android-release-keystore-v1
+
+      - name: Set up the signing key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > mobile/release.keystore
+            echo "ANDROID_KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
+          else
+            if [ ! -f mobile/release.keystore ]; then
+              keytool -genkeypair -keystore mobile/release.keystore -alias thenandnow -keyalg RSA -keysize 2048 \
+                -validity 10000 -storepass thenandnow-cache -keypass thenandnow-cache -dname "CN=Then and Now"
+            fi
+            echo "ANDROID_KEYSTORE_PASSWORD=thenandnow-cache" >> "$GITHUB_ENV"
+          fi
+          echo "ANDROID_KEYSTORE=$GITHUB_WORKSPACE/mobile/release.keystore" >> "$GITHUB_ENV"
+          echo "ANDROID_KEY_ALIAS=thenandnow" >> "$GITHUB_ENV"
+
+      - name: Keep the new signing key
+        if: ${{ steps.cached-key.outcome == 'success' && steps.cached-key.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@v4
+        with:
+          path: mobile/release.keystore
+          key: android-release-keystore-v1
+
+      - name: Build the APK
+        working-directory: mobile/android
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleRelease
+          cp app/build/outputs/apk/release/app-release.apk ../Then-and-Now-android.apk
+          "$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)/apksigner" verify --print-certs ../Then-and-Now-android.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: mobile/Then-and-Now-android.apk
+
+  release:
+    needs: [mac, windows, android]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Move the apps tag to this commit
+        run: |
+          git tag -f apps
+          git push -f origin apps
+
+      - name: Publish the release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apps
+          name: Then & Now apps (Mac, Windows, Android)
+          make_latest: true
+          files: |
+            dist/Then-and-Now-mac.dmg
+            dist/Then-and-Now-mac.zip
+            dist/Then-and-Now-Windows-Setup.exe
+            dist/Then-and-Now-android.apk
+          body: |
+            The game as an app. Built from ${{ github.sha }}. Every app has the whole game inside, so it plays offline; multiplayer and the bazaar need a connection.
+
+            **Mac** (Apple Silicon and Intel): download **Then-and-Now-mac.dmg**, open it and drag **Then & Now** into Applications. The first time, macOS says it can't check the developer: click **Done**, then **System Settings > Privacy & Security > Open Anyway**.
+
+            **Windows** (10 and 11): download **Then-and-Now-Windows-Setup.exe** and run it. If SmartScreen says "Windows protected your PC", click **More info**, then **Run anyway**. It adds Then & Now to the Start menu and the desktop.
+
+            **Android** (7.0 and later): download **Then-and-Now-android.apk** on your phone and tap it. Allow your browser to install unknown apps when asked, then tap **Install**.

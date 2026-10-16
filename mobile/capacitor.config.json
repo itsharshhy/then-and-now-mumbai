@@ -1,0 +1,12 @@
+{
+  "appId": "app.thenandnow.game",
+  "appName": "Then & Now",
+  "webDir": "../out",
+  "android": {
+    "backgroundColor": "#26365e"
+  },
+  "server": {
+    "androidScheme": "https"
+  },
+  "appendUserAgent": "ThenAndNowApp"
+}
