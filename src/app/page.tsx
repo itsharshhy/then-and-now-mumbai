@@ -1,5 +1,5 @@
-import Street from "@/components/Street";
+import Landing from "@/components/Landing";
 
 export default function Home() {
-  return <Street />;
+  return <Landing />;
 }

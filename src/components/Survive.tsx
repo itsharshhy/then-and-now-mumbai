@@ -42,7 +42,7 @@ export default function Survive() {
       <header className="topbar">
         <h1>Then &amp; Now Mumbai</h1>
         <span className="who">Can you survive the month?</span>
-        <Link href="/" className="btn-analyst">
+        <Link href="/play" className="btn-analyst">
           Back to the street
         </Link>
       </header>

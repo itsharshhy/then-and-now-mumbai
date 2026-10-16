@@ -200,7 +200,7 @@ export default function Analyst() {
   return (
     <main className="analyst">
       <nav className="an-nav">
-        <Link href="/">Back to the street</Link>
+        <Link href="/play">Back to the street</Link>
         <span>
           <Link href="/survive">Survive the month</Link>
           <Link href="/postcard">Postcards</Link>

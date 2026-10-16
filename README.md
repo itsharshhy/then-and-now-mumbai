@@ -12,6 +12,17 @@ One button switches to **Analyst Mode**: a plain report with inflation-adjusted 
 | --- | --- |
 | ![The street in 2007](docs/street-2007.png) | ![Kirana store, 2019](docs/shop-onion-2019.png) |
 
+## Install it like an app
+
+The home page (`/`) is a landing page with a **Download now** button, and the game itself is at `/play`.
+
+- On Android and in desktop Chrome or Edge, Download now opens the browser's install prompt.
+- On an iPhone it shows the two Add to Home Screen steps, because Apple doesn't offer a prompt.
+
+Once installed it opens full screen with its own icon, and after the first visit it works offline: everything except multiplayer and the bazaar, which need a connection. What we store is set out in `/privacy`.
+
+How it works: `src/app/manifest.ts` (the web app manifest), `public/sw.js` (service worker: network-first pages, cached game files and data), `src/components/Pwa.tsx` (registration and the install prompt), and `scripts/make_icons.py` (the pixel-art icon at every size).
+
 ## Two cities: Mumbai and Delhi
 
 Pick a city on the start screen. Both are seen from above like a drone shot, and you can zoom in and out (scroll, pinch, or the + and − buttons).

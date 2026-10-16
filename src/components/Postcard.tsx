@@ -81,7 +81,7 @@ export default function Postcard() {
       <header className="topbar">
         <h1>Then &amp; Now Mumbai</h1>
         <span className="who">Price postcards</span>
-        <Link href="/" className="btn-analyst">
+        <Link href="/play" className="btn-analyst">
           Back to the street
         </Link>
       </header>
