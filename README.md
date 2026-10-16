@@ -12,6 +12,11 @@ One button switches to **Analyst Mode**: a plain report with inflation-adjusted 
 | --- | --- |
 | ![The street in 2007](docs/street-2007.png) | ![Kirana store, 2019](docs/shop-onion-2019.png) |
 
+## Handbook and guide
+
+- **[docs/HANDBOOK.md](docs/HANDBOOK.md)**: everything about the project. Languages, tools, how each part works, how it goes live, and how to change it.
+- **[docs/Then-and-Now-Guide.pdf](docs/Then-and-Now-Guide.pdf)**: a 12-page guide in plain words. What the game is, how to play, every feature, and each programming language explained with real code from the game. Its source is `docs/guide/guide.html`.
+
 ## Install it like an app
 
 The home page (`/`) is a landing page with a **Download now** button, and the game itself is at `/play`.
@@ -149,7 +154,7 @@ npm run dev      # http://localhost:3000
 npm run build    # static site in out/
 ```
 
-Controls: arrow keys or A/D to walk, E (or Enter) to enter a shop, Esc to leave. On a phone, use the buttons under the street.
+Controls: arrow keys or W A S D to walk, E (or Enter) to enter a shop, Esc to leave, T to chat. Scroll or pinch to zoom. On a phone, use the joystick and buttons.
 
 ## Roadmap
 

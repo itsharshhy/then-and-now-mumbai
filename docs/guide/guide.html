@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Then &amp; Now: Game Guide and Product Document</title>
+<!-- Source of docs/Then-and-Now-Guide.pdf. Fonts and pictures come from the project itself
+     (node_modules and public/landing), so open it from this folder. -->
+<style>
+@font-face { font-family: "Pixel"; src: url("../../node_modules/@fontsource/silkscreen/files/silkscreen-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Pixel"; src: url("../../node_modules/@fontsource/silkscreen/files/silkscreen-latin-700-normal.woff2") format("woff2"); font-weight: 700; }
+@font-face { font-family: "Body"; src: url("../../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2") format("woff2"); font-weight: 200 800; }
+@font-face { font-family: "BodyExt"; src: url("../../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-ext-wght-normal.woff2") format("woff2"); font-weight: 200 800; }
+
+:root {
+  --navy: #1b2647; --navy2: #26365e; --taxi: #f2c230; --chalk: #f4f6fb; --line: #d3d9e8;
+  --muted: #56618a; --mark: #fff3c4; --green: #2f7d4f; --code: #eef1f7;
+  --pixel: "Pixel", "Courier New", monospace;
+  --body: "Body", "BodyExt", "Segoe UI", system-ui, sans-serif;
+  --mono: "DejaVu Sans Mono", Menlo, Consolas, monospace;
+}
+@page { size: A4; margin: 18mm 17mm 20mm; }
+@page :first { margin: 0; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: var(--body); color: var(--navy); font-size: 10.6pt; line-height: 1.55; }
+
+/* cover */
+.cover { height: 297mm; background: var(--navy); color: #fff; padding: 22mm 20mm; display: flex; flex-direction: column; break-after: page; }
+.cover .kicker { font-family: var(--pixel); font-size: 10pt; letter-spacing: 0.12em; color: var(--taxi); margin: 0 0 8mm; }
+.cover h1 { font-family: var(--pixel); font-weight: 700; font-size: 42pt; line-height: 1.02; margin: 0 0 6mm; }
+.cover h1 span { background: var(--taxi); color: var(--navy); padding: 0 3mm; }
+.cover .sub { font-size: 15pt; color: #c9d1ea; margin: 0 0 12mm; max-width: 150mm; }
+.cover figure { margin: 0; border: 3px solid #0e1530; box-shadow: 8px 8px 0 var(--taxi); }
+.cover figure img { display: block; width: 100%; image-rendering: pixelated; }
+.cover .facts { margin-top: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; font-size: 9.5pt; color: #c9d1ea; border-top: 1px solid #3a4a7a; padding-top: 6mm; }
+.cover .facts b { display: block; font-family: var(--pixel); font-size: 8pt; letter-spacing: 0.08em; color: var(--taxi); font-weight: 400; margin-bottom: 1mm; }
+
+/* body */
+h2 { font-family: var(--pixel); font-size: 17pt; line-height: 1.2; margin: 0 0 2mm; padding-top: 2mm; break-after: avoid; }
+h2 .n { color: #b88a00; margin-right: 3mm; }
+h2 + .lead { color: var(--muted); font-size: 11.5pt; margin: 0 0 5mm; }
+h3 { font-size: 12.5pt; font-weight: 800; margin: 6mm 0 1.5mm; break-after: avoid; }
+p { margin: 0 0 3mm; }
+ul, ol { margin: 0 0 3.5mm; padding-left: 5.5mm; }
+li { margin-bottom: 1.2mm; }
+strong { font-weight: 800; }
+code { font-family: var(--mono); font-size: 8.6pt; background: var(--code); padding: 0 1.2mm; }
+.page { break-before: page; }
+.keep { break-inside: avoid; }
+
+.box { background: var(--mark); padding: 3.5mm 5mm; margin: 2mm 0 4mm; break-inside: avoid; }
+.box b.t { display: block; font-family: var(--pixel); font-size: 7.5pt; letter-spacing: 0.1em; color: #8a6700; font-weight: 400; margin-bottom: 1mm; }
+
+table { width: 100%; border-collapse: collapse; margin: 1mm 0 5mm; font-size: 9.6pt; break-inside: auto; }
+th { font-family: var(--pixel); font-size: 7.5pt; letter-spacing: 0.08em; font-weight: 400; color: var(--muted); text-align: left; padding: 2mm 2.5mm; border-bottom: 2px solid var(--navy); }
+td { padding: 2.2mm 2.5mm; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr { break-inside: avoid; }
+td:first-child { font-weight: 700; }
+.done { display: inline-block; font-family: var(--pixel); font-size: 7pt; color: #fff; background: var(--green); padding: 0.4mm 1.6mm; letter-spacing: 0.05em; }
+
+.shots { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; margin: 2mm 0 5mm; }
+.shots figure { margin: 0; break-inside: avoid; }
+.shots img { width: 100%; display: block; border: 2px solid var(--navy); image-rendering: pixelated; }
+.shots figcaption { font-size: 8.8pt; color: var(--muted); margin-top: 1.2mm; }
+
+.steps { list-style: none; padding: 0; counter-reset: st; display: grid; gap: 2.5mm; }
+.steps li { counter-increment: st; display: grid; grid-template-columns: 9mm 1fr; gap: 3mm; align-items: start; margin: 0; break-inside: avoid; }
+.steps li::before { content: counter(st); font-family: var(--pixel); font-size: 10pt; background: var(--taxi); color: var(--navy); text-align: center; padding: 1.2mm 0; border: 2px solid var(--navy); }
+
+/* language cards */
+.lang { border: 1.5px solid var(--line); border-left: 5px solid var(--taxi); padding: 4mm 5mm 3mm; margin: 0 0 5mm; break-inside: avoid; }
+.lang header { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; margin-bottom: 1.5mm; }
+.lang h3 { margin: 0; font-size: 14pt; }
+.lang .share { font-family: var(--pixel); font-size: 7.5pt; color: var(--muted); letter-spacing: 0.06em; white-space: nowrap; }
+.lang .like { font-style: italic; color: var(--muted); margin-bottom: 2mm; }
+.lang dl { display: grid; grid-template-columns: 30mm 1fr; gap: 1.2mm 4mm; margin: 0 0 2.5mm; }
+.lang dt { font-family: var(--pixel); font-size: 7.5pt; letter-spacing: 0.06em; color: var(--muted); padding-top: 0.8mm; }
+.lang dd { margin: 0; }
+pre { font-family: var(--mono); font-size: 8.3pt; line-height: 1.5; background: var(--code); padding: 3mm 4mm; margin: 0 0 2mm; white-space: pre-wrap; word-break: break-word; border-left: 3px solid var(--navy2); }
+.lang .says { font-size: 9.6pt; }
+.lang .says b { font-family: var(--pixel); font-size: 7.5pt; letter-spacing: 0.06em; color: #8a6700; font-weight: 400; margin-right: 1.5mm; }
+
+/* simple flow diagram */
+.flow { display: grid; grid-template-columns: 1fr 8mm 1fr 8mm 1fr; align-items: center; gap: 2mm 0; margin: 3mm 0 6mm; break-inside: avoid; }
+.flow .node { border: 2px solid var(--navy); padding: 3mm; text-align: center; font-size: 9.4pt; background: #fff; min-height: 20mm; display: flex; flex-direction: column; justify-content: center; }
+.flow .node b { font-family: var(--pixel); font-size: 8pt; font-weight: 400; letter-spacing: 0.06em; display: block; margin-bottom: 1mm; }
+.flow .node.hl { background: var(--taxi); }
+.flow .arrow { text-align: center; font-family: var(--pixel); font-size: 13pt; color: #8a6700; }
+.flow .down { grid-column: 1 / -1; text-align: center; font-family: var(--pixel); color: #8a6700; font-size: 11pt; }
+
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+.two > div { min-width: 0; }
+.foot { margin-top: 8mm; padding-top: 3mm; border-top: 1px solid var(--line); font-size: 8.8pt; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <p class="kicker">GAME GUIDE AND PRODUCT DOCUMENT</p>
+  <h1>Then &amp; Now<br><span>Mumbai</span></h1>
+  <p class="sub">What the game is, how to play it, and how it is made, including every programming language it uses, in plain words.</p>
+  <figure><img src="../../public/landing/mumbai.webp" alt="Mumbai from above in the game"></figure>
+  <div class="facts">
+    <div><b>PLAY</b>then-and-now-mumbai.vercel.app</div>
+    <div><b>PLATFORMS</b>Web, Android, Windows, Mac, iPhone (home screen)</div>
+    <div><b>VERSION</b>October 2026</div>
+  </div>
+</section>
+
+<!-- 1 -->
+<section>
+  <h2><span class="n">01</span>The idea</h2>
+  <p class="lead">A game that answers a question everyone in India asks: "How much did this cost back then?"</p>
+
+  <h3>The problem</h3>
+  <p>People love comparing prices. "Vada pav was two rupees!" "A local train ticket was three!" But nobody kept a proper record of street prices over the years. Official numbers track inflation in general, not your cutting chai. So these conversations run on memory, and memory is often wrong.</p>
+
+  <h3>The answer</h3>
+  <p><strong>Then &amp; Now</strong> turns 30 years of real street prices into a city you can walk around. Every shop is a little piece of data. Move the <strong>Time Machine</strong> slider from 1995 to 2026 and the prices, the vehicles and the buildings all change in front of you.</p>
+
+  <div class="box"><b class="t">IN ONE SENTENCE</b>A pixel-art city where you walk into shops and see what street prices really were in any year from 1995 to 2026, with every number either sourced or honestly marked as a guess.</div>
+
+  <h3>Who it is for</h3>
+  <ul>
+    <li><strong>Curious people</strong> who want to settle "what did it cost back then" arguments.</li>
+    <li><strong>Students and teachers</strong> learning about inflation, using things they know (chai, onions, petrol) instead of charts.</li>
+    <li><strong>Friends and families</strong> who want to explore together: up to 8 people can walk the same street.</li>
+    <li><strong>Data lovers</strong>, who get proper charts and the source behind every number.</li>
+  </ul>
+
+  <h3>Goals</h3>
+  <ol>
+    <li>Make price history <strong>fun to explore</strong>, not a spreadsheet.</li>
+    <li>Be <strong>honest</strong>: every price shows how sure we are about it.</li>
+    <li>Work <strong>everywhere for free</strong>: phone, computer, online and offline.</li>
+  </ol>
+</section>
+
+<!-- 2 -->
+<section class="page">
+  <h2><span class="n">02</span>How to play</h2>
+  <p class="lead">Five minutes from opening it to knowing what chai cost in 1995.</p>
+  <ol class="steps">
+    <li><div><strong>Open the game.</strong> Go to the website and press <em>Play</em>, or open the app on your phone or computer.</div></li>
+    <li><div><strong>Pick a city and a look.</strong> Mumbai or Delhi. Choose your character's shirt colour and step onto the street.</div></li>
+    <li><div><strong>Walk around.</strong> Arrow keys or W A S D on a computer, the joystick on a phone. Scroll or pinch to zoom in and out, like a drone.</div></li>
+    <li><div><strong>Go into a shop.</strong> Walk up to a door and press <em>E</em> (or tap the button). The shopkeeper tells you today's price and the price in the year you picked.</div></li>
+    <li><div><strong>Use the Time Machine.</strong> Drag the slider at the bottom to any year. Watch the city change: old Padmini taxis come back, the Metro disappears, prices drop.</div></li>
+    <li><div><strong>Talk to people.</strong> Walk up to the dabbawala, the Koli fisherwoman or the old dada on the bench. They have stories about what changed.</div></li>
+    <li><div><strong>Bring friends.</strong> Press <em>Start a room</em>, send the link, and walk together. Press <em>T</em> to chat.</div></li>
+  </ol>
+
+  <div class="shots">
+    <figure><img src="../../public/landing/chai.webp" alt=""><figcaption>Inside the chai shop: the shopkeeper quotes then and now.</figcaption></figure>
+    <figure><img src="../../public/landing/station.webp" alt=""><figcaption>The railway station, where local trains pull in and leave.</figcaption></figure>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="page">
+  <h2><span class="n">03</span>What's in it</h2>
+  <p class="lead">Every feature, what it does, and its status.</p>
+  <table>
+    <thead><tr><th>Feature</th><th>What it does</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>The city</td><td>A drone view of a Mumbai or Delhi neighbourhood: roads, chawls, sea front, trees, people walking, live traffic</td><td><span class="done">DONE</span></td></tr>
+      <tr><td>Walk-in shops</td><td>Chai shop, kirana and railway station you can step inside, each with a shopkeeper</td><td><span class="done">DONE</span></td></tr>
+      <tr><td>Time Machine</td><td>Slide from 1995 to 2026. Prices, vehicles and buildings all change.</td><td><span class="done">DONE</span></td></tr>
+      <tr><td>Zoom</td><td>Pull back to see the whole area, or zoom right in</td><td><span class="done">DONE</span></td></tr>
+      <tr><td>Safe traffic</td><td>Cars and buses stop and honk for you instead of driving through you</td><td><span class="done">DONE</span></td></tr>
+      <tr><td>Two cities</td><td>Mumbai and Delhi, each with its own map, people, vehicles and price data</td><td><span class="done">DONE</span></td></tr>
+      <tr><td>Analyst Mode</td><td>Charts of every price, with sources and how sure we are</td><td><span class="done">DONE</span></td></tr>
+      <tr><td>Survive the month</td><td>A budget game: get through four weeks of street spending in any year</td><td><span class="done">DONE</span></td></tr>
+      <tr><td>Price postcards</td><td>Make a picture comparing two years, to share on WhatsApp or anywhere</td><td><span class="done">DONE</span></td></tr>
+      <tr><td>Multiplayer</td><td>Up to 8 friends in one street, with chat and a shared Time Machine</td><td><span class="done">DONE</span></td></tr>
+      <tr><td>The bazaar</td><td>Ask about any price or report what you paid. A reviewer checks everything first.</td><td><span class="done">DONE</span></td></tr>
+      <tr><td>Works offline</td><td>After the first visit (or straight away in the apps), the game runs without internet</td><td><span class="done">DONE</span></td></tr>
+      <tr><td>Apps</td><td>Download for Android, Windows and Mac. Add to home screen on iPhone.</td><td><span class="done">DONE</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>The two cities</h3>
+  <div class="two">
+    <div>
+      <p><strong>Mumbai</strong>: the sea front, chawls with washing on the balconies, the chai tapri, the vada pav cart, the kirana, a local train station, BEST double-deckers, kaali-peeli taxis, and the Metro from 2014.</p>
+      <p><em>Prices:</em> chai, vada pav, local train, auto, petrol, onion, milk.</p>
+    </div>
+    <div>
+      <p><strong>Delhi</strong>: the Yamuna ghats, Old Delhi havelis, a city gate, a gurudwara, Blueline buses, green CNG autos, cycle rickshaws, and a Metro that opens in December 2002.</p>
+      <p><em>Prices:</em> chai, samosa, Metro, auto, petrol, onion, milk.</p>
+    </div>
+  </div>
+
+  <h3>The honesty rule</h3>
+  <p>Old street prices were never officially recorded, so every number carries a label:</p>
+  <table>
+    <thead><tr><th>Label</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td>documented</td><td>From an official notice, like a fare chart</td></tr>
+      <tr><td>reported</td><td>A dated newspaper report gives the number</td></tr>
+      <tr><td>estimated</td><td>Our best guess. Still needs a source. Shown as a hollow dot in charts.</td></tr>
+      <tr><td>interpolated</td><td>A year between two known prices, filled in smoothly. The shopkeeper says so.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 4 -->
+<section style="margin-top:8mm">
+  <h2><span class="n">04</span>How it is made</h2>
+  <p class="lead">The whole system on one page.</p>
+
+  <div class="flow">
+    <div class="node"><b>PRICE SHEETS</b>Spreadsheets of prices with sources</div>
+    <div class="arrow">→</div>
+    <div class="node"><b>PYTHON</b>Fills gaps, adjusts for inflation</div>
+    <div class="arrow">→</div>
+    <div class="node"><b>PRICE DATA</b>Files the game reads</div>
+    <div class="down">↓</div>
+    <div class="node hl"><b>THE GAME</b>TypeScript, React, Phaser</div>
+    <div class="arrow">→</div>
+    <div class="node"><b>GITHUB</b>Stores the code, builds the apps</div>
+    <div class="arrow">→</div>
+    <div class="node"><b>VERCEL</b>Puts the website online</div>
+    <div class="down">↓</div>
+    <div class="node"><b>WEBSITE</b>Any browser</div>
+    <div class="arrow">+</div>
+    <div class="node"><b>APPS</b>Android, Windows, Mac</div>
+    <div class="arrow">↔</div>
+    <div class="node"><b>SUPABASE</b>Friends' rooms and the bazaar</div>
+  </div>
+
+  <div class="box"><b class="t">THE BIG IDEA</b>The game is just a set of files: pages, code and price data. They run entirely on the player's phone or computer. There is no server of our own to pay for or look after. The only online parts are playing with friends and the bazaar, and Supabase handles those.</div>
+
+  <h3>Three things that make it special</h3>
+  <ul>
+    <li><strong>No picture files.</strong> Every person, taxi, bus, tree and building is drawn by code, pixel by pixel. That is how a building can look older in 1995, or a Delhi auto can turn green when CNG arrives, just by changing a line of code.</li>
+    <li><strong>A grid city.</strong> Each city is a map of 104 × 72 squares (called tiles), each 16 pixels wide. Every square is road, pavement, grass, water, track or building.</li>
+    <li><strong>Living traffic.</strong> Vehicles drive in lanes, keep their distance, and brake and honk if you stand in the road.</li>
+  </ul>
+
+  <h3>The tools</h3>
+  <table>
+    <thead><tr><th>Tool</th><th>What it is, simply</th><th>Its job in this game</th></tr></thead>
+    <tbody>
+      <tr><td>Next.js</td><td>A kit for building websites</td><td>Makes all the pages and turns them into fast, simple files</td></tr>
+      <tr><td>React</td><td>A kit for buttons and screens</td><td>Menus, panels, charts, the Time Machine slider</td></tr>
+      <tr><td>Phaser</td><td>A game engine</td><td>Draws the city, moves the camera, handles walking and traffic</td></tr>
+      <tr><td>Supabase</td><td>An online database and live-chat service</td><td>Friends' rooms and the bazaar</td></tr>
+      <tr><td>Vercel</td><td>A website host</td><td>Keeps the site online and updates it on every change</td></tr>
+      <tr><td>GitHub</td><td>A home for code</td><td>Stores every version, and builds the apps on its own computers</td></tr>
+      <tr><td>Electron</td><td>Turns a website into a computer app</td><td>The Windows and Mac apps</td></tr>
+      <tr><td>Capacitor</td><td>Turns a website into a phone app</td><td>The Android app</td></tr>
+      <tr><td>Playwright</td><td>A robot that uses a browser</td><td>Tests the game by playing it and taking screenshots</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 5 -->
+<section class="page">
+  <h2><span class="n">05</span>The languages, one by one</h2>
+  <p class="lead">A programming language is a way of writing instructions a computer can follow. This game uses nine. For each one: what it is, what it does here, and a real piece of the game's code.</p>
+
+  <div class="lang">
+    <header><h3>TypeScript</h3><span class="share">ABOUT 80% OF THE PROJECT</span></header>
+    <p class="like">Like writing a recipe, with a label on every ingredient so you can't mix up sugar and salt.</p>
+    <dl>
+      <dt>WHAT IT IS</dt><dd>JavaScript, the language every web browser understands, with extra checks. Every value gets a type ("this is a year", "this is a list of prices"), and mistakes show up before anyone plays.</dd>
+      <dt>WHAT IT DOES</dt><dd>Almost everything: the game, the pages, the shops, multiplayer, the bazaar, postcards and the Survive game. About 9,200 lines.</dd>
+      <dt>WHERE</dt><dd><code>src/</code>, in files ending <code>.ts</code> and <code>.tsx</code> (TSX is TypeScript that also describes screens).</dd>
+    </dl>
+<pre>export const available = (item: Item, year: number) =&gt;
+  !item.available_from || year &gt;= item.available_from;</pre>
+    <p class="says"><b>IN WORDS</b>"Is this item available in this year? Yes if it has no start date, or if the year is on or after its start date." This is how the Delhi Metro stays closed before 2002.</p>
+  </div>
+
+  <div class="lang">
+    <header><h3>CSS</h3><span class="share">ABOUT 8%</span></header>
+    <p class="like">Like the paint, fonts and furniture layout of a house.</p>
+    <dl>
+      <dt>WHAT IT IS</dt><dd>A language that describes how things look: colours, sizes, spacing, fonts, and what happens when you hover over a button.</dd>
+      <dt>WHAT IT DOES</dt><dd>The look of the website: the navy and taxi-yellow colours, the pixel font, the landing page, the shop panels.</dd>
+      <dt>WHERE</dt><dd><code>src/app/globals.css</code></dd>
+    </dl>
+<pre>.ld-download {
+  background: var(--taxi); color: var(--ink);
+  border: 3px solid var(--ink); padding: 14px 24px;
+  box-shadow: 6px 6px 0 var(--best);
+}</pre>
+    <p class="says"><b>IN WORDS</b>"The Download button is taxi yellow with dark text, a thick border and a solid shadow." That is the chunky pixel-style button on the landing page.</p>
+  </div>
+</section>
+
+<section>
+  <div class="lang">
+    <header><h3>Python</h3><span class="share">SMALL, BUT IMPORTANT</span></header>
+    <p class="like">Like a calculator that does a whole spreadsheet's worth of work in a second.</p>
+    <dl>
+      <dt>WHAT IT IS</dt><dd>A popular, easy-to-read language, often used for data and maths.</dd>
+      <dt>WHAT IT DOES</dt><dd>Turns the price spreadsheets into the data the game reads: fills in missing years, adjusts for inflation, and works out minutes of work. It also draws the app icons.</dd>
+      <dt>WHERE</dt><dd><code>scripts/build_data.py</code> and <code>scripts/make_icons.py</code></dd>
+    </dl>
+<pre>out[y] = math.exp(math.log(anchors[lo]) * (1 - t) + math.log(anchors[hi]) * t)</pre>
+    <p class="says"><b>IN WORDS</b>"For a year between two known prices, find the price on a smooth curve between them." If vada pav was ₹2 in 1995 and ₹5 in 2005, this works out 2000 as about ₹3, growing at a steady rate rather than by the same amount each year.</p>
+  </div>
+
+  <div class="lang">
+    <header><h3>SQL</h3><span class="share">THE DATABASE</span></header>
+    <p class="like">Like the rules a librarian follows: who may borrow which book, and who may only look.</p>
+    <dl>
+      <dt>WHAT IT IS</dt><dd>The language for talking to databases: making tables, storing rows, asking questions of the data, and setting rules.</dd>
+      <dt>WHAT IT DOES</dt><dd>Sets up the bazaar in Supabase: the tables for questions and price reports, who is allowed to see what, the reviewer's checks, the limits on spam, and the nightly cleanup at 03:17.</dd>
+      <dt>WHERE</dt><dd><code>supabase/migrations/</code></dd>
+    </dl>
+<pre>create policy "anyone can read approved reports" on public.price_reports
+  for select to anon, authenticated using (status = 'approved');</pre>
+    <p class="says"><b>IN WORDS</b>"Anyone can read a price report, but only if it has been approved." Unchecked reports stay hidden. The database enforces this itself, so no one can get around it.</p>
+  </div>
+
+  <div class="lang">
+    <header><h3>JavaScript</h3><span class="share">SMALL</span></header>
+    <p class="like">TypeScript's older sibling: the same language, without the labels.</p>
+    <dl>
+      <dt>WHAT IT IS</dt><dd>The language every web browser runs. TypeScript turns into JavaScript before it runs.</dd>
+      <dt>WHAT IT DOES</dt><dd>Two small jobs: the <strong>service worker</strong>, which saves the game so it opens without internet, and the <strong>desktop app</strong> that opens the game in its own window on Windows and Mac.</dd>
+      <dt>WHERE</dt><dd><code>public/sw.js</code> and <code>desktop/main.js</code></dd>
+    </dl>
+<pre>fetch(req)
+  .then((res) =&gt; putInCache(req, res))
+  .catch(async () =&gt; (await caches.match(req)) || (await caches.match("/play/")))</pre>
+    <p class="says"><b>IN WORDS</b>"Try to get the page from the internet and keep a copy. If there's no internet, use the saved copy, or at least open the game."</p>
+  </div>
+</section>
+
+<section>
+  <div class="lang">
+    <header><h3>YAML</h3><span class="share">INSTRUCTIONS FOR GITHUB</span></header>
+    <p class="like">Like a to-do list you hand to a helper.</p>
+    <dl>
+      <dt>WHAT IT IS</dt><dd>A simple format for writing settings and step-by-step instructions as indented lists.</dd>
+      <dt>WHAT IT DOES</dt><dd>Tells GitHub how to build the apps: borrow a Mac, a Windows PC and a Linux machine, build each app, check it, and publish the download files.</dd>
+      <dt>WHERE</dt><dd><code>.github/workflows/apps.yml</code></dd>
+    </dl>
+<pre>mac:
+  runs-on: macos-latest
+  steps:
+    - name: Build the Mac app
+      run: npx electron-builder --mac</pre>
+    <p class="says"><b>IN WORDS</b>"For the Mac app: use GitHub's latest Mac computer, then run the command that builds the Mac app."</p>
+  </div>
+
+  <div class="lang">
+    <header><h3>Java</h3><span class="share">ONE FILE</span></header>
+    <p class="like">Android's home language, used here for one small fix.</p>
+    <dl>
+      <dt>WHAT IT IS</dt><dd>A long-standing language that Android apps are traditionally written in.</dd>
+      <dt>WHAT IT DOES</dt><dd>Inside the Android app, it makes sure each page (the game, the bazaar, the charts) opens its own file instead of always the home page.</dd>
+      <dt>WHERE</dt><dd><code>mobile/android/app/src/main/java/…/MainActivity.java</code></dd>
+    </dl>
+<pre>InputStream page = getAssets().open("public" + dir + "index.html");
+return new WebResourceResponse("text/html", "UTF-8", page);</pre>
+    <p class="says"><b>IN WORDS</b>"When the app asks for a page like /play/, open that page's file from inside the app and show it."</p>
+  </div>
+
+  <div class="lang">
+    <header><h3>Gradle</h3><span class="share">ANDROID SETTINGS</span></header>
+    <p class="like">The settings form for building an Android app.</p>
+    <dl>
+      <dt>WHAT IT IS</dt><dd>Android's build tool, with its own short settings language.</dd>
+      <dt>WHAT IT DOES</dt><dd>Sets the app's version number (so new versions install over old ones) and signs the app with its key.</dd>
+      <dt>WHERE</dt><dd><code>mobile/android/app/build.gradle</code></dd>
+    </dl>
+  </div>
+</section>
+
+<section>
+  <div class="lang">
+    <header><h3>CSV and JSON</h3><span class="share">DATA, NOT CODE</span></header>
+    <p class="like">CSV is a spreadsheet saved as text. JSON is the same information arranged for a computer to read.</p>
+    <dl>
+      <dt>WHAT THEY ARE</dt><dd>Formats for storing information. They don't give instructions; they hold facts.</dd>
+      <dt>WHAT THEY DO</dt><dd>CSV holds every price, year, source and note, and anyone can open it in Excel or Google Sheets. JSON is what the Python script writes for the game to read.</dd>
+      <dt>WHERE</dt><dd><code>data/raw/*.csv</code> and <code>public/data/*.json</code></dd>
+    </dl>
+<pre>item,year,price,confidence,source_id,note
+vadapav,1995,2,estimated,,Outlook Traveller traces the 1970s Dadar original to 25 paise.</pre>
+    <p class="says"><b>IN WORDS</b>"Vada pav, 1995, ₹2. This is an estimate, with a note about where the clue came from."</p>
+  </div>
+
+  <h3>Why so many languages?</h3>
+  <p>Each one is the natural choice for its job, like using a pen for writing and a brush for painting. TypeScript does nearly everything. The others each do one small job they are best at: SQL for the database, Python for number crunching, YAML for build instructions, Java for one Android fix.</p>
+</section>
+
+<!-- 6 -->
+<section style="margin-top:8mm">
+  <h2><span class="n">06</span>How players get it</h2>
+  <p class="lead">One game, five ways in, all free.</p>
+  <table>
+    <thead><tr><th>Device</th><th>How</th><th>First time</th></tr></thead>
+    <tbody>
+      <tr><td>Any browser</td><td>Open the website and press Play</td><td>Nothing to install</td></tr>
+      <tr><td>Android phone</td><td>Download for Android: <code>.apk</code> file</td><td>Allow "install unknown apps" once</td></tr>
+      <tr><td>Windows PC</td><td>Download for Windows: <code>.exe</code> installer</td><td>"More info", then "Run anyway"</td></tr>
+      <tr><td>Mac</td><td>Download for Mac: <code>.dmg</code> file</td><td>System Settings, Privacy &amp; Security, "Open Anyway"</td></tr>
+      <tr><td>iPhone / iPad</td><td>Safari, Share, Add to Home Screen</td><td>Nothing else</td></tr>
+    </tbody>
+  </table>
+  <div class="box"><b class="t">WHY THE FIRST-TIME WARNINGS</b>Apple, Microsoft and Google charge app makers to vouch for them. We haven't paid, so each system shows one warning the first time. The game is the same either way, and the website walks people through it.</div>
+
+  <h3>How a change goes live</h3>
+  <ol class="steps">
+    <li><div>A change to the game is saved and sent to GitHub.</div></li>
+    <li><div>Vercel notices, rebuilds the website and puts it live, in about a minute.</div></li>
+    <li><div>GitHub builds fresh Android, Windows and Mac apps on its own computers, in about five minutes, and the download buttons point at them automatically.</div></li>
+  </ol>
+
+  <h2 style="margin-top:8mm"><span class="n">07</span>What's next</h2>
+  <p class="lead">Ideas for future versions, roughly in order.</p>
+  <ul>
+    <li><strong>More sources.</strong> Turn the estimated prices (hollow dots) into sourced ones from old newspapers, fare charts and receipts.</li>
+    <li><strong>AI-drafted answers in the bazaar.</strong> An assistant drafts a cited answer, and the reviewer only checks it.</li>
+    <li><strong>More cities.</strong> Kolkata, Chennai, Bengaluru, each with its own map and prices.</li>
+    <li><strong>Store listings.</strong> Google Play ($25 once) and the Apple App Store ($99 a year) for one-tap installs without warnings.</li>
+    <li><strong>A custom domain</strong>, such as thenandnow.in.</li>
+  </ul>
+
+  <h3>Limits to know about</h3>
+  <ul>
+    <li>Many old prices are still estimates, and the game says so openly.</li>
+    <li>The free Supabase plan pauses after a week with no visitors. One click wakes it.</li>
+    <li>The Android app needs a permanent signing key saved in GitHub so updates install smoothly (see the handbook).</li>
+  </ul>
+
+  <h3>How we'll know it's working</h3>
+  <ul>
+    <li>People play more than one year and visit more than one shop per visit.</li>
+    <li>Postcards get shared.</li>
+    <li>Players send in sourced prices through the bazaar, and the number of hollow dots goes down.</li>
+  </ul>
+
+  <p class="foot">Then &amp; Now, game guide and product document, October 2026. The detailed technical handbook is <code>docs/HANDBOOK.md</code> in the code repository.</p>
+</section>
+
+</body>
+</html>
