@@ -5,9 +5,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { bus } from "@/lib/bus";
 import { CHAT_MAX, MAX_PLAYERS, Room, cleanRoomCode, newRoomCode, type Peer, type RoomStatus } from "@/lib/room";
 import { BUILDINGS, FIRST_YEAR, LAST_YEAR, itemById, pointAt, rupees, type BuildingId } from "@/lib/data";
-import { PLAYER_FRAMES, SHIRTS, playerPalette } from "@/lib/sprites";
+import { SHIRTS } from "@/lib/sprites";
 import GameCanvas from "./GameCanvas";
-import Pixel from "./Pixel";
+import { CharPreview, Dialogue, Joystick, ZoomButtons, type Talk } from "./GameHud";
 import ShopPanel from "./ShopPanel";
 
 const ERA: [number, string][] = [
@@ -26,6 +26,9 @@ export default function Street() {
   const [year, setYear] = useState(LAST_YEAR);
   const [open, setOpen] = useState<BuildingId | null>(null);
   const [near, setNear] = useState<BuildingId | null>(null);
+  const [talk, setTalk] = useState<Talk | null>(null);
+  const [where, setWhere] = useState("city");
+  const [found, setFound] = useState<{ title: string; body: string; url: string | null; count: number; total: number } | null>(null);
   const [playing, setPlaying] = useState(false);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
   // multiplayer
@@ -108,12 +111,23 @@ export default function Street() {
   }, [roomCode, open]);
 
   useEffect(() => {
-    const offs = [bus.on("enter", (id: BuildingId) => setOpen(id)), bus.on("near", (id: BuildingId | null) => setNear(id))];
+    const offs = [
+      bus.on("enter", (id: BuildingId) => setOpen(id)),
+      bus.on("near", (id: BuildingId | null) => setNear(id)),
+      bus.on("talk", (t: Talk) => setTalk(t)),
+      bus.on("scene", (s: string) => setWhere(s)),
+      bus.on("receipt", (r: NonNullable<typeof found>) => setFound(r)),
+    ];
     return () => offs.forEach((o) => o());
   }, []);
 
   useEffect(() => bus.emit("year", year), [year]);
-  useEffect(() => bus.emit("pause", !!open), [open]);
+  useEffect(() => bus.emit("pause", !!open || !!talk), [open, talk]);
+  useEffect(() => {
+    if (!found) return;
+    const t = setTimeout(() => setFound(null), 7000);
+    return () => clearTimeout(t);
+  }, [found]);
 
   const stop = useCallback(() => {
     if (timer.current) clearInterval(timer.current);
@@ -180,7 +194,7 @@ export default function Street() {
           >
             <div className="start-row">
               <div className="start-preview">
-                <Pixel grid={PLAYER_FRAMES[0]} palette={playerPalette(shirt)} size={8} label="Your character" />
+                <CharPreview shirt={shirt} size={5} label="Your character" />
               </div>
               <div className="start-fields">
                 <label htmlFor="pname">Your name</label>
@@ -231,7 +245,7 @@ export default function Street() {
               {roomMode === "new" ? "Open a room" : roomMode === "join" ? (joinCode.length >= 4 ? `Join room ${joinCode}` : "Type a room code") : "Step onto the street"}
             </button>
           </form>
-          <p className="start-help">Arrow keys or A/D to walk. E to enter a shop. On a phone, use the buttons under the street.</p>
+          <p className="start-help">Arrow keys or WASD to walk, E to enter or talk, scroll or pinch to zoom. On a phone, use the joystick.</p>
           <p className="start-more">
             <Link href="/survive">Can you survive a month in 1995?</Link>
             <Link href="/postcard">Make a price postcard</Link>
@@ -272,7 +286,29 @@ export default function Street() {
 
       <div className="stage">
         <GameCanvas year={year} shirt={shirt} />
-        <p className="rotate-hint">Turn your phone sideways for a bigger street</p>
+        <p className="where">{where === "city" ? "Mumbai, from above" : where === "chai" ? "Inside the chai tapri" : where === "kirana" ? "Inside the kirana store" : "Inside the railway station"}</p>
+        <ZoomButtons />
+        <div className="pad" aria-label="Touch controls">
+          <Joystick />
+          <button className="pad-act" onClick={() => bus.emit("interact")} aria-label="Use, enter or talk">
+            E
+          </button>
+        </div>
+        {talk && <Dialogue talk={talk} onClose={() => setTalk(null)} />}
+        {found && (
+          <div className="found" role="status">
+            <b>Old receipt found! ({found.count}/{found.total})</b>
+            <span>{found.title}</span>
+            <small>
+              {found.body}{" "}
+              {found.url && (
+                <a href={found.url} target="_blank" rel="noreferrer">
+                  See source
+                </a>
+              )}
+            </small>
+          </div>
+        )}
         {toast && (
           <div className="room-toast" role="status">
             {toast}
@@ -323,28 +359,6 @@ export default function Street() {
           </form>
         </div>
       )}
-
-      <div className="touch" aria-label="Touch controls">
-        <button
-          aria-label="Walk left"
-          onPointerDown={() => bus.emit("move", -1)}
-          onPointerUp={() => bus.emit("move", 0)}
-          onPointerLeave={() => bus.emit("move", 0)}
-        >
-          ◀
-        </button>
-        <button className="touch-enter" disabled={!near} onClick={() => bus.emit("interact")}>
-          {near ? `Enter ${BUILDINGS[near].name}` : "Walk to a shop"}
-        </button>
-        <button
-          aria-label="Walk right"
-          onPointerDown={() => bus.emit("move", 1)}
-          onPointerUp={() => bus.emit("move", 0)}
-          onPointerLeave={() => bus.emit("move", 0)}
-        >
-          ▶
-        </button>
-      </div>
 
       <section className="machine" aria-label="Time Machine">
         <div className="machine-year" aria-live="polite">

@@ -9,8 +9,13 @@ import { getSupabase, supabaseConfigured } from "./supabase";
 //   - Supabase Realtime (broadcast), when NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY are set
 //   - BroadcastChannel, which only reaches other tabs of the same browser (for local testing and as a fallback)
 
-export const WORLD_MIN_X = 8;
-export const WORLD_MAX_X = 1232;
+export const WORLD_MIN_X = 0;
+export const WORLD_MAX_X = 2000;
+export const WORLD_MAX_Y = 2000;
+export const SCENES = ["city", "chai", "kirana", "station"] as const;
+export type SceneId = (typeof SCENES)[number];
+export type Dir4 = "down" | "up" | "left" | "right";
+const DIR4: Dir4[] = ["down", "up", "left", "right"];
 export const MAX_PLAYERS = 8;
 export const CHAT_MAX = 80;
 const STALE_MS = 7000;
@@ -22,14 +27,16 @@ export interface Peer {
   name: string;
   shirt: string;
   x: number;
-  facing: 1 | -1;
+  y: number;
+  dir: Dir4;
+  scene: SceneId;
   moving: boolean;
   inside: BuildingId | null;
   seen: number;
 }
 
 export type Msg =
-  | { t: "state"; id: string; name: string; shirt: string; x: number; facing: number; moving: boolean; inside: string | null }
+  | { t: "state"; id: string; name: string; shirt: string; x: number; y: number; dir: Dir4; scene: SceneId; moving: boolean; inside: string | null }
   | { t: "chat"; id: string; text: string }
   | { t: "year"; id: string; year: number }
   | { t: "bye"; id: string }
@@ -62,7 +69,8 @@ export function parseMsg(raw: unknown): Msg | null {
   switch (m.t) {
     case "state": {
       const x = Number(m.x);
-      if (!Number.isFinite(x)) return null;
+      const y = Number(m.y);
+      if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
       const inside = typeof m.inside === "string" && m.inside in BUILDINGS ? m.inside : null;
       return {
         t: "state",
@@ -70,7 +78,9 @@ export function parseMsg(raw: unknown): Msg | null {
         name: cleanName(m.name),
         shirt: cleanShirt(m.shirt),
         x: Math.min(WORLD_MAX_X, Math.max(WORLD_MIN_X, x)),
-        facing: m.facing === -1 ? -1 : 1,
+        y: Math.min(WORLD_MAX_Y, Math.max(0, y)),
+        dir: DIR4.includes(m.dir as Dir4) ? (m.dir as Dir4) : "down",
+        scene: SCENES.includes(m.scene as SceneId) ? (m.scene as SceneId) : "city",
         moving: m.moving === true,
         inside,
       };
@@ -159,7 +169,7 @@ export class Room {
   readonly id = crypto.randomUUID();
   readonly transport: Transport;
   private peers = new Map<string, Peer>();
-  private self = { x: 70, facing: 1 as 1 | -1, moving: false };
+  private self: { x: number; y: number; dir: Dir4; moving: boolean; scene: SceneId } = { x: 360, y: 540, dir: "down", moving: false, scene: "city" };
   private inside: BuildingId | null = null;
   private lastSent = 0;
   private lastKey = "";
@@ -185,7 +195,7 @@ export class Room {
     else bus.emit("room:status", "connecting");
 
     this.unsubs.push(
-      bus.on("self", (s: { x: number; facing: 1 | -1; moving: boolean }) => {
+      bus.on("self", (s: { x: number; y: number; dir: Dir4; moving: boolean; scene: SceneId }) => {
         this.self = s;
         this.sendState();
       }),
@@ -211,11 +221,22 @@ export class Room {
   private sendState(force = false) {
     const now = Date.now();
     const s = this.self;
-    const key = `${Math.round(s.x)}|${s.facing}|${s.moving}|${this.inside}`;
+    const key = `${Math.round(s.x)}|${Math.round(s.y)}|${s.dir}|${s.moving}|${s.scene}|${this.inside}`;
     if (!force && (key === this.lastKey || now - this.lastSent < SEND_EVERY_MS)) return;
     this.lastKey = key;
     this.lastSent = now;
-    this.transport.send({ t: "state", id: this.id, name: this.me.name, shirt: this.me.shirt, x: Math.round(s.x), facing: s.facing, moving: s.moving, inside: this.inside });
+    this.transport.send({
+      t: "state",
+      id: this.id,
+      name: this.me.name,
+      shirt: this.me.shirt,
+      x: Math.round(s.x),
+      y: Math.round(s.y),
+      dir: s.dir,
+      scene: s.scene,
+      moving: s.moving,
+      inside: this.inside,
+    });
   }
 
   /** Returns false when the message was rate-limited or empty. */
@@ -249,7 +270,7 @@ export class Room {
         return;
       case "state": {
         if (!known && this.peers.size >= MAX_PLAYERS - 1) return; // room full: ignore newcomers
-        this.peers.set(m.id, { id: m.id, name: m.name, shirt: m.shirt, x: m.x, facing: m.facing as 1 | -1, moving: m.moving, inside: m.inside as BuildingId | null, seen: Date.now() });
+        this.peers.set(m.id, { id: m.id, name: m.name, shirt: m.shirt, x: m.x, y: m.y, dir: m.dir, scene: m.scene, moving: m.moving, inside: m.inside as BuildingId | null, seen: Date.now() });
         this.emitPeers();
         if (!known) {
           // a newcomer's hello can get lost, so seeing someone for the first time also hands them the room's year

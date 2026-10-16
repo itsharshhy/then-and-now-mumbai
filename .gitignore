@@ -8,3 +8,5 @@ next-env.d.ts
 # public, browser-safe settings only (never secrets): see README "Walk the street with friends"
 !.env
 __pycache__
+# written by next dev
+AGENTS.md

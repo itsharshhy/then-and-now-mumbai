@@ -775,3 +775,58 @@ p.bz-error.bz-panel { background: #f4d7a0; margin-top: 20px; }
 @media (max-width: 560px) {
   .topbar-links .btn-analyst[href="/survive"], .topbar-links .btn-analyst[href="/survive/"] { display: none; }
 }
+
+/* ------------------------------------------------------------------ top-down game HUD */
+.char-preview { display: block; image-rendering: pixelated; }
+.where {
+  position: absolute; left: 12px; top: 10px; margin: 0;
+  font-family: var(--pixel); font-size: 11px; color: var(--chalk);
+  background: rgba(28, 28, 34, 0.7); padding: 4px 8px; pointer-events: none;
+}
+.zoom {
+  position: absolute; right: 12px; top: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.zoom button {
+  width: 36px; height: 36px; font-family: var(--pixel); font-size: 20px; line-height: 1; cursor: pointer;
+  background: var(--taxi); color: var(--ink); border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink);
+}
+.zoom button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.zoom span { font-family: var(--pixel); font-size: 10px; color: var(--chalk); background: rgba(28,28,34,.7); padding: 1px 4px; min-height: 12px; }
+.pad { display: none; }
+@media (pointer: coarse), (max-width: 720px) {
+  .pad { display: block; }
+  .pad .joystick { position: absolute; left: 18px; bottom: 18px; }
+  .pad .pad-act { position: absolute; right: 18px; bottom: 26px; }
+}
+.joystick {
+  width: 104px; height: 104px; border-radius: 50%; touch-action: none;
+  background: rgba(28, 28, 34, 0.35); border: 3px solid rgba(243, 245, 247, 0.55);
+  display: grid; place-items: center;
+}
+.joystick span {
+  width: 42px; height: 42px; border-radius: 50%; background: var(--taxi); border: 3px solid var(--ink);
+  pointer-events: none; transition: transform 0.04s;
+}
+.pad-act {
+  width: 64px; height: 64px; border-radius: 50%; font-family: var(--pixel); font-size: 22px; cursor: pointer;
+  background: var(--best); color: #fff; border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); touch-action: manipulation;
+}
+.talk {
+  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); width: min(560px, calc(100% - 24px));
+  display: flex; gap: 12px; align-items: flex-start; cursor: pointer; z-index: 5;
+  background: var(--ink); color: var(--chalk); border: 3px solid var(--taxi); padding: 12px 14px;
+}
+.talk:focus { outline: none; }
+.talk-portrait { background: var(--dusk); border: 3px solid var(--taxi); padding: 4px 6px 0; flex: none; }
+.talk-body b { font-family: var(--pixel); color: var(--taxi); font-size: 12px; }
+.talk-body p { font-family: var(--pixel); font-size: 13px; line-height: 1.6; margin: 6px 0; }
+.talk-body small { font-size: 12px; color: #9aa0ad; }
+.found {
+  position: absolute; right: 60px; top: 10px; max-width: min(340px, calc(100% - 80px)); display: grid; gap: 2px; z-index: 4;
+  background: #f3ead2; color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); padding: 8px 12px;
+}
+.found b { font-family: var(--pixel); font-size: 11px; color: #8a3a2c; }
+.found span { font-weight: 700; font-size: 16px; }
+.found small { font-size: 12px; color: #3a3420; }
+.found a { color: var(--ink); font-weight: 600; }
+@media (max-width: 560px) { .found { right: 12px; top: 54px; } .talk-portrait { display: none; } }
