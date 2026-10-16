@@ -50,13 +50,14 @@
           ]
         }
       ],
-      "identity": "-",
+      "identity": null,
       "hardenedRuntime": false
     },
     "dmg": {
       "title": "Then & Now"
     },
-    "publish": null
+    "publish": null,
+    "afterPack": "adhoc-sign.js"
   },
   "repository": "https://github.com/itsharshhy/then-and-now-mumbai"
 }

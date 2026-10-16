@@ -42,6 +42,16 @@ jobs:
           npm ci
           npx electron-builder --mac --publish never -c.buildVersion=${{ github.run_number }}
 
+      - name: Check the app is signed and the dmg mounts
+        working-directory: desktop/dist
+        run: |
+          codesign --verify --deep --strict "mac-universal/Then & Now.app"
+          hdiutil attach -nobrowse -mountpoint /tmp/tnm Then-and-Now-mac.dmg
+          codesign --verify --deep --strict "/tmp/tnm/Then & Now.app"
+          hdiutil detach /tmp/tnm
+          unzip -q Then-and-Now-mac.zip -d unzipped
+          codesign --verify --deep --strict "unzipped/Then & Now.app"
+
       - name: Move the mac-app tag to this commit
         run: |
           git tag -f mac-app

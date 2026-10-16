@@ -24,7 +24,7 @@ The home page (`/`) is a landing page with a **Download now** button, and the ga
 
 `desktop/` is a small Electron wrapper: it ships the static site (`out/`) inside the app and serves it from `app://game`, so it plays offline and needs no server. `.github/workflows/mac-app.yml` builds it on a GitHub Mac runner whenever `main` changes and publishes it as the `mac-app` release; the landing page links to `releases/latest/download/Then-and-Now-mac.dmg`.
 
-It is ad-hoc signed but not notarized (notarizing needs a paid Apple Developer account), so the first launch needs **System Settings > Privacy & Security > Open Anyway**; the landing page walks people through it. To notarize later, add the Apple ID secrets to the workflow and set `mac.identity` in `desktop/package.json` to the Developer ID certificate.
+It is ad-hoc signed but not notarized (notarizing needs a paid Apple Developer account), so the first launch needs **System Settings > Privacy & Security > Open Anyway**; the landing page walks people through it. `desktop/adhoc-sign.js` does the ad-hoc signing (Apple Silicon won't open an unsigned app at all). To notarize later, import a Developer ID certificate in the workflow, set `mac.identity` in `desktop/package.json`, add the notarize settings and drop the ad-hoc hook.
 
 To build it yourself on a Mac: `npm run build`, then `cd desktop && npm ci && npm run dist:mac`.
 
